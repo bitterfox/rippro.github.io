@@ -14,12 +14,8 @@ p {
 }
 
 #header h2 {
-    margin-left: 10px;
-    vertical-align: middle;
     font-size: 42px;
     font-weight: bold;
-    text-decoration: none;
-    color: #000;
 }
 
 #content {
@@ -73,8 +69,25 @@ p {
     top: 0px;
 }
 
-table.table td, th{
+table.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.table th {
+    padding: 3px;
     text-align: center;
+    vertical-align: top;
+    color: #333;
+    background-color: #eee;
+    border: 1px solid #b9b9b9;
+}
+
+table.table td {
+    padding: 3px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #b9b9b9;
 }
 
 .legend table {

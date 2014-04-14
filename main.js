@@ -104,7 +104,6 @@ var updateMembers = function(){
             $("<tr></tr>")
                 .append($("<td></td>").text(data.id))
                 .append($("<td></td>").text(data.solved))
-                .append($("<td></td>").text(age))
                 .append($("<td></td>").text(spd))
                 .append($("<td></td>").text(last)));
     }
