@@ -110,6 +110,26 @@ var dtToString = function(dt){
     return res;
 };
 
+var getColor = function(x,a,b,c,d,inv){
+    if(inv){
+        x*=-1; a*=-1; b*=-1; c*=-1; d*=-1;
+    }
+    var res = "color:";
+    if(x >= a){
+        res += 'red';
+    } else if(x >= b){
+        res += 'orange';
+    } else if(x >= c){
+        res += 'blue';
+    } else if(x >= d){
+        res += 'green';
+    } else {
+        res += 'grey';
+    }
+    res += ";";
+    return res;
+};
+
 var updateMembers = function(){
     var datas = [];
     for(var i=0; i<members.length; i++){
@@ -123,19 +143,27 @@ var updateMembers = function(){
     for(var i=0; i<datas.length; i++){
         var data = datas[i];
         var spd = (data.solved/(data.age/1000/60/60/24)).toFixed(2);
-        var last = dtToString(new Date - data.lastAC) + "前";
+        var dt = new Date - data.lastAC;
+        var last = dtToString(dt) + "前";
         var age = dtToString(data.age);
         $("#table").append(
             $("<tr></tr>")
                 .append($("<td></td>")
                         .append($('<a></a>')
                                 .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
+                                .attr("style",getColor(data.solved,500,250,125,62))
                                 .text(data.id)))
-                .append($("<td></td>").text(data.solved))
+                .append($("<td></td>")
+                        .attr("style",getColor(data.solved,500,250,125,62))
+                        .text(data.solved))
                 .append($("<td></td>").text(spd))
-                .append($("<td></td>").text(data.lastAWeek))
-                .append($("<td></td>").text(last)));
-    }
+                .append($("<td></td>")
+                        .attr("style",getColor(data.lastAWeek,16,8,4,1))
+                        .text(data.lastAWeek))
+            .append($("<td></td>")
+                    .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                    .text(last)));
+}
 
     $.plot("#placeholder", datas, {
         xaxis: {

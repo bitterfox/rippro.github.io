@@ -8,17 +8,12 @@ p {
 }
 
 a {
+    color: gray;
     color: none;
     text-decoration: underline;
 }
 
 a:hover {
-    color: none;
-    text-decoration: underline;
-}
-
-a:visited {
-    color: none;
     text-decoration: underline;
 }
 
@@ -103,6 +98,7 @@ table.table td {
     text-align: center;
     background-color: #fff;
     border: 1px solid #b9b9b9;
+    color: gray;
 }
 
 .legend table {
