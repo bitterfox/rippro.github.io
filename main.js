@@ -97,6 +97,13 @@ var updateMembers = function(){
     for(var i=0; i<members.length; i++){
         var data = makeDataObject(members[i]);
         datas.push(data);
+    }
+    datas.sort(function(a,b){
+        return b.solved-a.solved;
+    });
+
+    for(var i=0; i<datas.length; i++){
+        var data = datas[i];
         var spd = (data.solved/(data.age/1000/60/60/24)).toFixed(2);
         var last = dtToString(new Date - data.lastAC) + "前";
         var age = dtToString(data.age);
