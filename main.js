@@ -10,7 +10,7 @@ var Problem = function(id, time){
 var getSolvedProblems = function(user_id){
     var res = [];
     var user_ids = user_id.split(",");
-    var solved_set = new Set([]);
+    // var solved_set = new Set([]);
     for(var i=0; i<user_ids.length; i++){
         var id = user_ids[i];
         $.ajax({
@@ -24,8 +24,8 @@ var getSolvedProblems = function(user_id){
                     var id = $(this).find("id").text();
                     var s = $(this).find("submissiondate").text();
                     var time = new Date(parseInt(s));
-                    if(solved_set.has(id)) return;
-                    solved_set.add(id);
+                    // if(solved_set.has(id)) return;
+                    // solved_set.add(id);
                     res.push(new Problem(id,time));
                 });
             }
