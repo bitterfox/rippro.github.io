@@ -116,7 +116,10 @@ var updateMembers = function(){
         var age = dtToString(data.age);
         $("#table").append(
             $("<tr></tr>")
-                .append($("<td></td>").text(data.id))
+                .append($("<td></td>")
+                        .append($('<a></a>')
+                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
+                                .text(data.id)))
                 .append($("<td></td>").text(data.solved))
                 .append($("<td></td>").text(spd))
                 .append($("<td></td>").text(last)));
