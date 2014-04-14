@@ -8,12 +8,17 @@ p {
 }
 
 a {
-    color: #000;
     color: none;
     text-decoration: underline;
 }
 
 a:hover {
+    color: none;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: none;
     text-decoration: underline;
 }
 

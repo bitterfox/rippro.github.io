@@ -57,6 +57,17 @@ var makeDataObject = function(user_id){
     var last = res.data[res.data.length-1];
     var first = res.data[0];
     res.age = last[0] - first[0];
+
+    res.lastAWeek = 0;
+    var now = new Date();
+    for(var i=res.data.length-1; i>=0; i--){
+        if(now - res.data[i][0] <= 1000*60*60*24*7){
+            res.lastAWeek++;
+        } else {
+            break;
+        }
+    }
+
     res.lastAC = last[0];
     return res;
 };
@@ -122,6 +133,7 @@ var updateMembers = function(){
                                 .text(data.id)))
                 .append($("<td></td>").text(data.solved))
                 .append($("<td></td>").text(spd))
+                .append($("<td></td>").text(data.lastAWeek))
                 .append($("<td></td>").text(last)));
     }
 
