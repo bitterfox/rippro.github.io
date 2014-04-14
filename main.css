@@ -65,11 +65,16 @@ p {
     line-height: 1.2em;
 }
 
+
 .flot-base {
     direction: ltr;
     position: absolute;
     left: 0px;
     top: 0px;
+}
+
+table.table td, th{
+    text-align: center;
 }
 
 .legend table {
