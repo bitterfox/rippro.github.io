@@ -62,14 +62,21 @@ var makeDataObject = function(user_id){
 };
 
 var members = [
+    // M以上,社会人
     "Respect2D",
+    "kioa",
     "yokit9",
     "utisam",
     "ik11235",
-    "arsenic28",
-    "bnsgny",
+    // B3
+    "komi0222",
     "menphim",
-    "dispenser"
+    "dispenser",
+    "arsenic28",
+    // B2
+    "bnsgny",
+    "CROW"
+    // B1
 ];
 
 var addMember = function(){
