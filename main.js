@@ -2,17 +2,32 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
+// Onload
+$(function() {
+    updateGraphAndTable(memberIDs);
+    $("#update").click(function(){
+        updateGraphAndTable(memberIDs);
+    });
+    $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+});
+
 var Problem = function(id, time){
     this.id = id;
     this.time = time;
 };
 
-var getSolvedProblems = function(user_id){
+var User = function(id){
+    this.id = id;
+    this.solved_list = getSolvedProblems(id);
+    this.solved = this.solved_list.length;
+};
+
+var getSolvedProblems = function(userID){
     var res = [];
-    var user_ids = user_id.split(",");
+    var userIDs = userID.split(",");
     var solved_set = {};
-    for(var i=0; i<user_ids.length; i++){
-        var id = user_ids[i];
+    for(var i=0; i<userIDs.length; i++){
+        var id = userIDs[i];
         $.ajax({
             url: "http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=" + id,
             type: "GET",
@@ -37,63 +52,92 @@ var getSolvedProblems = function(user_id){
     return res;
 };
 
-var makePlots = function(solved_list){
-    var res = [];
-    for(var i=0; i<solved_list.length; i++){
-        res.push([solved_list[i].time, i+1]);
+var updateGraphAndTable = function(userIDs){
+    var tableDatas = [];
+    var graphDatas = [];
+    for(var i=0; i<userIDs.length; i++){
+        var user = new User(userIDs[i]);
+        graphDatas.push(makeGraphData(user));
+        tableDatas.push(makeTableData(user));
+    }
+
+    graphDatas.sort(function(a,b){
+        return b.data.length - a.data.length;
+    });
+    tableDatas.sort(function(a,b){
+        return b.solved - a.solved;
+    });
+    drawGraph(graphDatas);
+    fillTable(tableDatas);
+};
+
+var makeGraphData = function(user){
+    var res = {};
+    res.data = [];
+    res.label = user.id;
+    console.log(user.id, user.solved_list);
+    for(var i=0; i<user.solved_list.length; i++){
+        res.data.push([user.solved_list[i].time, i+1]);
     }
     return res;
 };
 
-var makeDataObject = function(user_id){
+var drawGraph = function(graphDatas){
+    $.plot("#placeholder", graphDatas, {
+        xaxis: {
+            mode: "time"
+        },
+        legend: {
+            position: "nw"
+        }
+    });
+};
+
+var makeTableData = function(user){
     var res = {};
-    // for graph
-    res.label = user_id;
-    res.data = makePlots(getSolvedProblems(user_id));
-
-    // for table
-    res.id = user_id;
-    res.solved = res.data.length;
-    var last = res.data[res.data.length-1];
-    var first = res.data[0];
-    res.age = last[0] - first[0];
-
-    res.lastAWeek = 0;
+    res.id = user.id;
+    res.solved = user.solved_list.length;
+    var first = user.solved_list[0];
+    var last = user.solved_list[user.solved_list.length-1];
+    res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
+    res.solvedLastAWeek = 0;
     var now = new Date();
-    for(var i=res.data.length-1; i>=0; i--){
-        if(now - res.data[i][0] <= 1000*60*60*24*7){
-            res.lastAWeek++;
+    for(var i=0; i<user.solved_list.length; i++){
+        var j = user.solved_list.length-i-1;
+        if(now - user.solved_list[j].time <= 1000*86400*7){
+            res.solvedLastAWeek++;
         } else {
             break;
         }
     }
-
-    res.lastAC = last[0];
+    res.lastAC = last;
     return res;
 };
 
-var members = [
-    // M以上,社会人
-    "Respect2D",
-    "kioa",
-    "yokit9",
-    "utisam",
-    "ik11235",
-    // B3
-    "komi0222",
-    "menphim",
-    "dispenser",
-    "arsenic28",
-    // B2
-    "bnsgny",
-    "CROW"
-    // B1
-];
-
-var addMember = function(){
-    var user_id = $("#new_user").val();
-    members.push(user_id);
-    updateMembers();
+var fillTable = function(tableDatas){
+    for(var i=0; i<tableDatas.length; i++){
+        var data = tableDatas[i];
+        var dt = new Date - data.lastAC.time;
+        var last = dtToString(dt) + "前";
+        var age = dtToString(data.age);
+        $("#table").append(
+            $("<tr></tr>")
+                .append($("<td></td>")
+                        .append($('<a></a>')
+                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
+                                .attr("style",getColor(data.solved,500,250,125,62))
+                                .text(data.id)))
+                .append($("<td></td>")
+                        .attr("style",getColor(data.solved,500,250,125,62))
+                        .text(data.solved))
+                .append($("<td></td>").text(data.solvedPerDay.toFixed(2)))
+                .append($("<td></td>")
+                        .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
+                        .text(data.solvedLastAWeek))
+                .append($("<td></td>")
+                        .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                        .text(last)));
+    }
 };
 
 var dtToString = function(dt){
@@ -130,55 +174,20 @@ var getColor = function(x,a,b,c,d,inv){
     return res;
 };
 
-var updateMembers = function(){
-    var datas = [];
-    for(var i=0; i<members.length; i++){
-        var data = makeDataObject(members[i]);
-        datas.push(data);
-    }
-    datas.sort(function(a,b){
-        return b.solved-a.solved;
-    });
-
-    for(var i=0; i<datas.length; i++){
-        var data = datas[i];
-        var spd = (data.solved/(data.age/1000/60/60/24)).toFixed(2);
-        var dt = new Date - data.lastAC;
-        var last = dtToString(dt) + "前";
-        var age = dtToString(data.age);
-        $("#table").append(
-            $("<tr></tr>")
-                .append($("<td></td>")
-                        .append($('<a></a>')
-                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
-                                .attr("style",getColor(data.solved,500,250,125,62))
-                                .text(data.id)))
-                .append($("<td></td>")
-                        .attr("style",getColor(data.solved,500,250,125,62))
-                        .text(data.solved))
-                .append($("<td></td>").text(spd))
-                .append($("<td></td>")
-                        .attr("style",getColor(data.lastAWeek,16,8,4,1))
-                        .text(data.lastAWeek))
-            .append($("<td></td>")
-                    .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                    .text(last)));
-}
-
-    $.plot("#placeholder", datas, {
-        xaxis: {
-            mode: "time"
-        },
-        legend: {
-            position: "nw"
-        }
-    });
-};
-
-$(function() {
-    updateMembers();
-    $("#update").click(function(){
-        updateMembers();
-    });
-    $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
-});
+var memberIDs = [
+    // M以上,社会人
+    "Respect2D",
+    "kioa",
+    "yokit9",
+    "utisam",
+    "ik11235",
+    // B3
+    "komi0222",
+    "menphim",
+    "dispenser",
+    "arsenic28",
+    // B2
+    "bnsgny",
+    "CROW"
+    // B1
+];
