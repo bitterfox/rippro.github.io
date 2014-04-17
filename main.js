@@ -156,8 +156,11 @@ var fillTable = function(tableDatas){
             $("#row"+i).append($("<td></td>")
                                .append($('<a></a>')
                                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
-                                       .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                       .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                        .text(data.recentACs[j].id)));
+            $("#row"+i).append($("<td></td>")
+                               .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                               .text(dt));
 
         }
 
