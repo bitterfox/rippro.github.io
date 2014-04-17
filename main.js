@@ -11,10 +11,11 @@ $(function() {
     $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 });
 
-var Problem = function(id, time, runID){
+var Problem = function(id, time, runID, codeSize){
     this.id = id;
     this.time = time;
     this.runID = runID;
+    this.codeSize = codeSize;
 };
 
 var User = function(id){
@@ -40,10 +41,11 @@ var getSolvedProblems = function(userID){
                     var id = $(this).find("id").text();
                     var s = $(this).find("submissiondate").text();
                     var runID = $(this).find("judge_id").text();
+                    var codeSize = parseInt($(this).find("code_size").text());
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
                     solved_set[id] = 0;
-                    res.push(new Problem(id,time,runID));
+                    res.push(new Problem(id,time,runID,codeSize));
                 });
             }
         });
@@ -103,14 +105,14 @@ var makeTableData = function(user){
     var last = user.solved_list[user.solved_list.length-1];
     res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
     res.solvedLastAWeek = 0;
+    res.totalCodeSize = 0;
     var now = new Date();
     for(var i=0; i<user.solved_list.length; i++){
         var j = user.solved_list.length-i-1;
         if(now - user.solved_list[j].time <= 1000*86400*7){
             res.solvedLastAWeek++;
-        } else {
-            break;
         }
+        res.totalCodeSize += user.solved_list[j].codeSize;
     }
     res.lastAC = last;
     return res;
@@ -134,6 +136,8 @@ var fillTable = function(tableDatas){
                             .text(data.solved))
                     .append($("<td></td>")
                             .text(data.solvedPerDay.toFixed(2)))
+                    .append($("<td></td>")
+                            .text((data.totalCodeSize/1000).toFixed(2) + " KB"))
                     .append($("<td></td>")
                             .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
                             .text(data.solvedLastAWeek))
