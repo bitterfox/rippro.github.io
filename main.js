@@ -1,7 +1,6 @@
 // TODO: UI
 // TODO: highchartに変える
 // TODO: last submission を表示
-// TODO: 5問以上觧いていない場合の対処
 
 // Onload
 $(function() {
@@ -115,9 +114,10 @@ var makeTableData = function(user){
         }
     }
 
-    res.recentACs = [];
-    for(var i=0; i<5; i++){
-        res.recentACs.push(user.solved_list[user.solved_list.length-i-1]);
+    res.recentACs = ["","","","",""];
+    var t = 5 > user.solved_list.length ? user.solved_list.length : 5;
+    for(var i=0; i<t; i++){
+        res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
     }
 
     return res;
@@ -155,9 +155,10 @@ var fillTable = function(tableDatas){
                                        .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                        .text(data.recentACs[j].id)))
                 .append($("<td></td>")
-                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
-                        .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                        .text(dt));
+                        .append($('<a></a>')
+                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
+                                .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                .text(dt)));
 
         }
 
