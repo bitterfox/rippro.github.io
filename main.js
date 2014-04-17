@@ -136,7 +136,9 @@ var fillTable = function(tableDatas){
                         .text(data.solvedLastAWeek))
                 .append($("<td></td>")
                         .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                        .text(last)));
+                        .text(last))
+                .append($("<td></td>")
+                        .text(data.lastAC.id)));
     }
 };
 
