@@ -11,9 +11,10 @@ $(function() {
     $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 });
 
-var Problem = function(id, time){
+var Problem = function(id, time, runID){
     this.id = id;
     this.time = time;
+    this.runID = runID;
 };
 
 var User = function(id){
@@ -38,10 +39,11 @@ var getSolvedProblems = function(userID){
                 $(xml).find("user").find("solved_list").find("problem").each(function(){
                     var id = $(this).find("id").text();
                     var s = $(this).find("submissiondate").text();
+                    var runID = $(this).find("judge_id").text();
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
                     solved_set[id] = 0;
-                    res.push(new Problem(id,time));
+                    res.push(new Problem(id,time,runID));
                 });
             }
         });
@@ -138,7 +140,10 @@ var fillTable = function(tableDatas){
                         .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                         .text(last))
                 .append($("<td></td>")
-                        .text(data.lastAC.id)));
+                        .append($('<a></a>')
+                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.lastAC.runID)
+                                .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                .text("#" + data.lastAC.runID))));
     }
 };
 
