@@ -122,28 +122,29 @@ var fillTable = function(tableDatas){
         var dt = new Date - data.lastAC.time;
         var last = dtToString(dt) + "前";
         var age = dtToString(data.age);
-        $("#table").append(
-            $("<tr></tr>")
-                .append($("<td></td>")
-                        .append($('<a></a>')
-                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
-                                .attr("style",getColor(data.solved,500,250,125,62))
-                                .text(data.id)))
-                .append($("<td></td>")
-                        .attr("style",getColor(data.solved,500,250,125,62))
-                        .text(data.solved))
-                .append($("<td></td>").text(data.solvedPerDay.toFixed(2)))
-                .append($("<td></td>")
-                        .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
-                        .text(data.solvedLastAWeek))
-                .append($("<td></td>")
-                        .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                        .text(last))
-                .append($("<td></td>")
-                        .append($('<a></a>')
-                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.lastAC.runID)
-                                .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                .text("#" + data.lastAC.runID))));
+        $("#table")
+            .append($("<tr></tr>")
+                    .append($("<td></td>")
+                            .append($('<a></a>')
+                                    .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
+                                    .attr("style",getColor(data.solved,500,250,125,62))
+                                    .text(data.id)))
+                    .append($("<td></td>")
+                            .attr("style",getColor(data.solved,500,250,125,62))
+                            .text(data.solved))
+                    .append($("<td></td>")
+                            .text(data.solvedPerDay.toFixed(2)))
+                    .append($("<td></td>")
+                            .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
+                            .text(data.solvedLastAWeek))
+                    .append($("<td></td>")
+                            .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                            .text(last))
+                    .append($("<td></td>")
+                            .append($('<a></a>')
+                                    .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.lastAC.runID)
+                                    .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                    .text("#" + data.lastAC.runID))));
     }
 };
 
