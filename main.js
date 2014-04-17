@@ -144,23 +144,21 @@ var fillTable = function(tableDatas){
                     .text(data.solved))
         // solved/day
             .append($("<td></td>")
-                    .text(data.solvedPerDay.toFixed(2)))
-        // solved last a week
-            .append($("<td></td>")
-                    .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
-                    .text(data.solvedLastAWeek));
+                    .text(data.solvedPerDay.toFixed(2)));
 
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
             var dt = dtToString(now - data.recentACs[j].time) + "前";
-            $("#row"+i).append($("<td></td>")
+            $("#row"+i)
+                .append($("<td></td>")
                                .append($('<a></a>')
                                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
                                        .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                       .text(data.recentACs[j].id)));
-            $("#row"+i).append($("<td></td>")
-                               .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                               .text(dt));
+                                       .text(data.recentACs[j].id)))
+                .append($("<td></td>")
+                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
+                        .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                        .text(dt));
 
         }
 
