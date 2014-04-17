@@ -125,7 +125,6 @@ var makeTableData = function(user){
 
 var fillTable = function(tableDatas){
     for(var i=0; i<tableDatas.length; i++){
-        console.log(i);
         var data = tableDatas[i];
 
         var age = dtToString(data.age);
