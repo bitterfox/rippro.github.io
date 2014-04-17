@@ -1,6 +1,7 @@
 // TODO: UI
 // TODO: highchartに変える
 // TODO: last submission を表示
+// TODO: 5問以上觧いていない場合の対処
 
 // Onload
 $(function() {
@@ -79,7 +80,6 @@ var makeGraphData = function(user){
     var res = {};
     res.data = [];
     res.label = user.id;
-    console.log(user.id, user.solved_list);
     for(var i=0; i<user.solved_list.length; i++){
         res.data.push([user.solved_list[i].time, i+1]);
     }
@@ -105,50 +105,62 @@ var makeTableData = function(user){
     var last = user.solved_list[user.solved_list.length-1];
     res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
     res.solvedLastAWeek = 0;
-    res.totalCodeSize = 0;
     var now = new Date();
     for(var i=0; i<user.solved_list.length; i++){
         var j = user.solved_list.length-i-1;
         if(now - user.solved_list[j].time <= 1000*86400*7){
             res.solvedLastAWeek++;
+        } else {
+            break;
         }
-        res.totalCodeSize += user.solved_list[j].codeSize;
     }
-    res.lastAC = last;
+
+    res.recentACs = [];
+    for(var i=0; i<5; i++){
+        res.recentACs.push(user.solved_list[user.solved_list.length-i-1]);
+    }
+
     return res;
 };
 
 var fillTable = function(tableDatas){
     for(var i=0; i<tableDatas.length; i++){
+        console.log(i);
         var data = tableDatas[i];
-        var dt = new Date - data.lastAC.time;
-        var last = dtToString(dt) + "前";
+
         var age = dtToString(data.age);
-        $("#table")
-            .append($("<tr></tr>")
-                    .append($("<td></td>")
-                            .append($('<a></a>')
-                                    .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
-                                    .attr("style",getColor(data.solved,500,250,125,62))
-                                    .text(data.id)))
-                    .append($("<td></td>")
+
+        $("#table").append($("<tr></tr>").attr("id","row"+i));
+        $("#row"+i)
+        // ID
+            .append($("<td></td>")
+                    .append($('<a></a>')
+                            .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
                             .attr("style",getColor(data.solved,500,250,125,62))
-                            .text(data.solved))
-                    .append($("<td></td>")
-                            .text(data.solvedPerDay.toFixed(2)))
-                    .append($("<td></td>")
-                            .text((data.totalCodeSize/1000).toFixed(2) + " KB"))
-                    .append($("<td></td>")
-                            .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
-                            .text(data.solvedLastAWeek))
-                    .append($("<td></td>")
-                            .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                            .text(last))
-                    .append($("<td></td>")
-                            .append($('<a></a>')
-                                    .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.lastAC.runID)
-                                    .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                    .text("#" + data.lastAC.runID))));
+                            .text(data.id)))
+        // solved
+            .append($("<td></td>")
+                    .attr("style",getColor(data.solved,500,250,125,62))
+                    .text(data.solved))
+        // solved/day
+            .append($("<td></td>")
+                    .text(data.solvedPerDay.toFixed(2)))
+        // solved last a week
+            .append($("<td></td>")
+                    .attr("style",getColor(data.solvedLastAWeek,16,8,4,1))
+                    .text(data.solvedLastAWeek));
+
+        var now = new Date();
+        for(var j=0; j<data.recentACs.length; j++){
+            var dt = dtToString(now - data.recentACs[j].time) + "前";
+            $("#row"+i).append($("<td></td>")
+                               .append($('<a></a>')
+                                       .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
+                                       .attr("style",getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                       .text(data.recentACs[j].id)));
+
+        }
+
     }
 };
 
