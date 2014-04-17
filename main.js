@@ -24,6 +24,8 @@ var User = function(id){
     this.solved = this.solved_list.length;
 };
 
+var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
+
 var getSolvedProblems = function(userID){
     var res = [];
     var userIDs = userID.split(",");
@@ -31,7 +33,7 @@ var getSolvedProblems = function(userID){
     for(var i=0; i<userIDs.length; i++){
         var id = userIDs[i];
         $.ajax({
-            url: "http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=" + id,
+            url: pref + "webservice/user?id=" + id,
             type: "GET",
             dataType: "xml",
             timeout: "1000",
@@ -128,13 +130,12 @@ var fillTable = function(tableDatas){
         var data = tableDatas[i];
 
         var age = dtToString(data.age);
-
         $("#table").append($("<tr></tr>").attr("id","row"+i));
         $("#row"+i)
         // ID
             .append($("<td></td>")
                     .append($('<a></a>')
-                            .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + data.id)
+                            .attr("href",pref + "user.jsp?id=" + data.id)
                             .attr("style",getColor(data.solved,500,250,125,62))
                             .text(data.id)))
         // solved
@@ -151,15 +152,14 @@ var fillTable = function(tableDatas){
             $("#row"+i)
                 .append($("<td></td>")
                                .append($('<a></a>')
-                                       .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
+                                       .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
                                        .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                        .text(data.recentACs[j].id)))
                 .append($("<td></td>")
                         .append($('<a></a>')
-                                .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + data.recentACs[j].runID)
+                                .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
                                 .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                 .text(dt)));
-
         }
 
     }
