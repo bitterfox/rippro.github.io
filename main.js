@@ -200,12 +200,6 @@ var getColor = function(x,a,b,c,d,inv){
 };
 
 var memberIDs = [
-    // M以上,社会人
-    "Respect2D",
-    "kioa",
-    "yokit9",
-    "utisam",
-    "ik11235",
     // B3
     "komi0222",
     "menphim",
