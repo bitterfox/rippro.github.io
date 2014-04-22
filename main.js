@@ -207,7 +207,7 @@ var memberIDs = [
     "arsenic28",
     // B2
     "bnsgny",
-    "CROW"
+    "CROW",
     // B1
     "is0248vx"
 ];
