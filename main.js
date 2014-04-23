@@ -149,6 +149,8 @@ var fillTable = function(tableDatas){
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
             var dt = dtToString(now - data.recentACs[j].time) + "前";
+            if(dt == "NaN日前") dt = ""
+
             $("#row"+i)
                 .append($("<td></td>")
                                .append($('<a></a>')
