@@ -8,7 +8,6 @@ $(function() {
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
-    $("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
 });
 
 var Problem = function(id, time, runID, codeSize){
