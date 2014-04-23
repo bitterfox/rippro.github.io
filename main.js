@@ -119,7 +119,7 @@ var makeTableData = function(user){
         }
     }
 
-    res.recentACs = ["","","","",""];
+    res.recentACs = [null,null,null,null,null];
     var t = 5 > user.solved_list.length ? user.solved_list.length : 5;
     for(var i=0; i<t; i++){
         res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
@@ -151,20 +151,25 @@ var fillTable = function(tableDatas){
 
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
-            var dt = dtToString(now - data.recentACs[j].time) + "前";
-            if(dt == "NaN日前") dt = "";
+            if(data.recentACs[j] !== null){
+                var dt = dtToString(now - data.recentACs[j].time) + "前";
+                $("#row"+i)
+                    .append($("<td></td>")
+                            .append($('<a></a>')
+                                    .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
+                                    .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                    .text(data.recentACs[j].id)))
+                    .append($("<td></td>")
+                            .append($('<a></a>')
+                                    .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
+                                    .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                                    .text(dt)));
+            } else {
+                $("#row"+i)
+                    .append($("<td></td>").text(""))
+                    .append($("<td></td>").text(""));
 
-            $("#row"+i)
-                .append($("<td></td>")
-                               .append($('<a></a>')
-                                       .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
-                                       .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                       .text(data.recentACs[j].id)))
-                .append($("<td></td>")
-                        .append($('<a></a>')
-                                .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
-                                .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                .text(dt)));
+            }
         }
 
     }
