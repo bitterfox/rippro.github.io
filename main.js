@@ -103,7 +103,11 @@ var makeTableData = function(user){
     res.solved = user.solved_list.length;
     var first = user.solved_list[0];
     var last = user.solved_list[user.solved_list.length-1];
-    res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
+    if(last){
+        res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
+    } else {
+        res.solvedPerDay = 0;
+    }
     res.solvedLastAWeek = 0;
     var now = new Date();
     for(var i=0; i<user.solved_list.length; i++){
