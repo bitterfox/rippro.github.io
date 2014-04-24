@@ -120,8 +120,7 @@ var makeTableData = function(user){
     }
 
     res.recentACs = [null,null,null,null,null];
-    var t = 5 > user.solved_list.length ? user.solved_list.length : 5;
-    for(var i=0; i<t; i++){
+    for(var i=0; i<Math.min(user.solved_list.length, 5); i++){
         res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
     }
 
