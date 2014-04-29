@@ -4,7 +4,7 @@
 
 $.event.add(window,"load",function() {
     var url_pref = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=",
-        volumes = ["100",
+        volumes = [// "100",
                    // PCK
                    "0","1","2",
                    // JOI
