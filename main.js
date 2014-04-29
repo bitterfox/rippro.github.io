@@ -41,6 +41,14 @@ $.event.add(window,"load",function() {
         });
     }
 
+    var $ths = $("<tr></tr>")
+        .append($("<th></th>").text("No"))
+        .append($("<th></th>").text("ID"));
+    for(var i=0; i<memberIDs.length; i++){
+        $ths.append($("<th></th>").text(i));
+    }
+    $("#problems").append($ths);
+
     for(var i=0; i<problems.length; i++){
         var $row = $("<tr></tr>")
                 .attr("id", problems[i].id)
@@ -177,6 +185,14 @@ var makeTableData = function(user){
 };
 
 var fillTable = function(tableDatas){
+
+    $("#table").append($("<tr></tr>")
+            .append($("<th></th>").text("No"))
+            .append($("<th></th>").text("ID"))
+            .append($("<th></th>").text("solved"))
+            .append($("<th></th>").text("solved/day"))
+            .append($("<th></th>").text("Recent ACs").attr("colspan",2*tableDatas.length)));
+
     for(var i=0; i<tableDatas.length; i++){
         var data = tableDatas[i];
 
@@ -184,6 +200,7 @@ var fillTable = function(tableDatas){
         $("#table").append($("<tr></tr>").attr("id","row"+i));
         $("#row"+i)
         // ID
+            .append($("<td></td>").text(i))
             .append($("<td></td>")
                     .append($('<a></a>')
                             .attr("href",pref + "user.jsp?id=" + data.id)
