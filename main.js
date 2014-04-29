@@ -2,9 +2,6 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
-// Onload
-
-
 $.event.add(window,"load",function() {
     var url_pref = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=",
         volumes = ["100",
@@ -132,6 +129,7 @@ var makeGraphData = function(user){
     res.data = [];
     res.label = user.id;
     for(var i=0; i<user.solved_list.length; i++){
+        $("#"+user.solved_list[i].id+"-"+user.id).text("#");
         res.data.push([user.solved_list[i].time, i+1]);
     }
     return res;
