@@ -209,3 +209,54 @@ var getColor = function(x,a,b,c,d,inv){
     res += ";";
     return res;
 };
+
+$.event.add(window,"load",function() {
+    var url_pref = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=",
+        volumes = ["100",
+                   // PCK
+                   "0","1","2",
+                   // JOI
+                   "5",
+                   // UAPC
+                   "10",
+                   // ICPC Japan
+                   "11",
+                   // ICPC Asia
+                   "12","13",
+                   // UAPC
+                   "15",
+                   // JAG
+                   "20","21","22","23","24","25"
+                  ];
+
+    var problems = [];
+
+    for(var i=0; i<volumes.length; i++){
+        $.ajax({
+            url: url_pref + volumes[i],
+            type: "GET",
+            dataType: "xml",
+            timeout: "1000",
+            async: false,
+            success: function(xml){
+                $(xml).find("problem_list").find("problem").each(function(){
+                    var id = $(this).find("id").text().replace(/[\r\n]/g,"");
+                    var name = $(this).find("name").text().replace(/[\r\n]/g,"");
+                    problems.push({id:id,name:name});
+
+                });
+            }
+        });
+    }
+
+    for(var i=0; i<problems.length; i++){
+        var $row = $("<tr></tr>")
+                .attr("id", problems[i].id)
+                .append($("<td></td>").text(problems[i].id))
+                .append($("<td></td>").text(problems[i].name));
+        for(var j=0; j<memberIDs.length; j++){
+            $row.append($("<td></td>").attr("id", problems[i].id + "-" + memberIDs[i]));
+        }
+        $("#problems").append($row);
+    };
+});
