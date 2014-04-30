@@ -45,6 +45,14 @@ var updateGraphAndTable = function(userIDs){
         recentStatusDatas.push(makeRecentStatusData(users[i]));
     }
 
+    var solved = {};
+    for(var i=0; i<users.length; i++){
+        solved[users[i].id] = users[i].solved;
+    }
+
+    memberIDs.sort(function(a,b){
+        return - solved[a] + solved[b];
+    });
     graphDatas.sort(function(a,b){
         return b.data.length - a.data.length;
     });
@@ -54,7 +62,6 @@ var updateGraphAndTable = function(userIDs){
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
-
     makeSolvedTable(volumes);
     fillSolvedTable(users);
 };
