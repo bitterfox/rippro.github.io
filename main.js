@@ -21,7 +21,13 @@ $.event.add(window,"load",function() {
                    "20","21","22","23","24","25"
                   ];
 
-    var problems = [];
+    var $ths = $("<tr></tr>")
+            .append($("<th></th>").text("No"))
+            .append($("<th></th>").text("ID"));
+    for(var i=0; i<memberIDs.length; i++){
+        $ths.append($("<th></th>").text(i));
+    }
+    $("#problems").append($ths);
 
     for(var i=0; i<volumes.length; i++){
         $.ajax({
@@ -34,31 +40,18 @@ $.event.add(window,"load",function() {
                 $(xml).find("problem_list").find("problem").each(function(){
                     var id = $(this).find("id").text().replace(/[\r\n]/g,"");
                     var name = $(this).find("name").text().replace(/[\r\n]/g,"");
-                    problems.push({id:id,name:name});
-
+                    var $row = $("<tr></tr>")
+                            .attr("id", id)
+                            .append($("<td></td>").text(id))
+                            .append($("<td></td>").text(name));
+                    for(var j=0; j<memberIDs.length; j++){
+                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
+                    }
+                    $("#problems").append($row);
                 });
             }
         });
     }
-
-    var $ths = $("<tr></tr>")
-        .append($("<th></th>").text("No"))
-        .append($("<th></th>").text("ID"));
-    for(var i=0; i<memberIDs.length; i++){
-        $ths.append($("<th></th>").text(i));
-    }
-    $("#problems").append($ths);
-
-    for(var i=0; i<problems.length; i++){
-        var $row = $("<tr></tr>")
-                .attr("id", problems[i].id)
-                .append($("<td></td>").text(problems[i].id))
-                .append($("<td></td>").text(problems[i].name));
-        for(var j=0; j<memberIDs.length; j++){
-            $row.append($("<td></td>").attr("id", problems[i].id + "-" + memberIDs[j]));
-        }
-        $("#problems").append($row);
-    };
 });
 
 $.event.add(window,"load",function() {
