@@ -25,6 +25,8 @@ $.event.add(window,"load",function() {
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
+    $("#table").tablesorter();
+    $("#problems").tablesorter();
 });
 
 var updateGraphAndTable = function(userIDs){
@@ -102,7 +104,6 @@ var makeGraphData = function(user){
     res.data = [];
     res.label = user.id;
     for(var i=0; i<user.solved_list.length; i++){
-//         ;
         res.data.push([user.solved_list[i].time, i+1]);
     }
     return res;
@@ -150,18 +151,23 @@ var makeRecentStatusData = function(user){
 };
 
 var fillRecentStatusTable = function(recentStatusDatas){
-    $("#table").append($("<tr></tr>")
-                       .append($("<th></th>").text("No"))
-                       .append($("<th></th>").text("ID"))
-                       .append($("<th></th>").text("solved"))
-                       .append($("<th></th>").text("solved/day"))
-                       .append($("<th></th>").text("Recent ACs").attr("colspan",2*recentStatusDatas.length)));
+    $("#table")
+        .append($("<thead></thead>")
+                .append($("<tr></tr>")
+                        .append($("<th></th>").text("No"))
+                        .append($("<th></th>").text("ID"))
+                        .append($("<th></th>").text("solved"))
+                        .append($("<th></th>").text("solved/day"))
+                        .append($("<th></th>").text("Recent ACs")
+                                .attr("colspan",2*recentStatusDatas.length))))
+        .append($("<tbody></tbody>"));
 
     for(var i=0; i<recentStatusDatas.length; i++){
         var data = recentStatusDatas[i];
 
         var age = dtToString(data.age);
-        $("#table").append($("<tr></tr>").attr("id","row"+i));
+        $("#table tbody")
+            .append($("<tr></tr>").attr("id","row"+i));
         $("#row"+i)
         // ID
             .append($("<td></td>").text(i))
@@ -198,10 +204,8 @@ var fillRecentStatusTable = function(recentStatusDatas){
                                     .text(dt)));
             } else {
                 $("#row"+i)
-                    .append(
-                        $("<td></td>").text(""))
-                    .append(
-                        $("<td></td>").text(""));
+                    .append($("<td></td>"))
+                    .append($("<td></td>"));
             }
         }
 
@@ -243,13 +247,19 @@ var getColor = function(x,a,b,c,d,inv){
 };
 
 var makeSolvedTable = function(volumes){
-    var $ths = $("<tr></tr>")
-            .append($("<th></th>").text("No"))
-            .append($("<th></th>").text("ID"));
+    var $thead = $("<thead></thead>");
+    var $ths = $("<tr></tr>");
+
+    $thead
+        .append($("<th></th>").text("No"))
+        .append($("<th></th>").text("ID"));
     for(var i=0; i<memberIDs.length; i++){
-        $ths.append($("<th></th>").text(i));
+        $thead.append($("<th></th>").text(i));
     }
-    $("#problems").append($ths);
+
+    $("#problems")
+        .append($thead)
+        .append($("<tbody></tbody>"));
 
     for(var i=0; i<volumes.length; i++){
         $.ajax({
@@ -272,7 +282,7 @@ var makeSolvedTable = function(volumes){
                     for(var j=0; j<memberIDs.length; j++){
                         $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
                     }
-                    $("#problems").append($row);
+                    $("#problems tbody").append($row);
                 });
             }
         });
