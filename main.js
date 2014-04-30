@@ -63,6 +63,30 @@ $.event.add(window,"load",function() {
     });
 });
 
+var updateGraphAndTable = function(userIDs){
+    var tableDatas = [];
+    var graphDatas = [];
+    for(var i=0; i<userIDs.length; i++){
+        var solved_list = getSolvedProblems(userIDs[i]);
+        var user = {
+            id: userIDs[i],
+            solved_list: solved_list,
+            solved: solved_list.length
+        };
+        graphDatas.push(makeGraphData(user));
+        tableDatas.push(makeRecentStatusData(user));
+    }
+
+    graphDatas.sort(function(a,b){
+        return b.data.length - a.data.length;
+    });
+    tableDatas.sort(function(a,b){
+        return b.solved - a.solved;
+    });
+    drawGraph(graphDatas);
+    fillRecentStatusTable(tableDatas);
+};
+
 var getSolvedProblems = function(userID){
     var res = [];
     var userIDs = userID.split(",");
@@ -92,30 +116,6 @@ var getSolvedProblems = function(userID){
         return a.time - b.time;
     });
     return res;
-};
-
-var updateGraphAndTable = function(userIDs){
-    var tableDatas = [];
-    var graphDatas = [];
-    for(var i=0; i<userIDs.length; i++){
-        var solved_list = getSolvedProblems(userIDs[i]);
-        var user = {
-            id: userIDs[i],
-            solved_list: solved_list,
-            solved: solved_list.length
-        };
-        graphDatas.push(makeGraphData(user));
-        tableDatas.push(makeRecentStatusData(user));
-    }
-
-    graphDatas.sort(function(a,b){
-        return b.data.length - a.data.length;
-    });
-    tableDatas.sort(function(a,b){
-        return b.solved - a.solved;
-    });
-    drawGraph(graphDatas);
-    fillRecentStatusTable(tableDatas);
 };
 
 var makeGraphData = function(user){
