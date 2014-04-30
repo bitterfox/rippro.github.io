@@ -2,59 +2,23 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
-$.event.add(window,"load",function() {
-    var url_pref = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=",
-        volumes = [// "100",
-            // PCK
-            "0","1","2",
-            // JOI
-            "5",
-            // UAPC
-            "10",
-            // ICPC Japan
-            "11",
-            // ICPC Asia
-            "12","13",
-            // UAPC
-            "15",
-            // JAG
-            "20","21","22","23","24","25"
-        ];
-
-    var $ths = $("<tr></tr>")
-            .append($("<th></th>").text("No"))
-            .append($("<th></th>").text("ID"));
-    for(var i=0; i<memberIDs.length; i++){
-        $ths.append($("<th></th>").text(i));
-    }
-    $("#problems").append($ths);
-
-    for(var i=0; i<volumes.length; i++){
-        $.ajax({
-            url: url_pref + volumes[i],
-            type: "GET",
-            dataType: "xml",
-            timeout: "1000",
-            async: false,
-            success: function(xml){
-                $(xml).find("problem_list").find("problem").each(function(){
-                    var id = $(this).find("id").text().replace(/[\r\n]/g,"");
-                    var name = $(this).find("name").text().replace(/[\r\n]/g,"");
-                    var $row = $("<tr></tr>")
-                            .attr("id", id)
-                            .append($("<td></td>").text(id))
-                            .append($("<td></td>").text(name));
-                    for(var j=0; j<memberIDs.length; j++){
-                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
-                    }
-                    $("#problems").append($row);
-                });
-            }
-        });
-    }
-});
-
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
+var volumes = [// "100",
+    // PCK
+    "0","1","2",
+    // JOI
+    "5",
+    // UAPC
+    "10",
+    // ICPC Japan
+    "11",
+    // ICPC Asia
+    "12","13",
+    // UAPC
+    "15",
+    // JAG
+    "20","21","22","23","24","25"
+];
 
 $.event.add(window,"load",function() {
     updateGraphAndTable(memberIDs);
@@ -64,27 +28,35 @@ $.event.add(window,"load",function() {
 });
 
 var updateGraphAndTable = function(userIDs){
-    var tableDatas = [];
+    var recentStatusDatas = [];
     var graphDatas = [];
+    var users = [];
     for(var i=0; i<userIDs.length; i++){
         var solved_list = getSolvedProblems(userIDs[i]);
-        var user = {
+        users.push({
             id: userIDs[i],
             solved_list: solved_list,
             solved: solved_list.length
-        };
-        graphDatas.push(makeGraphData(user));
-        tableDatas.push(makeRecentStatusData(user));
+        });
+    }
+
+    for(var i=0; i<users.length; i++){
+        graphDatas.push(makeGraphData(users[i]));
+        recentStatusDatas.push(makeRecentStatusData(users[i]));
     }
 
     graphDatas.sort(function(a,b){
         return b.data.length - a.data.length;
     });
-    tableDatas.sort(function(a,b){
+    recentStatusDatas.sort(function(a,b){
         return b.solved - a.solved;
     });
+
     drawGraph(graphDatas);
-    fillRecentStatusTable(tableDatas);
+    fillRecentStatusTable(recentStatusDatas);
+
+    makeSolvedTable(volumes);
+    fillSolvedTable(users);
 };
 
 var getSolvedProblems = function(userID){
@@ -123,7 +95,7 @@ var makeGraphData = function(user){
     res.data = [];
     res.label = user.id;
     for(var i=0; i<user.solved_list.length; i++){
-//         $("#"+user.solved_list[i].id+"-"+user.id).text("#");
+//         ;
         res.data.push([user.solved_list[i].time, i+1]);
     }
     return res;
@@ -170,16 +142,16 @@ var makeRecentStatusData = function(user){
     return res;
 };
 
-var fillRecentStatusTable = function(tableDatas){
+var fillRecentStatusTable = function(recentStatusDatas){
     $("#table").append($("<tr></tr>")
                        .append($("<th></th>").text("No"))
                        .append($("<th></th>").text("ID"))
                        .append($("<th></th>").text("solved"))
                        .append($("<th></th>").text("solved/day"))
-                       .append($("<th></th>").text("Recent ACs").attr("colspan",2*tableDatas.length)));
+                       .append($("<th></th>").text("Recent ACs").attr("colspan",2*recentStatusDatas.length)));
 
-    for(var i=0; i<tableDatas.length; i++){
-        var data = tableDatas[i];
+    for(var i=0; i<recentStatusDatas.length; i++){
+        var data = recentStatusDatas[i];
 
         var age = dtToString(data.age);
         $("#table").append($("<tr></tr>").attr("id","row"+i));
@@ -261,4 +233,48 @@ var getColor = function(x,a,b,c,d,inv){
     }
     res += ";";
     return res;
+};
+
+var makeSolvedTable = function(volumes){
+    var $ths = $("<tr></tr>")
+            .append($("<th></th>").text("No"))
+            .append($("<th></th>").text("ID"));
+    for(var i=0; i<memberIDs.length; i++){
+        $ths.append($("<th></th>").text(i));
+    }
+    $("#problems").append($ths);
+
+    for(var i=0; i<volumes.length; i++){
+        $.ajax({
+            url: pref + "webservice/problem_list?volume=" + volumes[i],
+            type: "GET",
+            dataType: "xml",
+            timeout: "1000",
+            async: false,
+            success: function(xml){
+                $(xml).find("problem_list").find("problem").each(function(){
+                    var id = $(this).find("id").text().replace(/[\r\n]/g,"");
+                    var name = $(this).find("name").text().replace(/[\r\n]/g,"");
+                    var $row = $("<tr></tr>")
+                            .attr("id", id)
+                            .append($("<td></td>").text(id))
+                            .append($("<td></td>").text(name));
+                    for(var j=0; j<memberIDs.length; j++){
+                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
+                    }
+                    $("#problems").append($row);
+                });
+            }
+        });
+    }
+};
+
+var fillSolvedTable = function(users){
+    for(var i=0; i<users.length; i++){
+        var user = users[i];
+        var solved_list = user.solved_list;
+        for(var j=0; j<solved_list.length; j++){
+            $("#"+solved_list[j].id+"-"+user.id).text("#");
+        }
+    }
 };
