@@ -5,21 +5,21 @@
 $.event.add(window,"load",function() {
     var url_pref = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=",
         volumes = [// "100",
-                   // PCK
-                   "0","1","2",
-                   // JOI
-                   "5",
-                   // UAPC
-                   "10",
-                   // ICPC Japan
-                   "11",
-                   // ICPC Asia
-                   "12","13",
-                   // UAPC
-                   "15",
-                   // JAG
-                   "20","21","22","23","24","25"
-                  ];
+            // PCK
+            "0","1","2",
+            // JOI
+            "5",
+            // UAPC
+            "10",
+            // ICPC Japan
+            "11",
+            // ICPC Asia
+            "12","13",
+            // UAPC
+            "15",
+            // JAG
+            "20","21","22","23","24","25"
+        ];
 
     var $ths = $("<tr></tr>")
             .append($("<th></th>").text("No"))
@@ -54,26 +54,14 @@ $.event.add(window,"load",function() {
     }
 });
 
+var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
+
 $.event.add(window,"load",function() {
     updateGraphAndTable(memberIDs);
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
 });
-
-var Problem = function(id, time, runID){
-    this.id = id;
-    this.time = time;
-    this.runID = runID;
-};
-
-var User = function(id){
-    this.id = id;
-    this.solved_list = getSolvedProblems(id);
-    this.solved = this.solved_list.length;
-};
-
-var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 
 var getSolvedProblems = function(userID){
     var res = [];
@@ -95,7 +83,7 @@ var getSolvedProblems = function(userID){
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
                     solved_set[id] = 0;
-                    res.push(new Problem(id,time,runID));
+                    res.push({id:id,time:time,rumID:runID});
                 });
             }
         });
@@ -110,9 +98,14 @@ var updateGraphAndTable = function(userIDs){
     var tableDatas = [];
     var graphDatas = [];
     for(var i=0; i<userIDs.length; i++){
-        var user = new User(userIDs[i]);
+        var solved_list = getSolvedProblems(userIDs[i]);
+        var user = {
+            id: userIDs[i],
+            solved_list: solved_list,
+            solved: solved_list.length
+        };
         graphDatas.push(makeGraphData(user));
-        tableDatas.push(makeTableData(user));
+        tableDatas.push(makeRecentStatusData(user));
     }
 
     graphDatas.sort(function(a,b){
@@ -122,7 +115,7 @@ var updateGraphAndTable = function(userIDs){
         return b.solved - a.solved;
     });
     drawGraph(graphDatas);
-    fillTable(tableDatas);
+    fillRecentStatusTable(tableDatas);
 };
 
 var makeGraphData = function(user){
@@ -130,7 +123,7 @@ var makeGraphData = function(user){
     res.data = [];
     res.label = user.id;
     for(var i=0; i<user.solved_list.length; i++){
-        $("#"+user.solved_list[i].id+"-"+user.id).text("#");
+//         $("#"+user.solved_list[i].id+"-"+user.id).text("#");
         res.data.push([user.solved_list[i].time, i+1]);
     }
     return res;
@@ -147,7 +140,7 @@ var drawGraph = function(graphDatas){
     });
 };
 
-var makeTableData = function(user){
+var makeRecentStatusData = function(user){
     var res = {};
     res.id = user.id;
     res.solved = user.solved_list.length;
@@ -177,14 +170,13 @@ var makeTableData = function(user){
     return res;
 };
 
-var fillTable = function(tableDatas){
-
+var fillRecentStatusTable = function(tableDatas){
     $("#table").append($("<tr></tr>")
-            .append($("<th></th>").text("No"))
-            .append($("<th></th>").text("ID"))
-            .append($("<th></th>").text("solved"))
-            .append($("<th></th>").text("solved/day"))
-            .append($("<th></th>").text("Recent ACs").attr("colspan",2*tableDatas.length)));
+                       .append($("<th></th>").text("No"))
+                       .append($("<th></th>").text("ID"))
+                       .append($("<th></th>").text("solved"))
+                       .append($("<th></th>").text("solved/day"))
+                       .append($("<th></th>").text("Recent ACs").attr("colspan",2*tableDatas.length)));
 
     for(var i=0; i<tableDatas.length; i++){
         var data = tableDatas[i];
