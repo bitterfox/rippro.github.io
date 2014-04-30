@@ -250,15 +250,14 @@ var makeSolvedTable = function(volumes){
     var $thead = $("<thead></thead>");
     var $ths = $("<tr></tr>");
 
-    $thead
+    $ths
         .append($("<th></th>").text("No"))
         .append($("<th></th>").text("ID"));
-    // for(var i=0; i<memberIDs.length; i++){
-    //     $thead.append($("<th></th>").text(i));
-    // }
-
+    for(var i=0; i<memberIDs.length; i++){
+        $ths.append($("<th></th>").text(i));
+    }
     $("#problems")
-        .append($thead)
+        .append($thead.append($ths))
         .append($("<tbody></tbody>"));
 
     for(var i=0; i<volumes.length; i++){
@@ -279,9 +278,9 @@ var makeSolvedTable = function(volumes){
                                     .append($("<a></a>")
                                             .attr("href", pref + "description.jsp?id=" + id)
                                             .text(name)));
-                    // for(var j=0; j<memberIDs.length; j++){
-                    //     $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
-                    // }
+                    for(var j=0; j<memberIDs.length; j++){
+                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
+                    }
                     $("#problems tbody").append($row);
                 });
             }
