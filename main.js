@@ -86,7 +86,7 @@ var getSolvedProblems = function(userID){
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
                     solved_set[id] = 0;
-                    res.push({id:id,time:time,rumID:runID});
+                    res.push({id:id,time:time,runID:runID});
                 });
             }
         });
@@ -265,7 +265,10 @@ var makeSolvedTable = function(volumes){
                     var $row = $("<tr></tr>")
                             .attr("id", id)
                             .append($("<td></td>").text(id))
-                            .append($("<td></td>").text(name));
+                            .append($("<td></td>")
+                                    .append($("<a></a>")
+                                            .attr("href", pref + "description.jsp?id=" + id)
+                                            .text(name)));
                     for(var j=0; j<memberIDs.length; j++){
                         $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
                     }
@@ -281,7 +284,10 @@ var fillSolvedTable = function(users){
         var user = users[i];
         var solved_list = user.solved_list;
         for(var j=0; j<solved_list.length; j++){
-            $("#"+solved_list[j].id+"-"+user.id).text("#");
+            $("#"+solved_list[j].id+"-"+user.id)
+                .append($("<a></a>")
+                        .attr("href", pref + "review.jsp?rid=" + solved_list[j].runID)
+                        .text("#"));
         }
     }
 };

@@ -77,12 +77,12 @@ a:hover {
     top: 0px;
 }
 
-table.table {
+#table {
     width: 100%;
     border-collapse: collapse;
 }
 
-table.table th {
+#table th {
     padding: 3px;
     text-align: center;
     vertical-align: top;
@@ -91,7 +91,7 @@ table.table th {
     border: 1px solid #b9b9b9;
 }
 
-table.table td {
+#table td {
     font-size: small;
     padding: 0px;
     text-align: center;
@@ -99,6 +99,29 @@ table.table td {
     border: 1px solid #b9b9b9;
 }
 
-.legend table {
+#problems {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#problems th {
+    padding: large;
+    text-align: center;
+    vertical-align: top;
+    color: #333;
+    background-color: #eee;
+    border: 1px solid #b9b9b9;
+}
+
+#problems td {
+    font-size: small;
+    height: 10px;
+    padding: 0px;
+    text-align: center;
+    background-color: #fff;
+    border: 1px solid #b9b9b9;
+}
+
+.legend.usertable {
     border-spacing: 5px;
 }
