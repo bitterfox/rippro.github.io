@@ -25,7 +25,7 @@ $.event.add(window,"load",function() {
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
-    $("#table").tablesorter();
+    // $("#table").tablesorter();
     $("#problems").tablesorter();
 });
 
@@ -156,8 +156,8 @@ var fillRecentStatusTable = function(recentStatusDatas){
                 .append($("<tr></tr>")
                         .append($("<th></th>").text("No"))
                         .append($("<th></th>").text("ID"))
-                        .append($("<th></th>").text("solved"))
-                        .append($("<th></th>").text("solved/day"))
+                        .append($("<th></th>").text("Solved"))
+                        .append($("<th></th>").text("Solved/day"))
                         .append($("<th></th>").text("Recent ACs")
                                 .attr("colspan",2*recentStatusDatas.length))))
         .append($("<tbody></tbody>"));
@@ -253,9 +253,9 @@ var makeSolvedTable = function(volumes){
     $thead
         .append($("<th></th>").text("No"))
         .append($("<th></th>").text("ID"));
-    for(var i=0; i<memberIDs.length; i++){
-        $thead.append($("<th></th>").text(i));
-    }
+    // for(var i=0; i<memberIDs.length; i++){
+    //     $thead.append($("<th></th>").text(i));
+    // }
 
     $("#problems")
         .append($thead)
@@ -279,9 +279,9 @@ var makeSolvedTable = function(volumes){
                                     .append($("<a></a>")
                                             .attr("href", pref + "description.jsp?id=" + id)
                                             .text(name)));
-                    for(var j=0; j<memberIDs.length; j++){
-                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
-                    }
+                    // for(var j=0; j<memberIDs.length; j++){
+                    //     $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
+                    // }
                     $("#problems tbody").append($row);
                 });
             }
