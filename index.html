@@ -14,26 +14,46 @@
 
     <div id="header">
         <h2>進捗どうですか</h2>
-        部内AOJ進捗比較<br>
-        自分がいなければ<a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a>で追加してください
-        (<a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">Volume 100</a>
-        に含まれる問題はカウントされません)
+        <ul style="font-size:0.8em">
+          <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
+          <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">
+              Volume 100</a> に含まれる問題はカウントされません<br>
+          </li>
+          <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
+            <ul>
+              <li>Github アカウントでログインし，
+                'Edit' ボタンをクリックすると編集できるようになります</li>
+              <li>
+                'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
+              </li>
+              <li>
+                'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
+              </li>
+            </ul>
+          <li>
+            このページは次のもの利用して作られています
+            <ul>
+              <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">Aizu Online Judge Application Program Interface</a> - ユーザー情報・問題リストの取得</li>
+              <li><a href="https://pages.github.com/">Github Pages</a> - バージョン管理とページのパブリッシュ</li>
+              <li><a href="http://jquery.com/">jQuery</a> - API呼び出し，DOM操作など</li>
+              <li><a href="http://www.flotcharts.org/">Flot</a> - グラフ描画</li>
+              <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
+            </ul>
+          </li>
+        </ul>
     </div>
 
     <div id="content">
+      <h3>AC数の推移</h3>
         <div class="demo-container">
             <div id="placeholder" class="demo-placeholder">
               <canvas class="flot-base"></canvas>
             </div>
         </div>
         <table id="table" class="usertable tablesorter"></table>
+        <h3>問題リスト</h3>
         <table id="problems" class="problemtable tablesorter"></table>
-    </div>
-
-    <div id="footer">
-      Powored by
-      <a href="http://www.flotcharts.org/">Flot 0.8.2</a>
-      <a href="https://github.com/rippro/rippro.github.io">Github Pages</a>
     </div>
 
 </body></html>
