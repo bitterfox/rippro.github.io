@@ -7,6 +7,9 @@ var memberIDs = [
     // B2
     "bnsgny",
     "CROW",
+    "is0220rk",
+    "okyyun",
+    "tmbsx",
     // B1
     "is0248vx",
     "Nanana"
