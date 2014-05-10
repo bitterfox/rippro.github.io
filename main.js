@@ -131,12 +131,13 @@ var makeRecentStatusData = function(user){
     } else {
         res.solvedPerDay = 0;
     }
-    res.solvedLastAWeek = 0;
+
+    res.solvedLast24Hours = 0;
     var now = new Date();
     for(var i=0; i<user.solved_list.length; i++){
         var j = user.solved_list.length-i-1;
-        if(now - user.solved_list[j].time <= 1000*86400*7){
-            res.solvedLastAWeek++;
+        if(now - user.solved_list[j].time <= 1000*86400){
+            res.solvedLast24Hours++;
         } else {
             break;
         }
@@ -158,6 +159,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                         .append($("<th></th>").text("ID"))
                         .append($("<th></th>").text("Solved"))
                         .append($("<th></th>").text("Solved/day"))
+                        .append($("<th></th>").text("In 24 hours"))
                         .append($("<th></th>").text("Recent ACs")
                                 .attr("colspan",2*recentStatusDatas.length))))
         .append($("<tbody></tbody>"));
@@ -182,7 +184,10 @@ var fillRecentStatusTable = function(recentStatusDatas){
                     .text(data.solved))
         // solved/day
             .append($("<td></td>")
-                    .text(data.solvedPerDay.toFixed(2)));
+                    .text(data.solvedPerDay.toFixed(2)))
+        // solved in 24 hours
+            .append($("<td></td>")
+                   .text(data.solvedLast24Hours));
 
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
