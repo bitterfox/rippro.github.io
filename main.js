@@ -157,7 +157,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                 .append($("<tr></tr>")
                         .append($("<th></th>").text("No"))
                         .append($("<th></th>").text("ID"))
-                        .append($("<th></th>").text("Solved"))
+                        .append($("<th></th>").text("Total"))
                         .append($("<th></th>").text("Per day"))
                         .append($("<th></th>").text("In 24h"))
                         .append($("<th></th>").text("Recent")
