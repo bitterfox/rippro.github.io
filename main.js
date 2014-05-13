@@ -25,8 +25,8 @@ $.event.add(window,"load",function() {
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
-    // $("#table").tablesorter();
-    $("#problems").tablesorter();
+    // $("#table-recent").tablesorter();
+    $("#table-problems").tablesorter();
 });
 
 var updateGraphAndTable = function(userIDs){
@@ -152,7 +152,7 @@ var makeRecentStatusData = function(user){
 };
 
 var fillRecentStatusTable = function(recentStatusDatas){
-    $("#table")
+    $("#table-recent")
         .append($("<thead></thead>")
                 .append($("<tr></tr>")
                         .append($("<th></th>").text("No"))
@@ -168,7 +168,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
         var data = recentStatusDatas[i];
 
         var age = dtToString(data.age);
-        $("#table tbody")
+        $("#table-recent tbody")
             .append($("<tr></tr>").attr("id","row"+i));
         $("#row"+i)
         // ID
@@ -261,7 +261,7 @@ var makeSolvedTable = function(volumes){
     for(var i=0; i<memberIDs.length; i++){
         $ths.append($("<th></th>").text(i));
     }
-    $("#problems")
+    $("#table-problems")
         .append($thead.append($ths))
         .append($("<tbody></tbody>"));
 
@@ -284,9 +284,11 @@ var makeSolvedTable = function(volumes){
                                             .attr("href", pref + "description.jsp?id=" + id)
                                             .text(name)));
                     for(var j=0; j<memberIDs.length; j++){
-                        $row.append($("<td></td>").attr("id", id + "-" + memberIDs[j]));
+                        $row.append($("<td></td>")
+                                    .attr("id", id + "-" + memberIDs[j])
+                                    .attr("class", "solved-mark"));
                     }
-                    $("#problems tbody").append($row);
+                    $("#table-problems tbody").append($row);
                 });
             }
         });
