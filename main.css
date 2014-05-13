@@ -122,3 +122,11 @@ a:hover {
     background-color: #fff;
     border: 1px solid #b9b9b9;
 }
+
+#table-problems .problem-id {
+    width:7%;
+}
+
+#table-problems .solved-mark {
+    width:3%;
+}

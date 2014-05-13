@@ -256,10 +256,12 @@ var makeSolvedTable = function(volumes){
     var $ths = $("<tr></tr>");
 
     $ths
-        .append($("<th></th>").text("No"))
+        .append($("<th></th>").text("No").attr("class", "problem-id"))
         .append($("<th></th>").text("ID"));
     for(var i=0; i<memberIDs.length; i++){
-        $ths.append($("<th></th>").text(i));
+        $ths.append($("<th></th>")
+                    .text(i)
+                    .attr("class", "solved-mark"));
     }
     $("#table-problems")
         .append($thead.append($ths))
@@ -278,7 +280,7 @@ var makeSolvedTable = function(volumes){
                     var name = $(this).find("name").text().replace(/[\r\n]/g,"");
                     var $row = $("<tr></tr>")
                             .attr("id", id)
-                            .append($("<td></td>").text(id))
+                            .append($("<td></td>").text(id).attr("class","problem-id"))
                             .append($("<td></td>")
                                     .append($("<a></a>")
                                             .attr("href", pref + "description.jsp?id=" + id)
