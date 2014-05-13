@@ -13,5 +13,9 @@ var memberIDs = [
     // B1
     "is0248vx",
     "Nanana",
-    "satoshi31043"
+    "satoshi31043",
+    "mots555",
+    "ixmel",
+    "pikanatsu721",
+    "kerokero"
 ];
