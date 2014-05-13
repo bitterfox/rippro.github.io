@@ -15,5 +15,7 @@ var memberIDs = [
     "Nanana",
     "satoshi31043",
     "mots555",
-    "ixmel"
+    "ixmel",
+    "pikanatsu721",
+    "kerokero"
 ];
