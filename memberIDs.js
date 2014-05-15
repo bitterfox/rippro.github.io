@@ -18,5 +18,6 @@ var memberIDs = [
     "ixmel",
     "pikanatsu721",
     "kerokero",
-    "futo"
+    "futo",
+    "proru"
 ];
