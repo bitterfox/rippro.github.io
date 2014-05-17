@@ -169,7 +169,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
 
         var age = dtToString(data.age);
         $("#table-recent tbody")
-            .append($("<tr></tr>").attr("id","row"+i));
+            .append($("<tr></tr>").attr("id","row"+(i+1)));
         $("#row"+i)
         // ID
             .append($("<td></td>").text(i))
@@ -260,7 +260,7 @@ var makeSolvedTable = function(volumes){
         .append($("<th></th>").text("ID"));
     for(var i=0; i<memberIDs.length; i++){
         $ths.append($("<th></th>")
-                    .text(i)
+                    .text(i+1)
                     .attr("class", "solved-mark"));
     }
     $("#table-problems")
