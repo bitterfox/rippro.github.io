@@ -169,10 +169,10 @@ var fillRecentStatusTable = function(recentStatusDatas){
 
         var age = dtToString(data.age);
         $("#table-recent tbody")
-            .append($("<tr></tr>").attr("id","row"+(i+1)));
+            .append($("<tr></tr>").attr("id","row"+i));
         $("#row"+i)
         // ID
-            .append($("<td></td>").text(i))
+            .append($("<td></td>").text(i+1))
             .append($("<td></td>")
                     .append($('<a></a>')
                             .attr("href",pref + "user.jsp?id=" + data.id)
