@@ -18,7 +18,7 @@ a:hover {
 
 #header {
     position: relative;
-    width: 900px;
+    width: 940px;
     margin: auto;
 }
 
@@ -28,7 +28,7 @@ a:hover {
 }
 
 #content {
-    width: 880px;
+    width: 920px;
     margin: 0 auto;
     padding: 10px;
 }
@@ -43,8 +43,8 @@ a:hover {
 
 .demo-container {
     box-sizing: border-box;
-    width: 850px;
-    height: 500px;
+    width: 900px;
+    height: 520px;
     padding: 20px 15px 15px 15px;
     margin: 15px auto 30px auto;
     border: 1px solid #ddd;
@@ -128,5 +128,5 @@ a:hover {
 }
 
 #table-problems .solved-mark {
-    width:3%;
+    width:2.5%;
 }
