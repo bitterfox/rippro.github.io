@@ -9,12 +9,16 @@
     <script language="javascript" type="text/javascript" src="jquery.tablesorter.min.js"></script>
     <script language="javascript" type="text/javascript" src="memberIDs.js"></script>
     <script language="javascript" type="text/javascript" src="main.js"></script>
-</head>
-<body>
+  </head>
+  <body>
 
     <div id="header">
-        <h2>進捗どうですか</h2>
-        <h3>これは何</h3>
+      <h2>進捗どうですか</h2>
+    </div>
+
+    <div id="content">
+      <h3 id="description-title">これは何</h3>
+      <div id="description" style="display: none">
         <ul style="font-size:0.8em">
           <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
           <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
@@ -22,16 +26,16 @@
               Volume 100</a> に含まれる問題はカウントされません<br>
           </li>
           <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
-            <ul>
-              <li>Github アカウントでログインし，
-                'Edit' ボタンをクリックすると編集できるようになります</li>
-              <li>
-                'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
-              </li>
-              <li>
-                'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
-              </li>
-            </ul>
+          <ul>
+            <li>Github アカウントでログインし，
+              'Edit' ボタンをクリックすると編集できるようになります</li>
+            <li>
+              'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
+            </li>
+            <li>
+              'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
+            </li>
+          </ul>
           <li>
             このページは次のもの利用して作られています
             <ul>
@@ -42,19 +46,18 @@
               <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
             </ul>
           </li>
-        </ul>
-    </div>
+      </div>
+      </ul>
 
-    <div id="content">
       <h3>AC数の推移</h3>
-        <div class="demo-container">
-            <div id="placeholder" class="demo-placeholder">
-              <canvas class="flot-base"></canvas>
-            </div>
+      <div class="demo-container">
+        <div id="placeholder" class="demo-placeholder">
+          <canvas class="flot-base"></canvas>
         </div>
-        <table id="table-recent" class="usertable tablesorter"></table>
-        <h3>問題リスト</h3>
-        <table id="table-problems" class="problemtable tablesorter"></table>
+      </div>
+      <table id="table-recent" class="usertable tablesorter"></table>
+      <h3>問題リスト</h3>
+      <table id="table-problems" class="problemtable tablesorter"></table>
     </div>
 
 </body></html>
