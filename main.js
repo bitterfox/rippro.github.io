@@ -263,10 +263,8 @@ var makeSolvedTable = function(volumes){
                     .text(i+1)
                     .attr("class", "solved-mark"));
     }
-    $("#table-problems")
-        .append($thead.append($ths))
-        .append($("<tbody></tbody>"));
 
+    var $tbody = $("<tbody></tbody>");
     for(var i=0; i<volumes.length; i++){
         $.ajax({
             url: pref + "webservice/problem_list?volume=" + volumes[i],
@@ -290,11 +288,12 @@ var makeSolvedTable = function(volumes){
                                     .attr("id", id + "-" + memberIDs[j])
                                     .attr("class", "solved-mark"));
                     }
-                    $("#table-problems tbody").append($row);
+                    $tbody.append($row);
                 });
             }
         });
     }
+    $("#table-problems").append($thead.append($ths)).append($tbody);
 };
 
 var fillSolvedTable = function(users){
