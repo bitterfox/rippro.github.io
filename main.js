@@ -152,25 +152,23 @@ var makeRecentStatusData = function(user){
 };
 
 var fillRecentStatusTable = function(recentStatusDatas){
-    $("#table-recent")
-        .append($("<thead></thead>")
-                .append($("<tr></tr>")
-                        .append($("<th></th>").text("No"))
-                        .append($("<th></th>").text("ID"))
-                        .append($("<th></th>").text("Total"))
-                        .append($("<th></th>").text("Per day"))
-                        .append($("<th></th>").text("In 24h"))
-                        .append($("<th></th>").text("Recent")
-                                .attr("colspan",2*recentStatusDatas.length))))
-        .append($("<tbody></tbody>"));
+    var $thead = $("<thead></thead>");
+    var $tbody = $("<tbody></tbody>");
+
+    $thead.append($("<tr></tr>")
+                  .append($("<th></th>").text("No"))
+                  .append($("<th></th>").text("ID"))
+                  .append($("<th></th>").text("Total"))
+                  .append($("<th></th>").text("Per day"))
+                  .append($("<th></th>").text("In 24h"))
+                  .append($("<th></th>").text("Recent")
+                          .attr("colspan",2*recentStatusDatas.length)));
 
     for(var i=0; i<recentStatusDatas.length; i++){
         var data = recentStatusDatas[i];
-
         var age = dtToString(data.age);
-        $("#table-recent tbody")
-            .append($("<tr></tr>").attr("id","row"+i));
-        $("#row"+i)
+        var $tr = $("<tr></tr>").attr("id","row"+i);
+        $tr
         // ID
             .append($("<td></td>").text(i+1))
             .append($("<td></td>")
@@ -193,7 +191,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
         for(var j=0; j<data.recentACs.length; j++){
             if(data.recentACs[j] !== null){
                 var dt = dtToString(now - data.recentACs[j].time) + "前";
-                $("#row"+i).append(
+                $tr.append(
                     $("<td></td>")
                         .append(
                             $('<a></a>')
@@ -208,13 +206,15 @@ var fillRecentStatusTable = function(recentStatusDatas){
                                     .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                     .text(dt)));
             } else {
-                $("#row"+i)
+                $tr
                     .append($("<td></td>"))
                     .append($("<td></td>"));
             }
         }
-
+        $tbody.append($tr);
     }
+
+    $("#table-recent").append($thead).append($tbody);
 };
 
 var dtToString = function(dt){
