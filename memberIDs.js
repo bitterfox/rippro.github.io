@@ -1,9 +1,10 @@
 var memberIDs = [
-    // B3
+// B3
     "komi0222",
     "menphim",
     "dispenser",
     "arsenic28",
+    "ja3rno",
     // B2
     "bnsgny",
     "CROW",
