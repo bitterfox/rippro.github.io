@@ -185,7 +185,10 @@ var fillRecentStatusTable = function(recentStatusDatas){
                     .text(data.solvedPerDay.toFixed(2)))
         // solved in 24 hours
             .append($("<td></td>")
-                   .text(data.solvedLast24Hours));
+                    .text(data.solvedLast24Hours)
+                    .attr("style",
+                          getColor(data.solvedLast24Hours,
+                                   10,5,3,1)));
 
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
