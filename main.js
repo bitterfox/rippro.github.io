@@ -195,7 +195,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                     $("<td></td>")
                         .append(
                             $('<a></a>')
-                                .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
+                                .attr("href", pref + "description.jsp?id=" + data.recentACs[j].id)
                                 .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
                                 .text(data.recentACs[j].id)))
                     .append(
