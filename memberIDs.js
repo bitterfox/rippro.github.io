@@ -17,7 +17,7 @@ var memberIDs = [
     "satoshi31043",
     "mots555",
     "ixmel",
-    "pikanatsu721",
+    "pikanatsu",
     "kerokero",
     "futo",
     "proru",
