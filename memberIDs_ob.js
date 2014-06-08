@@ -5,5 +5,5 @@ var memberIDs = [
     "utisam",
     "OldBaka",
     "nkkwe",
-    "cross edge"    
+    "KNKedge"    
 ];
