@@ -61,6 +61,9 @@ var updateGraphAndTable = function(userIDs){
     recentStatusDatas.sort(function(a,b){
         return b.solved - a.solved;
     });
+    memberIDs.splice(20,memberIDs.length-20);
+    graphDatas.splice(20,graphDatas.length-20);
+    recentStatusDatas.splice(20,recentStatusDatas.length-20);
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
