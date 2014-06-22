@@ -24,5 +24,6 @@ var memberIDs = [
     "sarada417",
     "is0268ev",
     "IS0283IR",
-    "moon_remon"
+    "moon_remon",
+    "kinono",
 ];
