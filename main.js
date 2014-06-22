@@ -66,7 +66,7 @@ var updateGraphAndTable = function(userIDs){
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
-    makeSolvedTable(volumes);
+    //makeSolvedTable(volumes);
     fillSolvedTable(users);
 };
 
