@@ -2,6 +2,8 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
+var user_number_limit = 20;
+
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 var volumes = [// "100",
     // PCK
@@ -30,8 +32,6 @@ $.event.add(window,"load",function() {
 });
 
 var updateGraphAndTable = function(userIDs){
-    var recentStatusDatas = [];
-    var graphDatas = [];
     var users = [];
     for(var i=0; i<userIDs.length; i++){
         var solved_list = getSolvedProblems(userIDs[i]);
@@ -42,28 +42,27 @@ var updateGraphAndTable = function(userIDs){
         });
     }
 
-    for(var i=0; i<users.length; i++){
-        graphDatas.push(makeGraphData(users[i]));
-        recentStatusDatas.push(makeRecentStatusData(users[i]));
-    }
-
     var solved = {};
     for(var i=0; i<users.length; i++){
         solved[users[i].id] = users[i].solved;
     }
 
+    users.sort(function(a,b){
+        return solved[b.id] - solved[a.id];
+    });
+
     memberIDs.sort(function(a,b){
-        return - solved[a] + solved[b];
+        return solved[b] - solved[a];
     });
-    graphDatas.sort(function(a,b){
-        return b.data.length - a.data.length;
-    });
-    recentStatusDatas.sort(function(a,b){
-        return b.solved - a.solved;
-    });
-    memberIDs.splice(20,memberIDs.length-20);
-    graphDatas.splice(20,graphDatas.length-20);
-    recentStatusDatas.splice(20,recentStatusDatas.length-20);
+
+    users.length = user_number_limit;
+
+    var recentStatusDatas = [];
+    var graphDatas = [];
+    for(var i=0; i<users.length; i++){
+        graphDatas.push(makeGraphData(users[i]));
+        recentStatusDatas.push(makeRecentStatusData(users[i]));
+    }
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
@@ -264,7 +263,7 @@ var makeSolvedTable = function(volumes){
     $ths
         .append($("<th></th>").text("No").attr("class", "problem-id"))
         .append($("<th></th>").text("ID"));
-    for(var i=0; i<memberIDs.length; i++){
+    for(var i=0; i<user_number_limit; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
                     .attr("class", "solved-mark"));
@@ -280,18 +279,18 @@ var makeSolvedTable = function(volumes){
             async: false,
             success: function(xml){
                 $(xml).find("problem_list").find("problem").each(function(){
-                    var id = $(this).find("id").text().replace(/[\r\n]/g,"");
+                    var prob_id = $(this).find("id").text().replace(/[\r\n]/g,"");
                     var name = $(this).find("name").text().replace(/[\r\n]/g,"");
                     var $row = $("<tr></tr>")
-                            .attr("id", id)
-                            .append($("<td></td>").text(id).attr("class","problem-id"))
+                            .attr("id", prob_id)
+                            .append($("<td></td>").text(prob_id).attr("class","problem-id"))
                             .append($("<td></td>")
                                     .append($("<a></a>")
-                                            .attr("href", pref + "description.jsp?id=" + id)
+                                            .attr("href", pref + "description.jsp?id=" + prob_id)
                                             .text(name)));
-                    for(var j=0; j<memberIDs.length; j++){
+                    for(var j=0; j<user_number_limit; j++){
                         $row.append($("<td></td>")
-                                    .attr("id", id + "-" + memberIDs[j])
+                                    .attr("id", prob_id + "-" + j)
                                     .attr("class", "solved-mark"));
                     }
                     $tbody.append($row);
@@ -307,7 +306,7 @@ var fillSolvedTable = function(users){
         var user = users[i];
         var solved_list = user.solved_list;
         for(var j=0; j<solved_list.length; j++){
-            $("#"+solved_list[j].id+"-"+user.id)
+            $("#"+solved_list[j].id+"-"+i)
                 .append($("<a></a>")
                         .attr("href", pref + "review.jsp?rid=" + solved_list[j].runID)
                         .text("#"));
