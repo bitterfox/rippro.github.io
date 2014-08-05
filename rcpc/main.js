@@ -47,7 +47,7 @@ var updateGraphAndTable = function(userIDs){
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
     makeSolvedTable(problems);
-    fillSolvedTable(users);
+    fillSolvedTableAndCalcScore(users);
 };
 
 var getSolvedProblems = function(userID){
@@ -155,13 +155,18 @@ var fillRecentStatusTable = function(recentStatusDatas){
         var age = dtToString(data.age);
         var $tr = $("<tr></tr>").attr("id","row"+i);
         $tr
-        // ID
+        // rank
             .append($("<td></td>").text(i+1))
+        // id
             .append($("<td></td>")
                     .append($('<a></a>')
                             .attr("href",pref + "user.jsp?id=" + data.id)
                             .attr("style",getColor(data.solved,400,300,200,100))
                             .text(data.id)))
+        // score
+            .append($("<td></td>")
+                    .attr("style",getColor(data.solved,400,300,200,100))
+                    .attr("id", data.id + "-score"))
         // solved
             .append($("<td></td>")
                     .attr("style",getColor(data.solved,400,300,200,100))
@@ -269,6 +274,7 @@ var makeSolvedTable = function(problems){
                 .attr("href", pref + "description.jsp?id=" + pid)
                 .text(pname)))
             .append($("<td></td>")
+                .attr("id", pid + "-score")
                 .text(ppoint)
             );
         // add column for each user.
@@ -282,16 +288,25 @@ var makeSolvedTable = function(problems){
     $("#table-problems").append($thead.append($ths)).append($tbody);
 };
 
-var fillSolvedTable = function(users){
+var fillSolvedTableAndCalcScore = function(users){
     for(var i=0; i<users.length; i++){
         var user = users[i];
+        var score = 0;
         var solved_list = user.solved_list;
         for(var j=0; j<solved_list.length; j++){
-            $("#"+solved_list[j].id+"-"+i)
+            var problem = solved_list[j];
+            $("#"+problem.id+"-"+i)
                 .append($("<a></a>")
-                        .attr("href", pref + "review.jsp?rid=" + solved_list[j].runID)
+                        .attr("href", pref + "review.jsp?rid=" + problem.runID)
                         .text("#"));
+
+            var $score = $("#" + problem.id + "-score");
+            if($score){
+                var p = parseInt($score.text());
+                if(p) score += p;
+            }
         }
+        $("#" + user.id + "-score").text(score);
     }
 };
 
