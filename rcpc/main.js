@@ -62,11 +62,13 @@ var makeUserData = function(userID, problems){
         });
     }
 
+    var count = 0;
     var grade = userID[1];
-    var score = 0;
+    var score = solved_list.length - userID[2];
     for(var i=0; i<problems.length; i++){
         var id = problems[i][0];
         if(id in solved_set){
+            score -= 1;
             if(grade === 1){
                 score += problems[i][3];
             }else if(grade === 2){
@@ -77,7 +79,7 @@ var makeUserData = function(userID, problems){
             }
         }
     }
-    score -= userID[2];
+
     solved_list.sort(function(a,b){
         return a.time - b.time;
     });
@@ -153,7 +155,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                   .append($("<th></th>").text("Rank"))
                   .append($("<th></th>").text("Name"))
                   .append($("<th></th>").text("Score"))
-                  .append($("<th></th>").text("Total"))
+                  .append($("<th></th>").text("Solved"))
                   .append($("<th></th>").text("Per day"))
                   .append($("<th></th>").text("In 24h"))
                   .append($("<th></th>").text("Recent")
