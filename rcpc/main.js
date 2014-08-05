@@ -140,13 +140,15 @@ var fillRecentStatusTable = function(recentStatusDatas){
     var $tbody = $("<tbody></tbody>");
 
     $thead.append($("<tr></tr>")
-                  .append($("<th></th>").text("No"))
-                  .append($("<th></th>").text("ID"))
+                  .append($("<th></th>").text("Rank"))
+                  .append($("<th></th>").text("Name"))
+                  .append($("<th></th>").text("Score"))
                   .append($("<th></th>").text("Total"))
                   .append($("<th></th>").text("Per day"))
                   .append($("<th></th>").text("In 24h"))
                   .append($("<th></th>").text("Recent")
                           .attr("colspan",2*recentStatusDatas.length)));
+
 
     for(var i=0; i<recentStatusDatas.length; i++){
         var data = recentStatusDatas[i];
