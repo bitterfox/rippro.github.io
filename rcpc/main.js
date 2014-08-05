@@ -5,22 +5,6 @@
 var user_number_limit = 20;
 
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
-var volumes = [// "100",
-    // PCK
-    "0","1","2",
-    // JOI
-    "5",
-    // UAPC
-    "10",
-    // ICPC Japan
-    "11",
-    // ICPC Asia
-    "12","13",
-    // UAPC
-    "15",
-    // JAG
-    "20","21","22","23","24","25"
-];
 
 $.event.add(window,"load",function() {
     updateGraphAndTable(memberIDs);
@@ -66,7 +50,7 @@ var updateGraphAndTable = function(userIDs){
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
-    //makeSolvedTable(volumes);
+    makeSolvedTable(problems);
     fillSolvedTable(users);
 };
 
@@ -258,13 +242,12 @@ var getColor = function(x,a,b,c,d,inv){
     return res;
 };
 
-var makeSolvedTable = function(volumes){
+var makeSolvedTable = function(problems){
     var $thead = $("<thead></thead>");
-    var $ths = $("<tr></tr>");
-
-    $ths
-        .append($("<th></th>").text("No").attr("class", "problem-id"))
-        .append($("<th></th>").text("ID"));
+    var $ths = $("<tr></tr>")
+        .append($("<th></th>").text("ID").attr("class", "problem-id"))
+        .append($("<th></th>").text("Name"))
+        .append($("<th></th>").text("Point"));
     for(var i=0; i<user_number_limit; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
@@ -272,33 +255,29 @@ var makeSolvedTable = function(volumes){
     }
 
     var $tbody = $("<tbody></tbody>");
-    for(var i=0; i<volumes.length; i++){
-        $.ajax({
-            url: pref + "webservice/problem_list?volume=" + volumes[i],
-            type: "GET",
-            dataType: "xml",
-            timeout: "1000",
-            async: false,
-            success: function(xml){
-                $(xml).find("problem_list").find("problem").each(function(){
-                    var prob_id = $(this).find("id").text().replace(/[\r\n]/g,"");
-                    var name = $(this).find("name").text().replace(/[\r\n]/g,"");
-                    var $row = $("<tr></tr>")
-                            .attr("id", prob_id)
-                            .append($("<td></td>").text(prob_id).attr("class","problem-id"))
-                            .append($("<td></td>")
-                                    .append($("<a></a>")
-                                            .attr("href", pref + "description.jsp?id=" + prob_id)
-                                            .text(name)));
-                    for(var j=0; j<user_number_limit; j++){
-                        $row.append($("<td></td>")
-                                    .attr("id", prob_id + "-" + j)
-                                    .attr("class", "solved-mark"));
-                    }
-                    $tbody.append($row);
-                });
-            }
-        });
+    for(var i=0; i<problems.length; i++){
+        var prob = problems[i];
+        var pid = prob[0];
+        var pname = prob[1];
+        var ppoint = prob[3];
+
+        var $row = $("<tr></tr>").attr("id", pid)
+            .append($("<td></td>")
+                .text(pid).attr("class","problem-id"))
+            .append($("<td></td>")
+                .append($("<a></a>")
+                .attr("href", pref + "description.jsp?id=" + pid)
+                .text(pname)))
+            .append($("<td></td>")
+                .text(ppoint)
+            );
+        // add column for each user.
+        for(var j=0; j<user_number_limit; j++){
+            $row.append($("<td></td>")
+                .attr("id", pid + "-" + j)
+                .attr("class", "solved-mark"));
+        }
+        $tbody.append($row);
     }
     $("#table-problems").append($thead.append($ths)).append($tbody);
 };
