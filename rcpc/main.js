@@ -9,7 +9,7 @@ $.event.add(window,"load",function() {
     $("#update").click(function(){
         updateGraphAndTable(memberIDs);
     });
-    // $("#table-recent").tablesorter();
+    $("#table-recent").tablesorter();
     $("#table-problems").tablesorter();
 });
 
@@ -24,18 +24,18 @@ var updateGraphAndTable = function(userIDs){
         });
     }
 
-    var solved = {};
-    for(var i=0; i<users.length; i++){
-        solved[users[i].id] = users[i].solved;
-    }
-
-    users.sort(function(a,b){
-        return solved[b.id] - solved[a.id];
-    });
-
-    memberIDs.sort(function(a,b){
-        return solved[b] - solved[a];
-    });
+    // var solved = {};
+    // for(var i=0; i<users.length; i++){
+    //     solved[users[i].id] = users[i].solved;
+    // }
+    //
+    // users.sort(function(a,b){
+    //     return solved[b.id] - solved[a.id];
+    // });
+    //
+    // memberIDs.sort(function(a,b){
+    //     return solved[b] - solved[a];
+    // });
 
     var recentStatusDatas = [];
     var graphDatas = [];
@@ -165,7 +165,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                             .text(data.id)))
         // score
             .append($("<td></td>")
-                    .attr("style",getColor(data.solved,400,300,200,100))
+                    .attr("style",getColor(data.solved,400,300,200,100) + "font-weight:bold;")
                     .attr("id", data.id + "-score"))
         // solved
             .append($("<td></td>")
@@ -280,7 +280,7 @@ var makeSolvedTable = function(problems){
         // add column for each user.
         for(var j=0; j<memberIDs.length; j++){
             $row.append($("<td></td>")
-                .attr("id", pid + "-" + j)
+                .attr("id", pid + "-" + memberIDs[j])
                 .attr("class", "solved-mark"));
         }
         $tbody.append($row);
@@ -295,7 +295,7 @@ var fillSolvedTableAndCalcScore = function(users){
         var solved_list = user.solved_list;
         for(var j=0; j<solved_list.length; j++){
             var problem = solved_list[j];
-            $("#"+problem.id+"-"+i)
+            $("#"+problem.id+"-"+user.id)
                 .append($("<a></a>")
                         .attr("href", pref + "review.jsp?rid=" + problem.runID)
                         .text("#"));
