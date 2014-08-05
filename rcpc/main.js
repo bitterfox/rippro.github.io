@@ -32,7 +32,7 @@ var updateGraphAndTable = function(){
 
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
-    makeSolvedTable(problems);
+    makeSolvedTable(problems,users);
     fillSolvedTable(users);
 };
 
@@ -246,13 +246,13 @@ var getColor = function(x,a,b,c,d,inv){
     return res;
 };
 
-var makeSolvedTable = function(problems){
+var makeSolvedTable = function(problems, users){
     var $thead = $("<thead></thead>");
     var $ths = $("<tr></tr>")
         .append($("<th></th>").text("ID").attr("class", "problem-id"))
         .append($("<th></th>").text("Name"))
         .append($("<th></th>").text("Point"));
-    for(var i=0; i<memberIDs.length; i++){
+    for(var i=0; i<users.length; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
                     .attr("style", "font-size:small")
@@ -279,9 +279,9 @@ var makeSolvedTable = function(problems){
                 .text(ppoint)
             );
         // add column for each user.
-        for(var j=0; j<memberIDs.length; j++){
+        for(var j=0; j<users.length; j++){
             $row.append($("<td></td>")
-                .attr("id", pid + "-" + memberIDs[j])
+                .attr("id", pid + "-" + users[j].id)
                 .attr("class", "solved-mark"));
         }
         $tbody.append($row);
