@@ -1,3 +1,4 @@
+// [ID, 名前, 出展, ポイント]
 var problems = [
     ["0000","QQ","PCK",2],
     ["0001","List of Top 3 Hills","PCK",2],
