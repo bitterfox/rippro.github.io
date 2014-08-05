@@ -247,6 +247,7 @@ var makeSolvedTable = function(problems){
     for(var i=0; i<memberIDs.length; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
+                    .attr("style", "font-size:small")
                     .attr("class", "solved-mark"));
     }
 
