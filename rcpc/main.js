@@ -77,6 +77,7 @@ var makeUserData = function(userID, problems){
             }
         }
     }
+    score -= userID[2];
     solved_list.sort(function(a,b){
         return a.time - b.time;
     });
