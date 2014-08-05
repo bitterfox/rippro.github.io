@@ -2,8 +2,6 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
-var user_number_limit = 20;
-
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 
 $.event.add(window,"load",function() {
@@ -38,8 +36,6 @@ var updateGraphAndTable = function(userIDs){
     memberIDs.sort(function(a,b){
         return solved[b] - solved[a];
     });
-
-    users.length = user_number_limit;
 
     var recentStatusDatas = [];
     var graphDatas = [];
@@ -248,7 +244,7 @@ var makeSolvedTable = function(problems){
         .append($("<th></th>").text("ID").attr("class", "problem-id"))
         .append($("<th></th>").text("Name"))
         .append($("<th></th>").text("Point"));
-    for(var i=0; i<user_number_limit; i++){
+    for(var i=0; i<memberIDs.length; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
                     .attr("class", "solved-mark"));
@@ -261,6 +257,7 @@ var makeSolvedTable = function(problems){
         var pname = prob[1];
         var ppoint = prob[3];
 
+        // add column id, name, point
         var $row = $("<tr></tr>").attr("id", pid)
             .append($("<td></td>")
                 .text(pid).attr("class","problem-id"))
@@ -272,7 +269,7 @@ var makeSolvedTable = function(problems){
                 .text(ppoint)
             );
         // add column for each user.
-        for(var j=0; j<user_number_limit; j++){
+        for(var j=0; j<memberIDs.length; j++){
             $row.append($("<td></td>")
                 .attr("id", pid + "-" + j)
                 .attr("class", "solved-mark"));
