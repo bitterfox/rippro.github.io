@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>部内AOJ進捗比較</title>
+    <title>RCPC2014</title>
     <link href="main.css" rel="stylesheet" type="text/css">
     <script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/flot/0.8.2/jquery.flot.min.js"></script>
@@ -12,14 +12,138 @@
     <script language="javascript" type="text/javascript" src="main.js"></script>
   </head>
   <body>
-
     <div id="header">
-      <h2>進捗どうですか</h2>
+      <h1>RCPC2014</h1>
     </div>
-
     <div id="content">
-      <h3 id="description-title">これは何</h3>
+      <h2 id="description-title">概要(クリックして開閉)</h2>
+      <div id="description" style="display: none">
+        <h3>大会目的</h3>
+        <ul>
+          <li>夏休みのせいでプログラミングを忘れることをないようにする</li>
+          <li>ICPCの問題に少しでも慣れる</li>
+          <li>実力の向上</li>
+        </ul>
 
+        <h3>大会日時</h3>
+        <ul>
+          <li>8月4日(水) 00:00:00 ～ 9月26日(日) 23:59:59</li>
+        </ul>
+
+        <h3>表彰</h3>
+        <ul><li>9月30日(木)の1回目の活動にて。上位入賞者には景品有。</li></ul>
+
+        <h3>内容</h3>
+        <ul>
+          <li>Aizu Online Judgeの問題をひたすら解き続ける。</li>
+          <li>問題ごとに大会運営者が点数を振り、その合計点数で競い合う。</li>
+        </ul>
+
+        <h3>参加資格</h3>
+        <ul>
+          <li>RiPPro部員またはRiPProのOBであること</li>
+        </ul>
+
+        <h3>参加費用</h3>
+        <ul>
+          <li>現役生:無料</li>
+          <li>OB(B3以上):300円</li>
+          <li>上位入賞者の<strong>超豪華</strong>景品の購入に利用します。</li>
+        </ul>
+
+        <h3>参加方法</h3>
+        <ol>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/">AOJ</a>へアクセス</li>
+          <li>USER MENUからRegisterを選択</li>
+          <li>「User ID」「Password」「Name」を各自で入力</li>
+          <li>「Affiliation」には「Ritsumeikan University」と入力</li>
+          <li>「E-mail」は入力してもしなくても構わない</li>
+          <li>「Send」で送信</li>
+        </ol>
+
+        <h3>使用可能言語</h3>
+        何でも(言語によってボーナスポイントを与えてもいいかも)
+
+        <h3>特別ルール</h3>
+        <ul>
+          <li>電子辞書、翻訳サイト、インターネットの使用は許可する
+            <ul>
+              <li>ただし、他人の解答をそのままコピーをすることは禁ずる</li>
+            </ul>
+          </li>
+          <li>得点計算において、回生に応じた重み付けを行う</li>
+          <li>上位入賞者3名には景品を用意</li>
+        </ul>
+
+        <h3>サポート</h3>
+        <ul>
+          <li>プログラミングでつまずいた</li>
+          <li>全然わからない</li>
+          <li>自宅にプログラミングの環境なんて・・・</li>
+          <li>何かあればSkype，LINE，Twitter，メーリス，…で聞いてください。</li>
+        </ul>
+
+        <h3>便利サイト</h3>
+        <ul>
+          <li><a href="http://www.prefield.com/algorithm/index.html">Spaghetti Source</a> - 過去のICPCerが残してくれている超便利ライブラリ群</li>
+          <li><a href="https://sites.google.com/site/indy256/">Data Structures and Algorithms in Java</a> - こっちはJavaもある</li>
+          <li><a href="http://www.slideshare.net/iwiwi/presentations">SlideShare(iwiwi)</a> - 秋葉大先生のスライド</li>
+          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/">Aizu Online Judge</a> - 言うまでもない</li>
+          <li><a href="http://atcoder.jp/">AtCoder</a> - chokudaiさんおもしろい(それだけじゃない)</li>
+          <li><a href="http://codeforces.com/">Codeforces</a> - 問題は面白いけど開催時間が深夜</li>
+          <li><a href="http://www.topcoder.com/">TopCoder</a> - DPと数学が多く出題される</li>
+          <li><a href="https://icpcarchive.ecs.baylor.edu/">ACM-ICPC Live Archive</a> - 世界中のICPCの過去問</li>
+        </ul>
+
+        <h3>順位</h3>
+        <ul>
+          <li>ポイントの高い人から順位が決まる</li>
+          <li>同着の場合は、下回生が上位となる</li>
+          <li>回生も同じ場合は、正解した全問題の提出時間の和が小さい方が上位となる</li>
+        </ul>
+
+        <h3>ポイント計算ルール</h3>
+        <ul>
+          <li>提出期間
+            <ul>
+              <li>コンテスト開始日から終了日までの間に正解した問題のポイントの合計が最終ポイントとなる</li>
+            </ul>
+          </li>
+          <li>1問1ポイント
+            <ul>
+              <li>ボーナス問題以外のAOJ上の問題は、どれを解いても<strong>1ポイント</strong></li>
+              <li><strong>ただし、10000番台の問題は得点にはならない</strong></li>
+            </ul>
+          </li>
+          <li>ボーナス問題
+            <ul>
+              <li>通常の問題よりも配点が高く設定しているので、是非解いてもらいたい</li>
+              <li>配点が高いのは、解くことを推奨する問題だから</li>
+              <li>ボーナス問題は、ICPC国内予選のA～Gとパソコン甲子園の何問か</li>
+              <li>ICPCの問題が難しいと感じる人は、パソコン甲子園のボーナス問題から解くのがオススメ</li>
+              <li>ボーナス問題の一覧は下表を参照</li>
+            </ul>
+          </li>
+          <li>回生補正
+            <ul>
+              <li>1回生 : 通常通り計算</li>
+              <li>2回生 : ボーナス問題のポイントが半減する</li>
+              <li>3回生以上 : ボーナス問題のうち、ICPCの問題は全て2点、パソコン甲子園の問題は1点とする</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>問題の選出について</h3>
+        <ul>
+          <li>ICPC</li>
+          <li>JOI</li>
+          <li>PCK</li>
+          <li>あり本に登場するアルゴリズムがそのまま使える問題リストを作りたい</li>
+          <li>TopCoder、Codeforces、AtCoderで得た得点をポイント換算したい</li>
+        </ul>
+      </div>
+
+      <h2>現在の様子</h2>
       <h3>AC数の推移</h3>
       <div class="demo-container">
         <div id="placeholder" class="demo-placeholder">
@@ -29,9 +153,8 @@
       <table id="table-recent" class="usertable tablesorter"></table>
       <h3>問題リスト</h3>
       <table id="table-problems" class="problemtable tablesorter">
-<thead>
-</table>
-
-
-</body>
+        <thead>
+      </table>
+    </div>
+  </body>
 </html>

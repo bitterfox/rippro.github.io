@@ -306,5 +306,6 @@ var fillSolvedTable = function(users){
 $.event.add(window,"load",function() {
     $("#description-title").click(function () {
         $("#description").toggle();
+        console.log($("#description"));
     });
 });
