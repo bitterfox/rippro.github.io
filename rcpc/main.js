@@ -5,9 +5,9 @@
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 
 $.event.add(window,"load",function() {
-    updateGraphAndTable(memberIDs);
+    updateGraphAndTable();
     $("#update").click(function(){
-        updateGraphAndTable(memberIDs);
+        updateGraphAndTable();
     });
     $("#table-recent").tablesorter();
     $("#table-problems").tablesorter();
@@ -38,7 +38,7 @@ var updateGraphAndTable = function(){
 
 var makeUserData = function(userID, problems){
     var solved_list = [];
-    var userIDs = userID.split(",");
+    var userIDs = userID[0].split(",");
     var solved_set = {};
     for(var i=0; i<userIDs.length; i++){
         var id = userIDs[i];
@@ -62,11 +62,19 @@ var makeUserData = function(userID, problems){
         });
     }
 
+    var grade = userID[1];
     var score = 0;
     for(var i=0; i<problems.length; i++){
         var id = problems[i][0];
         if(id in solved_set){
-            score += problems[i][3];
+            if(grade === 1){
+                score += problems[i][3];
+            }else if(grade === 2){
+                score += problems[i][3]/2;
+            }else if(grade === 3){
+                if(problems[i][2].match(/ICPC/)) score += 2;
+                else score += 1;
+            }
         }
     }
     solved_list.sort(function(a,b){
@@ -74,10 +82,11 @@ var makeUserData = function(userID, problems){
     });
 
     return {
-        id: userID,
+        id: userID[0],
         solved_list: solved_list,
         solved: solved_list.length,
-        score: score
+        score: score,
+        grade: userID[1]
     };
 };
 
