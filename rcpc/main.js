@@ -13,29 +13,15 @@ $.event.add(window,"load",function() {
     $("#table-problems").tablesorter();
 });
 
-var updateGraphAndTable = function(userIDs){
+var updateGraphAndTable = function(){
     var users = [];
-    for(var i=0; i<userIDs.length; i++){
-        var solved_list = getSolvedProblems(userIDs[i]);
-        users.push({
-            id: userIDs[i],
-            solved_list: solved_list,
-            solved: solved_list.length
-        });
+    for(var i=0; i<memberIDs.length; i++){
+        users.push(makeUserData(memberIDs[i], problems));
     }
 
-    // var solved = {};
-    // for(var i=0; i<users.length; i++){
-    //     solved[users[i].id] = users[i].solved;
-    // }
-    //
-    // users.sort(function(a,b){
-    //     return solved[b.id] - solved[a.id];
-    // });
-    //
-    // memberIDs.sort(function(a,b){
-    //     return solved[b] - solved[a];
-    // });
+    users.sort(function(a,b){
+        return b.score - a.score !== 0 ? b.score - a.score : b.solved - a.solved;
+    });
 
     var recentStatusDatas = [];
     var graphDatas = [];
@@ -47,11 +33,11 @@ var updateGraphAndTable = function(userIDs){
     drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
     makeSolvedTable(problems);
-    fillSolvedTableAndCalcScore(users);
+    fillSolvedTable(users);
 };
 
-var getSolvedProblems = function(userID){
-    var res = [];
+var makeUserData = function(userID, problems){
+    var solved_list = [];
     var userIDs = userID.split(",");
     var solved_set = {};
     for(var i=0; i<userIDs.length; i++){
@@ -70,15 +56,29 @@ var getSolvedProblems = function(userID){
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
                     solved_set[id] = 0;
-                    res.push({id:id,time:time,runID:runID});
+                    solved_list.push({id:id,time:time,runID:runID});
                 });
             }
         });
     }
-    res.sort(function(a,b){
+
+    var score = 0;
+    for(var i=0; i<problems.length; i++){
+        var id = problems[i][0];
+        if(id in solved_set){
+            score += problems[i][3];
+        }
+    }
+    solved_list.sort(function(a,b){
         return a.time - b.time;
     });
-    return res;
+
+    return {
+        id: userID,
+        solved_list: solved_list,
+        solved: solved_list.length,
+        score: score
+    };
 };
 
 var makeGraphData = function(user){
@@ -131,7 +131,7 @@ var makeRecentStatusData = function(user){
         if(user.solved_list[user.solved_list.length-i-1])
             res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
     }
-
+    res.score = user.score;
     return res;
 };
 
@@ -166,7 +166,8 @@ var fillRecentStatusTable = function(recentStatusDatas){
         // score
             .append($("<td></td>")
                     .attr("style",getColor(data.solved,400,300,200,100) + "font-weight:bold;")
-                    .attr("id", data.id + "-score"))
+                    .attr("id", data.id + "-score")
+                    .text(data.score))
         // solved
             .append($("<td></td>")
                     .attr("style",getColor(data.solved,400,300,200,100))
@@ -288,10 +289,9 @@ var makeSolvedTable = function(problems){
     $("#table-problems").append($thead.append($ths)).append($tbody);
 };
 
-var fillSolvedTableAndCalcScore = function(users){
+var fillSolvedTable = function(users){
     for(var i=0; i<users.length; i++){
         var user = users[i];
-        var score = 0;
         var solved_list = user.solved_list;
         for(var j=0; j<solved_list.length; j++){
             var problem = solved_list[j];
@@ -299,14 +299,7 @@ var fillSolvedTableAndCalcScore = function(users){
                 .append($("<a></a>")
                         .attr("href", pref + "review.jsp?rid=" + problem.runID)
                         .text("#"));
-
-            var $score = $("#" + problem.id + "-score");
-            if($score){
-                var p = parseInt($score.text());
-                if(p) score += p;
-            }
         }
-        $("#" + user.id + "-score").text(score);
     }
 };
 
