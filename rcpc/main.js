@@ -82,15 +82,7 @@ var makeUserData = function(userID, problems){
         var id = problems[i][0];
         if(!(id in solved_set) || solved_set[id]===1) continue;
         else{
-            score -= 1;
-            if(grade === 1){
-                score += problems[i][3];
-            }else if(grade === 2){
-                score += problems[i][3]/2;
-            }else if(grade === 3){
-                if(problems[i][2].match(/ICPC/)) score += 2;
-                else score += 1;
-            }
+            score += problems[i][3] - 1;
         }
     }
 
