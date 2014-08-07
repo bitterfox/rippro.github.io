@@ -36,43 +36,53 @@ var updateGraphAndTable = function(){
     fillSolvedTable(users);
 };
 
-var isResubmission = function(){
-    return false;
+var isResubmission = function(id,ignore_list){
+    var lo  = 0;
+    var hi = ignore_list.length - 1;
+    var mid = Math.floor((hi + lo)/2);
+    while(ignore_list[mid] != id && lo < hi){
+        if (id < ignore_list[mid]){
+            hi = mid - 1;
+        } else if (id > ignore_list[mid]){
+            lo = mid + 1;
+        }
+        mid = Math.floor((hi + lo)/2);
+    }
+    return (ignore_list[mid] != id) ? false : true;
 };
 
 var makeUserData = function(userID, problems){
     var solved_list = [];
-    var userIDs = userID[0].split(",");
+    var id = userID[0];
     var solved_set = {};
-    for(var i=0; i<userIDs.length; i++){
-        var id = userIDs[i];
-        $.ajax({
-            url: pref + "webservice/user?id=" + id,
-            type: "GET",
-            dataType: "xml",
-            timeout: "1000",
-            async: false,
-            success: function(xml){
-                $(xml).find("user").find("solved_list").find("problem").each(function(){
-                    var id = $(this).find("id").text();
-                    var s = $(this).find("submissiondate").text();
-                    var runID = $(this).find("judge_id").text();
-                    var time = new Date(parseInt(s));
-                    if(id in solved_set) return;
-                    if(isResubmission(id)) return;
-                    solved_set[id] = 0;
-                    solved_list.push({id:id,time:time,runID:runID});
-                });
-            }
-        });
-    }
+    var ignore_list = userID[3];
+    $.ajax({
+        url: pref + "webservice/user?id=" + id,
+        type: "GET",
+        dataType: "xml",
+        timeout: "1000",
+        async: false,
+        success: function(xml){
+            $(xml).find("user").find("solved_list").find("problem").each(function(){
+                var id = $(this).find("id").text();
+                var s = $(this).find("submissiondate").text();
+                var runID = $(this).find("judge_id").text();
+                var time = new Date(parseInt(s));
+                if(id in solved_set) return;
+                if(!isResubmission(id,ignore_list)) solved_set[id] = 0;
+                else solved_set[id] = 1;
+                solved_list.push({id:id,time:time,runID:runID});
+            });
+        }
+    });
 
     var count = 0;
     var grade = userID[1];
     var score = solved_list.length - userID[2];
     for(var i=0; i<problems.length; i++){
         var id = problems[i][0];
-        if(id in solved_set){
+        if(solved_set[id]===undefined || solved_set[id]===1) continue;
+        else{
             score -= 1;
             if(grade === 1){
                 score += problems[i][3];
@@ -94,7 +104,8 @@ var makeUserData = function(userID, problems){
         solved_list: solved_list,
         solved: solved_list.length,
         score: score,
-        grade: userID[1]
+        grade: userID[1],
+        ignore_list: ignore_list
     };
 };
 
@@ -272,8 +283,7 @@ var makeSolvedTable = function(problems, users){
     for(var i=0; i<users.length; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
-                    .attr("style", "font-size:small")
-                    .attr("class", "solved-mark"));
+                    .attr("style", "font-size:small"));
     }
 
     var $tbody = $("<tbody></tbody>");
@@ -298,8 +308,7 @@ var makeSolvedTable = function(problems, users){
         // add column for each user.
         for(var j=0; j<users.length; j++){
             $row.append($("<td></td>")
-                .attr("id", pid + "-" + users[j].id)
-                .attr("class", "solved-mark"));
+                .attr("id", pid + "-" + users[j].id));
         }
         $tbody.append($row);
     }
@@ -313,9 +322,16 @@ var fillSolvedTable = function(users){
         for(var j=0; j<solved_list.length; j++){
             var problem = solved_list[j];
             $("#"+problem.id+"-"+user.id)
+                .addClass("solved-mark")
                 .append($("<a></a>")
                         .attr("href", pref + "review.jsp?rid=" + problem.runID)
                         .text("#"));
+        }
+        var ignore_list = user.ignore_list;
+        for(var j=0;j<ignore_list.length; j++){
+            var problem = ignore_list[j];
+            console.log("#"+problem+"-"+user.id);
+            $("#"+problem+"-"+user.id).addClass("ignore");
         }
     }
 };
