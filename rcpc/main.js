@@ -98,20 +98,21 @@ var makeUserData = function(userID, problems){
         return a.time - b.time;
     });
 
-    var t=[];
-    for(var i=0;i<solved_list.length;i++){
-        t.push(solved_list[i].id);
-    }
-    $("#content").append($("<div></div>").text(
-        "[" + ['"'+userID[0]+'"',userID[1],userID[2]].join(",") + ', ["' + t.join('","') + '"]' + "],"
-    )
-    );
+    // var t=[];
+    // for(var i=0;i<solved_list.length;i++){
+    //     t.push(solved_list[i].id);
+    // }
+    // t.sort();
+    // $("#content").append($("<div></div>").text(
+    //     "[" + ['"'+userID[0]+'"',userID[1],score].join(",") + ', ["' + t.join('","') + '"]' + "],"
+    // )
+    // );
 
     return {
         id: userID[0],
         solved_list: solved_list,
         solved: solved_list.length,
-        score: score,
+        score: Math.round(100*score/grade)/100,
         grade: userID[1],
         ignore_list: ignore_list
     };
