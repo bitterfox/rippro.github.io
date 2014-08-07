@@ -68,7 +68,6 @@ var makeUserData = function(userID, problems){
                 var s = $(this).find("submissiondate").text();
                 var runID = $(this).find("judge_id").text();
                 var time = new Date(parseInt(s));
-                if(id in solved_set) return;
                 if(!isResubmission(id,ignore_list)) solved_set[id] = 0;
                 else solved_set[id] = 1;
                 solved_list.push({id:id,time:time,runID:runID});
@@ -81,7 +80,7 @@ var makeUserData = function(userID, problems){
     var score = solved_list.length - userID[2];
     for(var i=0; i<problems.length; i++){
         var id = problems[i][0];
-        if(solved_set[id]===undefined || solved_set[id]===1) continue;
+        if(!(id in solved_set) || solved_set[id]===1) continue;
         else{
             score -= 1;
             if(grade === 1){
@@ -98,6 +97,15 @@ var makeUserData = function(userID, problems){
     solved_list.sort(function(a,b){
         return a.time - b.time;
     });
+
+    var t=[];
+    for(var i=0;i<solved_list.length;i++){
+        t.push(solved_list[i].id);
+    }
+    $("#content").append($("<div></div>").text(
+        "[" + ['"'+userID[0]+'"',userID[1],userID[2]].join(",") + ', ["' + t.join('","') + '"]' + "],"
+    )
+    );
 
     return {
         id: userID[0],
@@ -330,7 +338,6 @@ var fillSolvedTable = function(users){
         var ignore_list = user.ignore_list;
         for(var j=0;j<ignore_list.length; j++){
             var problem = ignore_list[j];
-            console.log("#"+problem+"-"+user.id);
             $("#"+problem+"-"+user.id).addClass("ignore");
         }
     }
@@ -339,6 +346,5 @@ var fillSolvedTable = function(users){
 $.event.add(window,"load",function() {
     $("#description-title").click(function () {
         $("#description").toggle();
-        console.log($("#description"));
     });
 });

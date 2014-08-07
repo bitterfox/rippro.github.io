@@ -52,5 +52,6 @@ var problems = [
     ["1168","Off Balance","ICPC Domestic",10],
     ["1169","The Most Powerful Spell","ICPC Domestic",12],
     ["1170","Old Memories","ICPC Domestic",20],
-    ["1171","Laser Beam Reflections","ICPC Domestic",20]
+    ["1171","Laser Beam Reflections","ICPC Domestic",20],
+    ["0241","(TEST) Quaternion Multiplication","PCK",5]
 ];
