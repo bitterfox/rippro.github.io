@@ -1,19 +1,9 @@
 body {
-    background: url(background.png) repeat-x;
-    font: 18px/1.5em "proxima-nova", Helvetica, Arial, sans-serif;
+    font: 18px/1.5em Helvetica, Arial, sans-serif;
 }
 
 p {
     margin-top: 10px;
-}
-
-a {
-    color: none;
-    text-decoration: underline;
-}
-
-a:hover {
-    text-decoration: underline;
 }
 
 #header {
@@ -87,7 +77,6 @@ a:hover {
     padding: 3px;
     text-align: center;
     vertical-align: top;
-    color: #333;
     background-color: #eee;
     border: 1px solid #b9b9b9;
 }
@@ -96,7 +85,6 @@ a:hover {
     font-size: small;
     padding: 0px;
     text-align: center;
-    background-color: #fff;
     border: 1px solid #b9b9b9;
 }
 
@@ -106,27 +94,22 @@ a:hover {
 }
 
 #table-problems th {
-    padding: large;
     text-align: center;
-    vertical-align: top;
-    color: #333;
     background-color: #eee;
     border: 1px solid #b9b9b9;
 }
 
 #table-problems td {
     font-size: small;
-    height: 10px;
-    padding: 0px;
     text-align: center;
     background-color: #fff;
     border: 1px solid #b9b9b9;
 }
 
 #table-problems .problem-id {
-    width:7%;
+    width:5%;
 }
 
-#table-problems .solved-mark {
-    width:2.0%;
+#table-problems .ignore a {
+    color: gray;
 }

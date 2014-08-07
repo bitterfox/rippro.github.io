@@ -283,7 +283,7 @@ var makeSolvedTable = function(problems, users){
     for(var i=0; i<users.length; i++){
         $ths.append($("<th></th>")
                     .text(i+1)
-                    .attr("style", "font-size:small"));
+                    .attr("style", "font-size:small; width:2.0%"));
     }
 
     var $tbody = $("<tbody></tbody>");
