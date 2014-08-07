@@ -36,6 +36,10 @@ var updateGraphAndTable = function(){
     fillSolvedTable(users);
 };
 
+var isResubmission = function(){
+    return false;
+};
+
 var makeUserData = function(userID, problems){
     var solved_list = [];
     var userIDs = userID[0].split(",");
@@ -55,6 +59,7 @@ var makeUserData = function(userID, problems){
                     var runID = $(this).find("judge_id").text();
                     var time = new Date(parseInt(s));
                     if(id in solved_set) return;
+                    if(isResubmission(id)) return;
                     solved_set[id] = 0;
                     solved_list.push({id:id,time:time,runID:runID});
                 });
