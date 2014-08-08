@@ -30,7 +30,7 @@ var updateGraphAndTable = function(){
         recentStatusDatas.push(makeRecentStatusData(users[i]));
     }
 
-    drawGraph(graphDatas);
+    // drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
     makeSolvedTable(problems,users);
     fillSolvedTable(users);
@@ -278,14 +278,14 @@ var getColor = function(x,a,b,c,d,inv){
 var makeSolvedTable = function(problems, users){
     var $thead = $("<thead></thead>");
     var $ths = $("<tr></tr>")
-        .append($("<th></th>").text("ID").attr("class", "problem-id"))
-        .append($("<th></th>").text("Name"))
-        .append($("<th></th>").text("Source"))
-        .append($("<th></th>").text("Point"));
+            .append($("<th></th>").text("ID").attr("class", "problem-id"))
+            .append($("<th></th>").text("Name"))
+            .append($("<th></th>").text("Source"))
+            .append($("<th></th>").text("Point"));
     for(var i=0; i<users.length; i++){
         $ths.append($("<th></th>")
                     .text(users[i].id.substr(0,3))
-                    .attr("style", "font-size:small; width:2.0%"));
+                    .attr("style", "font-size:small; width:2.2%"));
     }
 
     var $tbody = $("<tbody></tbody>");
@@ -308,11 +308,11 @@ var makeSolvedTable = function(problems, users){
                 .append($("<td></td>")
                         .attr("id", pid + "-score")
                         .text(ppoint)
-            );
+                       );
         // add column for each user.
         for(var j=0; j<users.length; j++){
             $row.append($("<td></td>")
-                .attr("id", pid + "-" + users[j].id));
+                        .attr("id", pid + "-" + users[j].id));
         }
         $tbody.append($row);
     }

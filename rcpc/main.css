@@ -67,7 +67,6 @@ p {
     top: 0px;
 }
 
-
 #table-recent {
     width: 100%;
     border-collapse: collapse;
@@ -94,9 +93,14 @@ p {
 }
 
 #table-problems th {
+    font-size: small;
     text-align: center;
     background-color: #eee;
     border: 1px solid #b9b9b9;
+}
+
+#table-problems tbody tr:hover { /* 行にマウスオーバーした時のスタイル */
+    background-color: #ccc;    
 }
 
 #table-problems td {
@@ -104,10 +108,6 @@ p {
     text-align: center;
     background-color: #fff;
     border: 1px solid #b9b9b9;
-}
-
-#table-problems .problem-id {
-    width:5%;
 }
 
 #table-problems .ignore a {
