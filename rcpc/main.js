@@ -155,8 +155,8 @@ var makeRecentStatusData = function(user){
     }
 
     res.recentACs = [];
-    res.recentACs.length = 10;
-    for(var i=0; i<10; i++){
+    res.recentACs.length = 5;
+    for(var i=0; i<5; i++){
         if(user.solved_list[user.solved_list.length-i-1])
             res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
     }
