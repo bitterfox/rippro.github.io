@@ -155,8 +155,8 @@ var makeRecentStatusData = function(user){
     }
 
     res.recentACs = [];
-    res.recentACs.length = 5;
-    for(var i=0; i<5; i++){
+    res.recentACs.length = 10;
+    for(var i=0; i<10; i++){
         if(user.solved_list[user.solved_list.length-i-1])
             res.recentACs[i] = user.solved_list[user.solved_list.length-i-1];
     }
@@ -280,10 +280,11 @@ var makeSolvedTable = function(problems, users){
     var $ths = $("<tr></tr>")
         .append($("<th></th>").text("ID").attr("class", "problem-id"))
         .append($("<th></th>").text("Name"))
+        .append($("<th></th>").text("Source"))
         .append($("<th></th>").text("Point"));
     for(var i=0; i<users.length; i++){
         $ths.append($("<th></th>")
-                    .text(i+1)
+                    .text(users[i].id.substr(0,3))
                     .attr("style", "font-size:small; width:2.0%"));
     }
 
@@ -292,19 +293,21 @@ var makeSolvedTable = function(problems, users){
         var prob = problems[i];
         var pid = prob[0];
         var pname = prob[1];
+        var psource = prob[2];
         var ppoint = prob[3];
-
-        // add column id, name, point
+        // add column (id, name, source, point)
         var $row = $("<tr></tr>").attr("id", pid)
-            .append($("<td></td>")
-                .text(pid).attr("class","problem-id"))
-            .append($("<td></td>")
-                .append($("<a></a>")
-                .attr("href", pref + "description.jsp?id=" + pid)
-                .text(pname)))
-            .append($("<td></td>")
-                .attr("id", pid + "-score")
-                .text(ppoint)
+                .append($("<td></td>")
+                        .text(pid).attr("class","problem-id"))
+                .append($("<td></td>")
+                        .append($("<a></a>")
+                                .attr("href", pref + "description.jsp?id=" + pid)
+                                .text(pname)))
+                .append($("<td></td>")
+                        .text(psource))
+                .append($("<td></td>")
+                        .attr("id", pid + "-score")
+                        .text(ppoint)
             );
         // add column for each user.
         for(var j=0; j<users.length; j++){
