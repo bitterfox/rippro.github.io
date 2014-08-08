@@ -1,16 +1,77 @@
 // [ID,  名前,  出展,  ポイント]
 var problems = [
-    // PCK
-    ["0000", "QQ", "PCK", 2],
-    ["0001", "List of Top 3 Hills", "PCK", 2],
-    ["0002", "Digit Number", "PCK", 2],
-    ["0003", "Is it a Right Triangle?", "PCK", 2],
-    ["0005", "GCD and LCM", "PCK", 2],
-    ["0006", "Reverse Sequence", "PCK", 2],
-    ["0007", "Dept Hell", "PCK", 2],
-    ["0045", "Sum and Average", "PCK", 2],
-    ["0093", "Leap Year", "PCK", 2],
-    ["0136", "Frequency Distribution of Height", "PCK", 2],
+
+    ["","========== 基本問題 ==========","",0],
+
+    ["0000", "QQ","基本", 2],
+    ["0007", "Debt Hell","基本", 2],
+    ["0045", "Sum and Average","基本", 2],
+    ["0093", "Leap Year","基本", 2],
+    ["0003", "Is it a Right Triangle?", "基本", 2],
+    ["0136", "Frequency Distribution of Height", "基本", 2],
+
+    ["","========== STLの使い方 ==========","",0],
+
+    ["0001", "List of Top 3 Hills", "sort/stringの使い方", 3],
+    ["0006", "Reverse Sequence", "stringの使い方", 3],
+    ["0002", "Digit Number", "stringかmath.hの使い方", 3],
+    ["0029", "English Sentence", "mapの使い方", 3],
+    ["0130", "Train", "dequeの使い方", 3],
+    ["1173", "The Balance of the World", "stackの使い方", 3],
+
+    ["","========== 数学 ==========","",0],
+
+    ["0005", "GCD and LCM", "数学(GCD,LCM)", 3],
+    ["0044", "Prime Number II", "数学(素数判定)", 3],
+
+    ["","========== 探索 ==========","",0],
+
+    ["0003", "Is it a Right Triangle?", "探索", 3],
+    ["1130", "Red and Black", "探索", 5],
+    ["0067", "The Number of Island", "探索", 5],
+    ["0122", "Summer of Phyonkichi", "探索", 6],
+    ["0179", "Mysterious Worm", "探索", 8],
+    ["0121", "Seven Puzzle", "探索", 10],
+
+    ["","========== DP(動的計画法) ==========","",0],
+
+    ["0042", "A Thief", "DP(ナップサック問題)", 7],
+    ["0057", "The Number of Area", "DP(数え上げ)", 4],
+    ["0168", "Kannondou", "DP(数え上げ)",4],
+    ["0098", "Maximum Sum Sequence II", "DP(部分長方形)", 5],
+    ["0092", "Square Searching", "DP(部分長方形)",5],
+    ["0191", "Baby Tree", "DP(最適解)",6],
+    ["0557", "A First Grader", "DP(数え上げ)",6],
+    ["0096", "Sum of 4 Integers II", "DP(数え上げ)",6],
+    ["1056", "Ben Toh", "DP(確率)",6],
+    ["2035", "It Prefokery Pio", "DP(最長共通部分列問題)", 8],
+    ["2221", "KULASIS", "DP(工夫が必要なDP)", "10"],
+
+    ["","========== グラフ ==========","",0],
+
+    ["0119", "Taro's Obsession", "グラフ(トポロジカルソート)", 6],
+    ["0200", "Traveling Alone: One-way Ticket of Youth", "グラフ(最短経路)", 6],
+    ["0180", "Stellar Performance of the Debunkey Family", "グラフ(最小全域木)", 6],
+    ["0212", "Highway Express Bus", "グラフ(拡張グラフ)", 10],
+    ["0086", "Patrol", "グラフ(ケーニヒスベルクの橋)", 6],
+    ["0120", "Patisserie", "グラフ(トラベリングセールスマン問題, ビットDP)", 8],
+
+    ["","========== 幾何 ==========","",0],
+
+    ["0079", "Area of Polygon", "幾何(負の面積かヘロンの公式)", 4],
+    ["1132", "Circle and Points", "幾何(「ギリギリを攻める」の典型)", 6],
+
+    ["","========= 文字列 =========", "", 0],
+
+    ["1244", "Molecular Formula", "構文解析", 7],
+    ["2444", "Substring", "ローリングハッシュ", 10]
+
+    ["","========== その他 ==========","",0],
+
+    ["0027", "What day is today?", "その他(ツェラーの公式)", 3],
+    ["0502", "Dice", "その他(サイコロ)", 3],
+
+    ["","========== ICPC過去問 ==========","",0],
 
     // AOJ-ICPC by ichyo
     ["1147", "ICPC 得点集計ソフトウェア", "国内予選2007A", 4],
@@ -35,7 +96,6 @@ var problems = [
     ["2019", "お姫様の嫁入り", "模擬国内2008B", 6],
     ["2012", "宇宙ヤシガニ", "模擬国内2007A", 6],
     ["2399", "君のプライバシーを守れ！", "模擬国内2012A", 6],
-    ["1173", "世界の天秤", "国内予選2011B", 6],
     ["1276", "Prime Gap", "アジア地区予選2007B", 6],
     ["1137", "Numeral System", "国内予選2005C", 6],
     ["1141", "ディリクレの算術級数定理", "国内予選2006A", 6],
@@ -44,7 +104,6 @@ var problems = [
     ["1172", "チェビシェフの定理", "国内予選2011A", 6],
     ["2001", "Amida,  the City of Miracle", "模擬国内2006", 6],
     ["2150", "Matsuzaki 数", "模擬国内2006", 6],
-    ["1130", "Red and Black", "模擬国内2004", 6],
     ["1180", "繰り返す10進数", "国内予選2012B", 6],
     ["2400", "審判は君だ！", "模擬国内2012B", 6],
     ["1232", "Calling Extraterrestrial Intelligence Again", "アジア地区予選2002A", 8],
@@ -138,7 +197,6 @@ var problems = [
     ["2303", "Marathon Match", "夏合宿2011:day3D", 16],
     ["1235", "Life Line", "アジア地区予選2002D", 16],
     ["2435", "Zero division checker", "夏合宿2012:day3aB", 16],
-    ["1244", "Molecular Formula", "アジア地区予選2003E", 16],
     ["1150", "崖登り", "国内予選2007D", 16],
     ["1245", "Gap", "アジア地区予選2003F", 16],
     ["1161", "覆面算", "国内予選2009C", 16],
@@ -151,7 +209,6 @@ var problems = [
     ["1236", "Map of Ninja House", "アジア地区予選2002E", 18],
     ["2441", "FizzBuzz", "夏合宿2012:day3bB", 18],
     ["2425", "全探索お姉さんの休日", "夏合宿2012:day2B", 18],
-    ["1132", "Circle and Points", "国内予選2004D", 18],
     ["1157", "大玉転がし", "国内予選2008E", 18],
     ["1140", "Cleaning Robot", "国内予選2005F", 18],
     ["2447", "A Two Floors Dungeon", "夏合宿2012:day4A", 18],
@@ -164,7 +221,6 @@ var problems = [
     ["2223", "Kaeru Jump", "夏合宿2010:day4B", 18],
     ["2438", "YAML", "夏合宿2012:day3aE", 18],
     ["2304", "Reverse Roads", "夏合宿2011:day3E", 18],
-    ["2444", "Substring", "夏合宿2012:day3bE", 18],
     ["1138", "Traveling by Stagecoach", "国内予選2005D", 18],
     ["1253", "Dice Puzzle", "アジア地区予選2004F", 18],
     ["1176", "輪番停電計画", "国内予選2011E", 18],
