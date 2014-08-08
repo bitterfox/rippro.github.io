@@ -1,5 +1,6 @@
 body {
     font: 18px/1.5em Helvetica, Arial, sans-serif;
+    padding: 30px;
 }
 
 p {
@@ -99,11 +100,8 @@ p {
     border: 1px solid #b9b9b9;
 }
 
-#table-problems tbody tr:hover { /* 行にマウスオーバーした時のスタイル */
-    background-color: #ccc;    
-}
-
 #table-problems td {
+    line-height:1.6;
     font-size: small;
     text-align: center;
     background-color: #fff;
@@ -111,5 +109,5 @@ p {
 }
 
 #table-problems .ignore a {
-    color: gray;
+    color: #CCF;
 }
