@@ -68,12 +68,15 @@ var makeUserData = function(userID, problems){
                 var s = $(this).find("submissiondate").text();
                 var runID = $(this).find("judge_id").text();
                 var time = new Date(+s);
-                if(!isResubmission(id,ignore_list)) solved_set[id] = 0;
-                else solved_set[id] = 1;
+                if(!isResubmission(id,ignore_list)){
+                    solved_set[id] = 0;
+                } else solved_set[id] = 1;
                 solved_list[solved_list.length] = {id:id,time:time,runID:runID};
             });
         }
     });
+
+    var solved = solved_list.length - ignore_list.length;
 
     var offset_score = userID[2];
     var total_score = solved_list.length;
@@ -105,7 +108,7 @@ var makeUserData = function(userID, problems){
     return {
         id: userID[0],
         solved_list: solved_list,
-        solved: solved_list.length,
+        solved: solved,
         offset_score: offset_score,
         total_score: total_score,
         score: Math.round(100*score/grade)/100,
@@ -140,7 +143,7 @@ var makeUserData = function(userID, problems){
 var makeRecentStatusData = function(user){
     var res = {};
     res.id = user.id;
-    res.solved = user.solved_list.length;
+    res.solved = user.solved;
     var first = user.solved_list[0];
     var last = user.solved_list[user.solved_list.length-1];
     if(last){
@@ -196,16 +199,16 @@ var fillRecentStatusTable = function(recentStatusDatas){
             .append($("<td></td>")
                     .append($('<a></a>')
                             .attr("href",pref + "user.jsp?id=" + data.id)
-                            .attr("style",getColor(data.solved,400,300,200,100))
+                            .attr("style",getColor(data.solved,40,30,20,10))
                             .text(data.id)))
         // score
             .append($("<td></td>")
-                    .attr("style",getColor(data.solved,400,300,200,100) + "font-weight:bold;")
+                    .attr("style",getColor(data.solved,40,30,20,10) + "font-weight:bold;")
                     .attr("id", data.id + "-score")
                     .text(data.score))
         // solved
             .append($("<td></td>")
-                    .attr("style",getColor(data.solved,400,300,200,100))
+                    .attr("style",getColor(data.solved,40,30,20,10))
                     .text(data.solved))
         // solved/day
             .append($("<td></td>")
