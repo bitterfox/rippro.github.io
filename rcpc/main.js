@@ -4,6 +4,8 @@
 
 var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 
+(function(){
+
 $.event.add(window,"load",function() {
     updateGraphAndTable();
     $("#table-recent").tablesorter();
@@ -348,3 +350,5 @@ $.event.add(window,"load",function() {
         $("#description").toggle();
     });
 });
+
+})();
