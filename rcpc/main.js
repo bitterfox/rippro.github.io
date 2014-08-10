@@ -328,7 +328,7 @@ var fillSolvedTable = function(users){
     for(var i=0, l=users.length; i<l; i++){
         var user = users[i];
         var solved_list = user.solved_list;
-        for(var j=0, l=solved_list.length; j<l; j++){
+        for(var j=0, l2=solved_list.length; j<l2; j++){
             var problem = solved_list[j];
             $("#"+problem.id+"-"+user.id)
                 .addClass("solved-mark")
@@ -337,7 +337,7 @@ var fillSolvedTable = function(users){
                         .text("#"));
         }
         var ignore_list = user.ignore_list;
-        for(var j=0, l=ignore_list.length; j<l; j++){
+        for(var j=0, l3=ignore_list.length; j<l3; j++){
             var pid = ignore_list[j];
             $("#"+pid+"-"+user.id).addClass("ignore");
         }
