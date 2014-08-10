@@ -6,9 +6,6 @@ var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 
 $.event.add(window,"load",function() {
     updateGraphAndTable();
-    $("#update").click(function(){
-        updateGraphAndTable();
-    });
     $("#table-recent").tablesorter();
     $("#table-problems").tablesorter();
 });
@@ -20,7 +17,10 @@ var updateGraphAndTable = function(){
     }
 
     users.sort(function(a,b){
-        return b.score - a.score !== 0 ? b.score - a.score : b.solved - a.solved;
+        if(a.score !== b.score) return b.score - a.score;
+        if(a.grade !== b.grade) return a.grade - b.grade;
+        if(a.total_score !== b.total_score) return b.total_score - a.total_score;
+        return a.id < b.id ? -1 : 1;
     });
 
     var recentStatusDatas = [];
@@ -75,16 +75,17 @@ var makeUserData = function(userID, problems){
         }
     });
 
-    var count = 0;
-    var grade = userID[1];
-    var score = solved_list.length - userID[2];
+    var offset_score = userID[2];
+    var total_score = solved_list.length;
     for(var i=0; i<problems.length; i++){
         var id = problems[i][0];
         if(!(id in solved_set) || solved_set[id]===1) continue;
         else{
-            score += problems[i][3] - 1;
+            total_score += problems[i][3] - 1;
         }
     }
+
+    var score = total_score - offset_score;
 
     solved_list.sort(function(a,b){
         return a.time - b.time;
@@ -100,10 +101,13 @@ var makeUserData = function(userID, problems){
     // )
     // );
 
+    var grade = userID[1];
     return {
         id: userID[0],
         solved_list: solved_list,
         solved: solved_list.length,
+        offset_score: offset_score,
+        total_score: total_score,
         score: Math.round(100*score/grade)/100,
         grade: userID[1],
         ignore_list: ignore_list
