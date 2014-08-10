@@ -68,10 +68,12 @@ var makeUserData = function(userID, problems){
                 var s = $(this).find("submissiondate").text();
                 var runID = $(this).find("judge_id").text();
                 var time = new Date(+s);
+                if(time > new Date(2014,9,9,0,0,0)) return false; // break;
                 if(!isResubmission(id,ignore_list)){
                     solved_set[id] = 0;
                 } else solved_set[id] = 1;
                 solved_list[solved_list.length] = {id:id,time:time,runID:runID};
+                return true; // continue
             });
         }
     });
@@ -146,14 +148,15 @@ var makeRecentStatusData = function(user){
     res.solved = user.solved;
     var first = user.solved_list[0];
     var last = user.solved_list[user.solved_list.length-1];
+    var now = new Date();
+    var begin = new Date(2014,8,7,20,0,0);
     if(last){
-        res.solvedPerDay = res.solved / (last.time - first.time) * 1000*86400;
+        res.solvedPerDay = res.solved / (begin - now) * 1000*86400;
     } else {
         res.solvedPerDay = 0;
     }
 
     res.solvedLast24Hours = 0;
-    var now = new Date();
     for(var i=0, l=user.solved_list.length; i<l; i++){
         var j = user.solved_list.length-i-1;
         if(now - user.solved_list[j].time <= 1000*86400){
