@@ -2,22 +2,23 @@
 // TODO: highchartに変える
 // TODO: last submission を表示
 
-var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
-
 (function(){
 
+var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
+
 $.event.add(window,"load",function() {
+    console.time("begin"); // 2850 ms
     updateGraphAndTable();
     $("#table-recent").tablesorter();
     $("#table-problems").tablesorter();
+    console.timeEnd("begin");
 });
 
 var updateGraphAndTable = function(){
     var users = [];
-    for(var i=0; i<memberIDs.length; i++){
-        users.push(makeUserData(memberIDs[i], problems));
+    for(var i=0, l=memberIDs.length; i<l; i++){
+        users[users.length] = makeUserData(memberIDs[i], problems);
     }
-
     users.sort(function(a,b){
         if(a.score !== b.score) return b.score - a.score;
         if(a.grade !== b.grade) return a.grade - b.grade;
@@ -26,13 +27,10 @@ var updateGraphAndTable = function(){
     });
 
     var recentStatusDatas = [];
-    var graphDatas = [];
-    for(var i=0; i<users.length; i++){
-        graphDatas.push(makeGraphData(users[i]));
-        recentStatusDatas.push(makeRecentStatusData(users[i]));
+    for(var i=0, l=users.length; i<l; i++){
+        recentStatusDatas[i] = makeRecentStatusData(users[i]);
     }
 
-    // drawGraph(graphDatas);
     fillRecentStatusTable(recentStatusDatas);
     makeSolvedTable(problems,users);
     fillSolvedTable(users);
@@ -69,17 +67,17 @@ var makeUserData = function(userID, problems){
                 var id = $(this).find("id").text();
                 var s = $(this).find("submissiondate").text();
                 var runID = $(this).find("judge_id").text();
-                var time = new Date(parseInt(s));
+                var time = new Date(+s);
                 if(!isResubmission(id,ignore_list)) solved_set[id] = 0;
                 else solved_set[id] = 1;
-                solved_list.push({id:id,time:time,runID:runID});
+                solved_list[solved_list.length] = {id:id,time:time,runID:runID};
             });
         }
     });
 
     var offset_score = userID[2];
     var total_score = solved_list.length;
-    for(var i=0; i<problems.length; i++){
+    for(var i=0, l=problems.length; i<l; i++){
         var id = problems[i][0];
         if(!(id in solved_set) || solved_set[id]===1) continue;
         else{
@@ -116,26 +114,28 @@ var makeUserData = function(userID, problems){
     };
 };
 
-var makeGraphData = function(user){
-    var res = {};
-    res.data = [];
-    res.label = user.id;
-    for(var i=0; i<user.solved_list.length; i++){
-        res.data.push([user.solved_list[i].time, i+1]);
-    }
-    return res;
-};
+// var makeGraphData = function(user){
+//     var data = [];
+//     for(var i=0, l=user.solved_list.length; i<l; i++){
+//         data[i] = [user.solved_list[i].time, i+1];
+//     }
 
-var drawGraph = function(graphDatas){
-    $.plot("#placeholder", graphDatas, {
-        xaxis: {
-            mode: "time"
-        },
-        legend: {
-            position: "nw"
-        }
-    });
-};
+//     var res = {};
+//     res.label = user.id;
+//     res.data = data;
+//     return res;
+// };
+
+// var drawGraph = function(graphDatas){
+//     $.plot("#placeholder", graphDatas, {
+//         xaxis: {
+//             mode: "time"
+//         },
+//         legend: {
+//             position: "nw"
+//         }
+//     });
+// };
 
 var makeRecentStatusData = function(user){
     var res = {};
@@ -151,7 +151,7 @@ var makeRecentStatusData = function(user){
 
     res.solvedLast24Hours = 0;
     var now = new Date();
-    for(var i=0; i<user.solved_list.length; i++){
+    for(var i=0, l=user.solved_list.length; i<l; i++){
         var j = user.solved_list.length-i-1;
         if(now - user.solved_list[j].time <= 1000*86400){
             res.solvedLast24Hours++;
@@ -184,8 +184,8 @@ var fillRecentStatusTable = function(recentStatusDatas){
                   .append($("<th></th>").text("Recent")
                           .attr("colspan",2*recentStatusDatas.length)));
 
-
-    for(var i=0; i<recentStatusDatas.length; i++){
+    var now = new Date();
+    for(var i=0, l=recentStatusDatas.length; i<l; i++){
         var data = recentStatusDatas[i];
         var age = dtToString(data.age);
         var $tr = $("<tr></tr>").attr("id","row"+i);
@@ -217,8 +217,7 @@ var fillRecentStatusTable = function(recentStatusDatas){
                           getColor(data.solvedLast24Hours,
                                    10,5,3,1)));
 
-        var now = new Date();
-        for(var j=0; j<data.recentACs.length; j++){
+        for(var j=0, l2=data.recentACs.length; j<l2; j++){
             if(data.recentACs[j]){
                 var dt = dtToString(now - data.recentACs[j].time) + "前";
                 $tr.append(
@@ -288,14 +287,14 @@ var makeSolvedTable = function(problems, users){
             .append($("<th></th>").text("Name"))
             .append($("<th></th>").text("Source"))
             .append($("<th></th>").text("Point"));
-    for(var i=0; i<users.length; i++){
+    for(var i=0, l=users.length; i<l; i++){
         $ths.append($("<th></th>")
                     .text(users[i].id.substr(0,3))
                     .attr("style", "font-size:small; width:2.2%"));
     }
 
     var $tbody = $("<tbody></tbody>");
-    for(var i=0; i<problems.length; i++){
+    for(var i=0, l=problems.length; i<l; i++){
         var prob = problems[i];
         var pid = prob[0];
         var pname = prob[1];
@@ -316,7 +315,7 @@ var makeSolvedTable = function(problems, users){
                         .text(ppoint)
                        );
         // add column for each user.
-        for(var j=0; j<users.length; j++){
+        for(var j=0, l2=users.length; j<l2; j++){
             $row.append($("<td></td>")
                         .attr("id", pid + "-" + users[j].id));
         }
@@ -326,10 +325,10 @@ var makeSolvedTable = function(problems, users){
 };
 
 var fillSolvedTable = function(users){
-    for(var i=0; i<users.length; i++){
+    for(var i=0, l=users.length; i<l; i++){
         var user = users[i];
         var solved_list = user.solved_list;
-        for(var j=0; j<solved_list.length; j++){
+        for(var j=0, l=solved_list.length; j<l; j++){
             var problem = solved_list[j];
             $("#"+problem.id+"-"+user.id)
                 .addClass("solved-mark")
@@ -338,9 +337,9 @@ var fillSolvedTable = function(users){
                         .text("#"));
         }
         var ignore_list = user.ignore_list;
-        for(var j=0;j<ignore_list.length; j++){
-            var problem = ignore_list[j];
-            $("#"+problem+"-"+user.id).addClass("ignore");
+        for(var j=0, l=ignore_list.length; j<l; j++){
+            var pid = ignore_list[j];
+            $("#"+pid+"-"+user.id).addClass("ignore");
         }
     }
 };
