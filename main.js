@@ -178,11 +178,11 @@ var fillRecentStatusTable = function(recentStatusDatas){
             .append($("<td></td>")
                     .append($('<a></a>')
                             .attr("href",pref + "user.jsp?id=" + data.id)
-                            .attr("style",getColor(data.solved,400,300,200,100))
+                            .attr("style",getColor(data.solved,500,300,200,100))
                             .text(data.id)))
         // solved
             .append($("<td></td>")
-                    .attr("style",getColor(data.solved,400,300,200,100))
+                    .attr("style",getColor(data.solved,500,300,200,100))
                     .text(data.solved))
         // solved/day
             .append($("<td></td>")
