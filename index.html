@@ -17,44 +17,54 @@
 </div>
 
 <div id="content">
-<h3 id="description-title">これは何</h3>
-<div id="description" style="display: none">
-    <ul style="font-size:0.8em">
-        <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
-        <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
-        <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">
-            Volume 100</a> に含まれる問題はカウントされません<br>
-        </li>
-        <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
-        <ul>
-            <li>Github アカウントでログインし，
-                'Edit' ボタンをクリックすると編集できるようになります</li>
-            <li>
-                'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
+    <h3 id="description-title">これは何</h3>
+    <div id="description" style="display: none">
+        <ul style="font-size:0.8em">
+            <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
+            <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
+            <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">
+                Volume 100</a> に含まれる問題はカウントされません<br>
             </li>
+            <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
+            <ul>
+                <li>Github アカウントでログインし，
+                    'Edit' ボタンをクリックすると編集できるようになります</li>
+                <li>
+                    'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
+                </li>
+                <li>
+                    'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
+                </li>
+            </ul>
             <li>
-                'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
+                このページは次のもの利用して作られています
+                <ul>
+                    <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">Aizu Online Judge Application Program Interface</a> - ユーザー情報・問題リストの取得</li>
+                    <li><a href="https://pages.github.com/">Github Pages</a> - バージョン管理とページのパブリッシュ</li>
+                    <li><a href="http://jquery.com/">jQuery</a> - API呼び出し，DOM操作など</li>
+                    <li><a href="http://www.flotcharts.org/">Flot</a> - グラフ描画</li>
+                    <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
+                </ul>
             </li>
         </ul>
-        <li>
-            このページは次のもの利用して作られています
-            <ul>
-                <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">Aizu Online Judge Application Program Interface</a> - ユーザー情報・問題リストの取得</li>
-                <li><a href="https://pages.github.com/">Github Pages</a> - バージョン管理とページのパブリッシュ</li>
-                <li><a href="http://jquery.com/">jQuery</a> - API呼び出し，DOM操作など</li>
-                <li><a href="http://www.flotcharts.org/">Flot</a> - グラフ描画</li>
-                <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
-            </ul>
-        </li>
-</div>
-</ul>
+    </div>
 
 <h3>AC数の推移</h3>
+</div>
+</ul>
 <div class="demo-container">
     <div id="placeholder" class="demo-placeholder">
         <canvas class="flot-base"></canvas>
     </div>
-</div>
+    <p><br>
+        <a href="./light_version.html">light ver.</a>
+        <a href="./9th.html">9期</a>
+        <a href="./10th.html">10期</a>
+        <a href="./11th.html">11期</a>
+        <a href="./ob.html">OB</a>
+        <a href="./all.html">All Generation</a>
+    </p>
+
 <table id="table-recent" class="usertable tablesorter"></table>
 <h3>問題リスト</h3>
 <table id="table-problems" class="problemtable tablesorter">
@@ -1392,7 +1402,5 @@
 <tr id="2580"><td class="problem-id">2580</td><td><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2580">Dangerous Delivery</a></td><td class="solved-mark" id="2580-0"></td><td class="solved-mark" id="2580-1"></td><td class="solved-mark" id="2580-2"></td><td class="solved-mark" id="2580-3"></td><td class="solved-mark" id="2580-4"></td><td class="solved-mark" id="2580-5"></td><td class="solved-mark" id="2580-6"></td><td class="solved-mark" id="2580-7"></td><td class="solved-mark" id="2580-8"></td><td class="solved-mark" id="2580-9"></td><td class="solved-mark" id="2580-10"></td><td class="solved-mark" id="2580-11"></td><td class="solved-mark" id="2580-12"></td><td class="solved-mark" id="2580-13"></td><td class="solved-mark" id="2580-14"></td><td class="solved-mark" id="2580-15"></td><td class="solved-mark" id="2580-16"></td><td class="solved-mark" id="2580-17"></td><td class="solved-mark" id="2580-18"></td><td class="solved-mark" id="2580-19"></td></tr>
 <tr id="2581"><td class="problem-id">2581</td><td><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2581">Derangement</a></td><td class="solved-mark" id="2581-0"></td><td class="solved-mark" id="2581-1"></td><td class="solved-mark" id="2581-2"></td><td class="solved-mark" id="2581-3"></td><td class="solved-mark" id="2581-4"></td><td class="solved-mark" id="2581-5"></td><td class="solved-mark" id="2581-6"></td><td class="solved-mark" id="2581-7"></td><td class="solved-mark" id="2581-8"></td><td class="solved-mark" id="2581-9"></td><td class="solved-mark" id="2581-10"></td><td class="solved-mark" id="2581-11"></td><td class="solved-mark" id="2581-12"></td><td class="solved-mark" id="2581-13"></td><td class="solved-mark" id="2581-14"></td><td class="solved-mark" id="2581-15"></td><td class="solved-mark" id="2581-16"></td><td class="solved-mark" id="2581-17"></td><td class="solved-mark" id="2581-18"></td><td class="solved-mark" id="2581-19"></td></tr></tbody>
 </table>
-
-
+</div>
 </body>
-<footer id="foot"><a href="./light_version.html">light ver.</a> <a href="./9th.html">9期</a> <a href="./10th.html">10期</a> <a href="./11th.html">11期</a> <a href="./ob.html">OB</a> <a href="./all.html">All Generation</a></footer></html>    </div>
