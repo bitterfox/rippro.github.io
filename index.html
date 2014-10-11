@@ -9,70 +9,70 @@
     <script language="javascript" type="text/javascript" src="jquery.tablesorter.min.js"></script>
     <script language="javascript" type="text/javascript" src="memberIDs.js"></script>
     <script language="javascript" type="text/javascript" src="main.js"></script>
-  </head>
-  <body>
+</head>
+<body>
 
-    <div id="header">
-      <h2>進捗どうですか</h2>
-    </div>
+<div id="header">
+    <h2>進捗どうですか</h2>
+</div>
 
-    <div id="content">
-      <h3 id="description-title">これは何</h3>
-      <div id="description" style="display: none">
-        <ul style="font-size:0.8em">
-          <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
-          <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
-          <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">
-              Volume 100</a> に含まれる問題はカウントされません<br>
-          </li>
-          <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
-          <ul>
+<div id="content">
+<h3 id="description-title">これは何</h3>
+<div id="description" style="display: none">
+    <ul style="font-size:0.8em">
+        <li>部内AOJ進捗状況を <a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">API</a> によって取得し，可視化します</li>
+        <li>表のヘッダーをクリックするとその列をキーとしてソートします</li>
+        <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/finder.jsp?volumeNo=100">
+            Volume 100</a> に含まれる問題はカウントされません<br>
+        </li>
+        <li>自分がいなければ <a href="https://github.com/rippro/rippro.github.io/blob/master/memberIDs.js">Github</a> で追加してください</li>
+        <ul>
             <li>Github アカウントでログインし，
-              'Edit' ボタンをクリックすると編集できるようになります</li>
+                'Edit' ボタンをクリックすると編集できるようになります</li>
             <li>
-              'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
+                'memberIDs' がユーザーのIDを管理するコンマ区切りの配列です．ここに追加してください．
             </li>
             <li>
-              'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
+                'Commit changes' の下の欄にどういう変更をしたかを入力し，'Commit Changes' をクリックすると反映されます
             </li>
-          </ul>
-          <li>
+        </ul>
+        <li>
             このページは次のもの利用して作られています
             <ul>
-              <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">Aizu Online Judge Application Program Interface</a> - ユーザー情報・問題リストの取得</li>
-              <li><a href="https://pages.github.com/">Github Pages</a> - バージョン管理とページのパブリッシュ</li>
-              <li><a href="http://jquery.com/">jQuery</a> - API呼び出し，DOM操作など</li>
-              <li><a href="http://www.flotcharts.org/">Flot</a> - グラフ描画</li>
-              <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
+                <li><a href="http://judge.u-aizu.ac.jp/onlinejudge/api.jsp">Aizu Online Judge Application Program Interface</a> - ユーザー情報・問題リストの取得</li>
+                <li><a href="https://pages.github.com/">Github Pages</a> - バージョン管理とページのパブリッシュ</li>
+                <li><a href="http://jquery.com/">jQuery</a> - API呼び出し，DOM操作など</li>
+                <li><a href="http://www.flotcharts.org/">Flot</a> - グラフ描画</li>
+                <li><a href="http://tablesorter.com/docs/">tablesorter</a> - 表のソート</li>
             </ul>
-          </li>
-      </div>
-      </ul>
+        </li>
+</div>
+</ul>
 
-      <h3>AC数の推移</h3>
-      <div class="demo-container">
-        <div id="placeholder" class="demo-placeholder">
-          <canvas class="flot-base"></canvas>
-        </div>
-      </div>
-      <table id="table-recent" class="usertable tablesorter"></table>
-      <h3>問題リスト</h3>
-      <table id="table-problems" class="problemtable tablesorter">
+<h3>AC数の推移</h3>
+<div class="demo-container">
+    <div id="placeholder" class="demo-placeholder">
+        <canvas class="flot-base"></canvas>
+    </div>
+</div>
+<table id="table-recent" class="usertable tablesorter"></table>
+<h3>問題リスト</h3>
+<table id="table-problems" class="problemtable tablesorter">
 <thead>
 <tr>
-<th class="problem-id header">No</th>
-<th class="header">ID</th>
-<th class="solved-mark header">1</th>
-<th class="solved-mark header">2</th>
-<th class="solved-mark header">3</th>
-<th class="solved-mark header">4</th>
-<th class="solved-mark header">5</th>
-<th class="solved-mark header">6</th>
-<th class="solved-mark header">7</th>
-<th class="solved-mark header">8</th>
-<th class="solved-mark header">9</th>
-<th class="solved-mark header">10</th>
-<th class="solved-mark header">11</th><th class="solved-mark header">12</th><th class="solved-mark header">13</th><th class="solved-mark header">14</th><th class="solved-mark header">15</th><th class="solved-mark header">16</th><th class="solved-mark header">17</th><th class="solved-mark header">18</th><th class="solved-mark header">19</th><th class="solved-mark header">20</th></tr></thead><tbody>
+    <th class="problem-id header">No</th>
+    <th class="header">ID</th>
+    <th class="solved-mark header">1</th>
+    <th class="solved-mark header">2</th>
+    <th class="solved-mark header">3</th>
+    <th class="solved-mark header">4</th>
+    <th class="solved-mark header">5</th>
+    <th class="solved-mark header">6</th>
+    <th class="solved-mark header">7</th>
+    <th class="solved-mark header">8</th>
+    <th class="solved-mark header">9</th>
+    <th class="solved-mark header">10</th>
+    <th class="solved-mark header">11</th><th class="solved-mark header">12</th><th class="solved-mark header">13</th><th class="solved-mark header">14</th><th class="solved-mark header">15</th><th class="solved-mark header">16</th><th class="solved-mark header">17</th><th class="solved-mark header">18</th><th class="solved-mark header">19</th><th class="solved-mark header">20</th></tr></thead><tbody>
 <tr id="0000"><td class="problem-id">0000</td><td><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0000">QQ</a></td><td class="solved-mark" id="0000-0"></td><td class="solved-mark" id="0000-1"></td><td class="solved-mark" id="0000-2"></td><td class="solved-mark" id="0000-3"></td><td class="solved-mark" id="0000-4"></td><td class="solved-mark" id="0000-5"></td><td class="solved-mark" id="0000-6"></td><td class="solved-mark" id="0000-7"></td><td class="solved-mark" id="0000-8"></td><td class="solved-mark" id="0000-9"></td><td class="solved-mark" id="0000-10"></td><td class="solved-mark" id="0000-11"></td><td class="solved-mark" id="0000-12"></td><td class="solved-mark" id="0000-13"></td><td class="solved-mark" id="0000-14"></td><td class="solved-mark" id="0000-15"></td><td class="solved-mark" id="0000-16"></td><td class="solved-mark" id="0000-17"></td><td class="solved-mark" id="0000-18"></td><td class="solved-mark" id="0000-19"></td></tr>
 <tr id="0001"><td class="problem-id">0001</td><td><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0001">List of Top 3 Hills</a></td><td class="solved-mark" id="0001-0"></td><td class="solved-mark" id="0001-1"></td><td class="solved-mark" id="0001-2"></td><td class="solved-mark" id="0001-3"></td><td class="solved-mark" id="0001-4"></td><td class="solved-mark" id="0001-5"></td><td class="solved-mark" id="0001-6"></td><td class="solved-mark" id="0001-7"></td><td class="solved-mark" id="0001-8"></td><td class="solved-mark" id="0001-9"></td><td class="solved-mark" id="0001-10"></td><td class="solved-mark" id="0001-11"></td><td class="solved-mark" id="0001-12"></td><td class="solved-mark" id="0001-13"></td><td class="solved-mark" id="0001-14"></td><td class="solved-mark" id="0001-15"></td><td class="solved-mark" id="0001-16"></td><td class="solved-mark" id="0001-17"></td><td class="solved-mark" id="0001-18"></td><td class="solved-mark" id="0001-19"></td></tr>
 <tr id="0002"><td class="problem-id">0002</td><td><a href="http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=0002">Digit Number</a></td><td class="solved-mark" id="0002-0"></td><td class="solved-mark" id="0002-1"></td><td class="solved-mark" id="0002-2"></td><td class="solved-mark" id="0002-3"></td><td class="solved-mark" id="0002-4"></td><td class="solved-mark" id="0002-5"></td><td class="solved-mark" id="0002-6"></td><td class="solved-mark" id="0002-7"></td><td class="solved-mark" id="0002-8"></td><td class="solved-mark" id="0002-9"></td><td class="solved-mark" id="0002-10"></td><td class="solved-mark" id="0002-11"></td><td class="solved-mark" id="0002-12"></td><td class="solved-mark" id="0002-13"></td><td class="solved-mark" id="0002-14"></td><td class="solved-mark" id="0002-15"></td><td class="solved-mark" id="0002-16"></td><td class="solved-mark" id="0002-17"></td><td class="solved-mark" id="0002-18"></td><td class="solved-mark" id="0002-19"></td></tr>

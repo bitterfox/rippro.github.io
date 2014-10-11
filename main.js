@@ -160,39 +160,39 @@ var fillRecentStatusTable = function(recentStatusDatas){
     var $tbody = $("<tbody></tbody>");
 
     $thead.append($("<tr></tr>")
-                  .append($("<th></th>").text("No"))
-                  .append($("<th></th>").text("ID"))
-                  .append($("<th></th>").text("Total"))
-                  .append($("<th></th>").text("Per day"))
-                  .append($("<th></th>").text("In 24h"))
-                  .append($("<th></th>").text("Recent")
-                          .attr("colspan",2*recentStatusDatas.length)));
+        .append($("<th></th>").text("No"))
+        .append($("<th></th>").text("ID"))
+        .append($("<th></th>").text("Total"))
+        .append($("<th></th>").text("Per day"))
+        .append($("<th></th>").text("In 24h"))
+        .append($("<th></th>").text("Recent")
+            .attr("colspan",2*recentStatusDatas.length)));
 
     for(var i=0; i<recentStatusDatas.length; i++){
         var data = recentStatusDatas[i];
         var age = dtToString(data.age);
         var $tr = $("<tr></tr>").attr("id","row"+i);
         $tr
-        // ID
+            // ID
             .append($("<td></td>").text(i+1))
             .append($("<td></td>")
-                    .append($('<a></a>')
-                            .attr("href",pref + "user.jsp?id=" + data.id)
-                            .attr("style",getColor(data.solved,500,300,200,100))
-                            .text(data.id)))
-        // solved
-            .append($("<td></td>")
+                .append($('<a></a>')
+                    .attr("href",pref + "user.jsp?id=" + data.id)
                     .attr("style",getColor(data.solved,500,300,200,100))
-                    .text(data.solved))
-        // solved/day
+                    .text(data.id)))
+            // solved
             .append($("<td></td>")
-                    .text(data.solvedPerDay.toFixed(2)))
-        // solved in 24 hours
+                .attr("style",getColor(data.solved,500,300,200,100))
+                .text(data.solved))
+            // solved/day
             .append($("<td></td>")
-                    .text(data.solvedLast24Hours)
-                    .attr("style",
-                          getColor(data.solvedLast24Hours,
-                                   10,5,3,1)));
+                .text(data.solvedPerDay.toFixed(2)))
+            // solved in 24 hours
+            .append($("<td></td>")
+                .text(data.solvedLast24Hours)
+                .attr("style",
+                getColor(data.solvedLast24Hours,
+                    10,5,3,1)));
 
         var now = new Date();
         for(var j=0; j<data.recentACs.length; j++){
@@ -201,17 +201,17 @@ var fillRecentStatusTable = function(recentStatusDatas){
                 $tr.append(
                     $("<td></td>")
                         .append(
-                            $('<a></a>')
-                                .attr("href", pref + "description.jsp?id=" + data.recentACs[j].id)
-                                .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                .text(data.recentACs[j].id)))
+                        $('<a></a>')
+                            .attr("href", pref + "description.jsp?id=" + data.recentACs[j].id)
+                            .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                            .text(data.recentACs[j].id)))
                     .append(
-                        $("<td></td>")
-                            .append(
-                                $('<a></a>')
-                                    .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
-                                    .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
-                                    .text(dt)));
+                    $("<td></td>")
+                        .append(
+                        $('<a></a>')
+                            .attr("href", pref + "review.jsp?rid=" + data.recentACs[j].runID)
+                            .attr("style",getColor(now - data.recentACs[j].time,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true))
+                            .text(dt)));
             } else {
                 $tr
                     .append($("<td></td>"))
@@ -267,8 +267,8 @@ var makeSolvedTable = function(volumes){
         .append($("<th></th>").text("ID"));
     for(var i=0; i<user_number_limit; i++){
         $ths.append($("<th></th>")
-                    .text(i+1)
-                    .attr("class", "solved-mark"));
+            .text(i+1)
+            .attr("class", "solved-mark"));
     }
 
     var $tbody = $("<tbody></tbody>");
@@ -284,16 +284,16 @@ var makeSolvedTable = function(volumes){
                     var prob_id = $(this).find("id").text().replace(/[\r\n]/g,"");
                     var name = $(this).find("name").text().replace(/[\r\n]/g,"");
                     var $row = $("<tr></tr>")
-                            .attr("id", prob_id)
-                            .append($("<td></td>").text(prob_id).attr("class","problem-id"))
-                            .append($("<td></td>")
-                                    .append($("<a></a>")
-                                            .attr("href", pref + "description.jsp?id=" + prob_id)
-                                            .text(name)));
+                        .attr("id", prob_id)
+                        .append($("<td></td>").text(prob_id).attr("class","problem-id"))
+                        .append($("<td></td>")
+                            .append($("<a></a>")
+                                .attr("href", pref + "description.jsp?id=" + prob_id)
+                                .text(name)));
                     for(var j=0; j<user_number_limit; j++){
                         $row.append($("<td></td>")
-                                    .attr("id", prob_id + "-" + j)
-                                    .attr("class", "solved-mark"));
+                            .attr("id", prob_id + "-" + j)
+                            .attr("class", "solved-mark"));
                     }
                     $tbody.append($row);
                 });
@@ -310,8 +310,8 @@ var fillSolvedTable = function(users){
         for(var j=0; j<solved_list.length; j++){
             $("#"+solved_list[j].id+"-"+i)
                 .append($("<a></a>")
-                        .attr("href", pref + "review.jsp?rid=" + solved_list[j].runID)
-                        .text("#"));
+                    .attr("href", pref + "review.jsp?rid=" + solved_list[j].runID)
+                    .text("#"));
         }
     }
 };

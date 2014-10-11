@@ -33,13 +33,13 @@ a:hover {
     padding: 10px;
 }
 
-/* #footer { */
-/*     margin-top: 25px; */
-/*     margin-bottom: 10px; */
-/*     text-align: center; */
-/*     font-size: 12px; */
-/*     color: #999; */
-/* } */
+ #footer {
+     margin-top: 25px;
+     margin-bottom: 10px;
+     text-align: center;
+     font-size: 12px;
+     color: #999;
+ }
 
 .demo-container {
     box-sizing: border-box;
