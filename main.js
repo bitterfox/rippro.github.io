@@ -1,10 +1,3 @@
-// TODO: UI
-// TODO: highchartに変える
-// TODO: last submission を表示
-
-var user_number_limit = 20;
-
-var pref = "http://judge.u-aizu.ac.jp/onlinejudge/";
 var volumes = [// "100",
     // PCK
     "0","1","2",
@@ -23,13 +16,64 @@ var volumes = [// "100",
 ];
 
 $.event.add(window,"load",function() {
-    updateGraphAndTable(memberIDs);
-    $("#update").click(function(){
-        updateGraphAndTable(memberIDs);
-    });
-    // $("#table-recent").tablesorter();
-    $("#table-problems").tablesorter();
+    buildPriblemList(volumes);
 });
+
+function buildPriblemList(volumes){
+    // build tabs
+    var $volumeUl = $("#volume-tab");
+    for(var i=0, l=volumes.length; i<l;i++){
+        var $li = $("<li></li>")
+            .append($("<a></a>")
+                    .attr("href","#")
+                    .attr("id","volume-tab-" + volumes[i])
+                    .text(volumes[i]));
+        if(i==0) $li.addClass("active");
+        $volumeUl.append($li);
+        // add click event
+    }
+
+    for(var i=0, l=volumes.length; i<l; i++){
+        $("#volume-tab-" + volumes[i]).click((function(volume){
+            selectVolume(volume);
+        }).bind(undefined,volumes[i]));
+    }
+
+    // build table
+    selectVolume(volumes[0]);
+
+    // tab onclick
+    $('.nav-tabs > li > a').click( function() {
+        $('.nav-tabs > li.active').removeClass('active');
+        $(this).parent().addClass('active');
+    } );
+}
+
+function selectVolume(volume){
+    var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=" + volume;
+    $.ajax({
+        url: apiUrl ,
+        type: "GET",
+        dataType: "xml",
+        timeout: "1000",
+        success: function(xml){
+            // build ploblem list on table
+            var $table = $("#problem-table-body");
+            $table.html("");
+            $(xml).find("problem_list").find("problem").each(function(){
+                var id = $.trim($(this).find("id").text());
+                var name = $.trim($(this).find("name").text());
+                var $tr = $("<tr></tr>");
+                var url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + id;
+                var $a_id = $("<a></a>").text(id).attr("href",url);
+                var $a_name = $("<a></a>").text(name).attr("href",url);
+                $tr.append($("<td></td>").append($a_id));
+                $tr.append($("<td></td>").append($a_name));
+                $table.append($tr);
+            });
+        }
+    });
+}
 
 var updateGraphAndTable = function(userIDs){
     var users = [];
