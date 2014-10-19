@@ -35,12 +35,12 @@ function buildPriblemList(volumes){
 
     for(var i=0, l=volumes.length; i<l; i++){
         $("#volume-tab-" + volumes[i]).click((function(volume){
-            selectVolume(volume);
+            selectVolumeTab(volume);
         }).bind(undefined,volumes[i]));
     }
 
     // build table
-    selectVolume(volumes[0]);
+    selectVolumeTab(volumes[0]);
 
     // tab onclick
     $('.nav-tabs > li > a').click( function() {
@@ -49,7 +49,7 @@ function buildPriblemList(volumes){
     } );
 }
 
-function selectVolume(volume){
+function selectVolumeTab(volume){
     var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=" + volume;
     $.ajax({
         url: apiUrl ,
