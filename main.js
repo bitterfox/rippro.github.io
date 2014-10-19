@@ -9,7 +9,7 @@ var volumes = [// "100",
     // PCK
     "0","1","2",
     // JOI
-    "5",
+    "5","6",
     // UAPC
     "10",
     // ICPC Japan
