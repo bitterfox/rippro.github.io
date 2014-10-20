@@ -1,3 +1,10 @@
+var members = [
+    { id: "bnsgny" , generation: "10" },
+    { id: "CROW" , generation: "10" },
+    { id: "dispenser" , generation: "9" },
+    { id: "arsenic28" , generation: "9" }
+];
+
 var volumes = [// "100",
     // PCK
     "0","1","2",
@@ -17,6 +24,7 @@ var volumes = [// "100",
 
 $.event.add(window,"load",function() {
     buildPriblemList(volumes);
+    buildMemberList("10");
 });
 
 function buildPriblemList(volumes){
@@ -75,44 +83,56 @@ function selectVolumeTab(volume){
     });
 }
 
-var updateGraphAndTable = function(userIDs){
-    var users = [];
-    for(var i=0; i<userIDs.length; i++){
-        var solved_list = getSolvedProblems(userIDs[i]);
-        users.push({
-            id: userIDs[i],
-            solved_list: solved_list,
-            solved: solved_list.length
+function buildMemberList(generation){
+    var members_sel = [];
+    for(var i=0, l=members.length; i<l;i++){
+        if(members[i].generation === generation){
+            members_sel.push(members[i].id);
+        }
+    }
+
+    var members_obj = [];
+    for(var i=0, l=members_sel.length; i<l; i++){
+        var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=" + members_sel[i];
+        $.ajax({
+            url: apiUrl ,
+            type: "GET",
+            dataType: "xml",
+            timeout: "1000",
+            async: false, // TODO 非同期にする
+            success: function(xml){
+                var obj = parseUserInfoXML(xml);
+                members_obj.push(obj);
+            }
         });
     }
-
-    var solved = {};
-    for(var i=0; i<users.length; i++){
-        solved[users[i].id] = users[i].solved;
-    }
-
-    users.sort(function(a,b){
-        return solved[b.id] - solved[a.id];
+    members_obj.sort(function(a,b){
+        return -(a.solved - b.solved);
     });
+    console.log(members_obj);
+}
 
-    memberIDs.sort(function(a,b){
-        return solved[b] - solved[a];
+function parseUserInfoXML(xml){
+    var res = {};
+    var $xml = $(xml);
+    res.id = $.trim($xml.find("user > id").text());
+    res.name = $.trim($xml.find("user > name").text());
+    // milisec
+    var reg = new Date(parseInt($xml.find("user > registerdate").text()));
+    res.age = new Date() - reg;
+    res.solved = parseInt($.trim($xml.find("user > status > solved").text()));
+    res.perDay = res.solved / (res.age/1000/3600/24);
+    res.solved_list = [];
+    $xml.find("user > solved_list > problem").each(function(){
+        var $prob = $(this);
+        var prob = {};
+        prob.id = $prob.find("id").text();
+        prob.judge_id = $prob.find("judge_id").text();
+        prob.submissiondate = $prob.find("submissiondate").text();
+        res.solved_list.push(prob);
     });
-
-    users.length = user_number_limit;
-
-    var recentStatusDatas = [];
-    var graphDatas = [];
-    for(var i=0; i<users.length; i++){
-        graphDatas.push(makeGraphData(users[i]));
-        recentStatusDatas.push(makeRecentStatusData(users[i]));
-    }
-
-    drawGraph(graphDatas);
-    fillRecentStatusTable(recentStatusDatas);
-    //makeSolvedTable(volumes);
-    fillSolvedTable(users);
-};
+    return res;
+}
 
 var getSolvedProblems = function(userID){
     var res = [];
