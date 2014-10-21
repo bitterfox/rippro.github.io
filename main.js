@@ -165,6 +165,13 @@ function parseUserInfoXML(xml){
 }
 
 function fillSolvedList(){
+    var $header = $("#problem-table-head-tr");
+    $("#problem-table > thead > tr > .header-user-name").remove();
+    for(var i=0,l=currentMembers.length; i<l; i++){
+        var id = currentMembers[i].id;
+        $header.append($('<th class="header-user-name">'+id+"</th>"));
+    }
+
     $("#problem-table > tbody > tr").each(function(){
         var $raw = $(this);
         var pid = $raw.attr("id");
