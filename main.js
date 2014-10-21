@@ -101,13 +101,13 @@ $.event.add(window,"load",function() {
     buildVolumeList(volumes);
 
     // 初期状態
-    selectGenaration("11th");
-    selectVolume("0");
+    selectGenaration('Active');
+    selectVolume('0');
     drawGraph();
 });
 
 function initGenerationArray(){
-    var temp = [];
+    var temp = ["All", "Active"];
     for(var i=0; i<members.length; i++) {
         temp.push(members[i].generation);
     }
@@ -144,7 +144,7 @@ function buildGeneraionList(generations){
         var $li = $('<li></li>')
                 .append($('<a href="#">' + generations[i] + '</a>')
                         .attr('id','generation-tab-' + generations[i]));
-        if(generations[i]==='11th') $li.addClass('active');
+        if(generations[i]==='Active') $li.addClass('active');
         $genarationUi.append($li);
     }
 
@@ -231,7 +231,9 @@ function buildProblemList(){
 function getMemberList(generation){
     var members_sel = [];
     for(var i=0, l=members.length; i<l;i++){
-        if(members[i].generation === generation){
+        if(generation === 'All' ||
+           (generation === 'Active' && members[i].generation.match(/th$/)) ||
+           members[i].generation === generation){
             members_sel.push(members[i].id);
         }
     }
@@ -289,7 +291,7 @@ function parseUserInfoXML(xml){
 function fillSolvedList(){
     var $header = $('#problem-table-head-tr');
     $('#problem-table > thead > tr > .header-user-name').remove();
-    for(var i=0,l=currentMembers.length; i<l; i++){
+    for(var i=0,l=Math.min(20,currentMembers.length); i<l; i++){
         var id = currentMembers[i].id;
         $header.append($('<th class="header-user-name text-center">'+ id.substr(0,3) +'</th>'));
     }
@@ -298,7 +300,7 @@ function fillSolvedList(){
         var $raw = $(this);
         $raw.find('.solved-check').remove();
         var pid = $raw.attr('id');
-        for(var i=0,l=currentMembers.length; i<l; i++){
+        for(var i=0,l=Math.min(20,currentMembers.length); i<l; i++){
             var member = currentMembers[i];
             var $column = $('<td class="solved-check"></td>');
             var $solvedMark = $('<a></a>');
