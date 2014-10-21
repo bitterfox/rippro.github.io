@@ -1,36 +1,43 @@
 var members = [
-    { id: "komi0222" ,    generation: "9" },
-    { id: "menphim" ,     generation: "9" },
-    { id: "ja3rno" ,      generation: "9" },
-    { id: "dispenser" ,   generation: "9" },
-    { id: "arsenic28" ,   generation: "9" },
-    { id: "ayihis" ,      generation: "9" },
+    { id: "Respect2D",    generation: "OBOG" },
+    { id: "yokit9",       generation: "OBOG" },
+    { id: "ik11235",      generation: "OBOG" },
+    { id: "utisam",       generation: "OBOG" },
+    { id: "OldBaka",      generation: "OBOG" },
+    { id: "nkkwe",        generation: "OBOG" },
+    { id: "KNKedge",      generation: "OBOG" },
 
-    { id: "bnsgny",       generation: "10" },
-    { id: "CROW",         generation: "10" },
-    { id: "is0220rk",     generation: "10" },
-    { id: "okyyun",       generation: "10" },
-    { id: "tmbsx",        generation: "10" },
+    { id: "komi0222" ,    generation: "09th" },
+    { id: "menphim" ,     generation: "09th" },
+    { id: "ja3rno" ,      generation: "09th" },
+    { id: "dispenser" ,   generation: "09th" },
+    { id: "arsenic28" ,   generation: "09th" },
+    { id: "ayihis" ,      generation: "09th" },
 
-    { id: "is0248vx",     generation: "11" },
-    { id: "Nanana",       generation: "11" },
-    { id: "satoshi31043", generation: "11" },
-    { id: "mots555",      generation: "11" },
-    { id: "ixmel",        generation: "11" },
-    { id: "pikanatsu",    generation: "11" },
-    { id: "kerokero",     generation: "11" },
-    { id: "futo",         generation: "11" },
-    { id: "proru",        generation: "11" },
-    { id: "sarada417",    generation: "11" },
-    { id: "is0268ev",     generation: "11" },
-    { id: "IS0283IR",     generation: "11" },
-    { id: "moon_remon",   generation: "11" },
-    { id: "kinono",       generation: "11" }
+    { id: "bnsgny",       generation: "10th" },
+    { id: "CROW",         generation: "10th" },
+    { id: "is0220rk",     generation: "10th" },
+    { id: "okyyun",       generation: "10th" },
+    { id: "tmbsx",        generation: "10th" },
+
+    { id: "is0248vx",     generation: "11th" },
+    { id: "Nanana",       generation: "11th" },
+    { id: "satoshi31043", generation: "11th" },
+    { id: "mots555",      generation: "11th" },
+    { id: "ixmel",        generation: "11th" },
+    { id: "pikanatsu",    generation: "11th" },
+    { id: "kerokero",     generation: "11th" },
+    { id: "futo",         generation: "11th" },
+    { id: "proru",        generation: "11th" },
+    { id: "sarada417",    generation: "11th" },
+    { id: "is0268ev",     generation: "11th" },
+    { id: "IS0283IR",     generation: "11th" },
+    { id: "moon_remon",   generation: "11th" },
+    { id: "kinono",       generation: "11th" }
 ];
 
-var generations = [
-    "9", "10", "11"
-];
+// membersから自動生成
+var generations = [];
 
 var volumes = [// "100",
     // PCK
@@ -78,7 +85,7 @@ var graphConfig = {
             { "from":bounds[3], "to":1000000, "color":"rgba(238, 0, 0, 0.2)" }
         ]
     },
-    chart: { height: 500, type: 'line', zoomType: 'x', renderTo : "graph-container" },
+    chart: { height: 600, type: 'line', zoomType: 'x', renderTo : "graph-container" },
     plotOptions: {  series: { marker: { enabled: false } } },
     series: []
 };
@@ -87,15 +94,32 @@ var currentProlems = [];
 var currentMembers = [];
 
 $.event.add(window,"load",function() {
+    initGenerationArray();
+
     // 配列volumesに含まれるボリュームリストのDOMを構築する
     buildGeneraionList(generations);
     buildVolumeList(volumes);
 
     // 初期状態
-    selectGenaration("11");
+    selectGenaration("11th");
     selectVolume("0");
     drawGraph();
 });
+
+function initGenerationArray(){
+    var temp = [];
+    for(var i=0; i<members.length; i++) {
+        temp.push(members[i].generation);
+    }
+    temp.sort();
+    var n = temp.length;
+    temp.push("XXXXX");
+    generations = [];
+    for(var i=0; i<n; i++){
+        if(temp[i] != temp[i+1]) generations.push(temp[i]);
+    }
+    console.log(generations);
+}
 
 function selectVolume(volume){
     // Volumeに含まれる問題リストを生成し問題リストを生成する
@@ -120,7 +144,7 @@ function buildGeneraionList(generations){
         var $li = $("<li></li>")
                 .append($('<a href="#">' + generations[i] + '</a>')
                         .attr("id","generation-tab-" + generations[i]));
-        if(i==0) $li.addClass("active");
+        if(generations[i]==="11th") $li.addClass("active");
         $genarationUi.append($li);
     }
 
@@ -267,7 +291,7 @@ function fillSolvedList(){
     $("#problem-table > thead > tr > .header-user-name").remove();
     for(var i=0,l=currentMembers.length; i<l; i++){
         var id = currentMembers[i].id;
-        $header.append($('<th class="header-user-name">'+id+"</th>"));
+        $header.append($('<th class="header-user-name">'+ id.substr(0,3) +"</th>"));
     }
 
     $("#problem-table > tbody > tr").each(function(){
