@@ -26,14 +26,20 @@ var currentProlems = [];
 var currentMembers = [];
 
 $.event.add(window,"load",function() {
+    // 世代を指定してsolvedの情報を取得する
+    getMemberList("9");
     // 配列volumesに含まれるボリュームリストのDOMを構築する
     buildVolumeList(volumes);
+    selectVolume(volumes[0]);
+});
+
+function selectVolume(volume){
     // Volumeに含まれる問題リストを生成する(初期状態としてVolume0を選択する)
     // その後問題リストを生成する
-    getAndBuildProblemList(volumes[0]);
-    // 世代を指定して問題リストを埋める
-    getAndbuildMemberList("10");
-});
+    getAndBuildProblemList(volume);
+    // 取得した情報によってsolvedリストを埋める
+    fillSolvedList();
+}
 
 function buildVolumeList(volumes){
     // build tabs
@@ -46,12 +52,11 @@ function buildVolumeList(volumes){
                     .text(volumes[i]));
         if(i==0) $li.addClass("active");
         $volumeUl.append($li);
-        // add click event
     }
 
     for(var i=0, l=volumes.length; i<l; i++){
         $("#volume-tab-" + volumes[i]).click((function(volume){
-            getAndBuildProblemList(volume);
+            selectVolume(volume);
         }).bind(undefined,volumes[i]));
     }
 
@@ -69,6 +74,7 @@ function getAndBuildProblemList(volume){
         type: "GET",
         dataType: "xml",
         timeout: "1000",
+        async: false,
         success: function(xml){
             // build ploblem list on table
             currentProlems = parseVolumeInfoXML(xml);
@@ -93,7 +99,7 @@ function buildProblemList(){
     var $table = $("#problem-table-body");
     $table.html("");
     for(var i=0, l=currentProlems.length; i<l; i++){
-        var $tr = $('<tr id="problem' + currentProlems[i].id  + '"></tr>');
+        var $tr = $('<tr id="' + currentProlems[i].id  + '"></tr>');
         var $a_id = $("<a></a>").text(currentProlems[i].id).attr("href",currentProlems[i].url);
         var $a_name = $("<a></a>").text(currentProlems[i].name).attr("href",currentProlems[i].url);
         $tr.append($("<td></td>").append($a_id));
@@ -103,7 +109,7 @@ function buildProblemList(){
 }
 
 // 戻り値はsolved降順にソートされている
-function getAndbuildMemberList(generation){
+function getMemberList(generation){
     var members_sel = [];
     for(var i=0, l=members.length; i<l;i++){
         if(members[i].generation === generation){
@@ -111,7 +117,7 @@ function getAndbuildMemberList(generation){
         }
     }
 
-    var members_obj = [];
+    currentMembers = [];
     for(var i=0, l=members_sel.length; i<l; i++){
         var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=" + members_sel[i];
         $.ajax({
@@ -119,16 +125,16 @@ function getAndbuildMemberList(generation){
             type: "GET",
             dataType: "xml",
             timeout: "1000",
-            async: false, // TODO 非同期にする
+            // メンバーをsolved順にソートした後で表を埋めるなどの操作をしたいため、やむなく同期処理を行う
+            async: false,
             success: function(xml){
-                members_obj.push(parseUserInfoXML(xml));
+                currentMembers.push(parseUserInfoXML(xml));
             }
         });
     }
-    members_obj.sort(function(a,b){
+    currentMembers.sort(function(a,b){
         return -(a.solved - b.solved);
     });
-    currentMembers = members_obj;
 }
 
 function parseUserInfoXML(xml){
@@ -142,7 +148,7 @@ function parseUserInfoXML(xml){
     res.solved = parseInt($.trim($xml.find("user > status > solved").text()));
     res.perDay = res.solved / (res.age/1000/3600/24);
     res.solved_list = [];
-    // res.solved_set = {};
+    res.solved_set = {};
     $xml.find("user > solved_list > problem").each(function(){
         var $prob = $(this);
         var prob = {};
@@ -150,10 +156,25 @@ function parseUserInfoXML(xml){
         prob.judge_id = $prob.find("judge_id").text();
         prob.submissiondate = $prob.find("submissiondate").text();
         res.solved_list.push(prob);
-        // res.solved_set[prob.id] = 1;
+        res.solved_set[prob.id] = 1;
     });
     res.solved_list.sort(function(a,b){
         return a.submissiondate - b.submissiondate;
     });
     return res;
+}
+
+function fillSolvedList(){
+    $("#problem-table > tbody > tr").each(function(){
+        var $raw = $(this);
+        var pid = $raw.attr("id");
+        for(var i=0,l=currentMembers.length; i<l; i++){
+            var member = currentMembers[i];
+            var $column = $('<td></td>');
+            if(pid in member.solved_set){
+                $column.text("#");
+            }
+            $raw.append($column);
+        }
+    });
 }
