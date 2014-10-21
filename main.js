@@ -49,6 +49,40 @@ var volumes = [// "100",
     "20","21","22","23","24","25"
 ];
 
+var bounds = [200,350,500,650];
+var graphConfig = {
+    title: { text: null },
+    "tooltip":{
+        "formatter":function() {
+            return '<b>' + this.point.userid + '</b><br/>' +
+                'Problem: '+ this.point.name +'<br/>Date: '+
+                Highcharts.dateFormat('%e %b %Y', this.x) +'<br/>Solved: '+ this.y ;
+        }
+    },
+    xAxis: {
+        type: 'datetime',
+        "title":{ "text":null },
+        "dateTimeLabelFormats":{ "year":"%Y" },
+        "tickInterval":30758400000
+    },
+    yAxis: {
+        min: 0,
+        startOnTick: false,
+        "title":{ "text":null },
+        "plotLines":[ { "value":0, "width":1, "color":"#808080" } ],
+        "plotBands":[
+            { "from":0, "to":bounds[0]-1, "color":"rgba(153, 153, 153, 0.2)" },
+            { "from":bounds[0], "to":bounds[1]-1, "color":"rgba(0, 169, 0, 0.2)" },
+            { "from":bounds[1], "to":bounds[2]-1, "color":"rgba(102, 102, 255, 0.2)" },
+            { "from":bounds[2], "to":bounds[3]-1, "color":"rgba(221, 204, 0, 0.2)" },
+            { "from":bounds[3], "to":1000000, "color":"rgba(238, 0, 0, 0.2)" }
+        ]
+    },
+    chart: { height: 500, type: 'line', zoomType: 'x', renderTo : "graph-container" },
+    plotOptions: {  series: { marker: { enabled: false } } },
+    series: []
+};
+
 var currentProlems = [];
 var currentMembers = [];
 
@@ -58,8 +92,9 @@ $.event.add(window,"load",function() {
     buildVolumeList(volumes);
 
     // 初期状態
-    selectGenaration("9");
+    selectGenaration("11");
     selectVolume("0");
+    drawGraph();
 });
 
 function selectVolume(volume){
@@ -75,6 +110,7 @@ function selectGenaration(generation){
     // 構築したリストでメンバー毎にsolvedリストを埋める
     fillSolvedList();
     fillRecentActivityList();
+    drawGraph();
 }
 
 function buildGeneraionList(generations){
@@ -215,8 +251,8 @@ function parseUserInfoXML(xml){
         var prob = {};
         prob.id = $prob.find("id").text();
         prob.judge_id = $prob.find("judge_id").text();
-        prob.submissiondate = $prob.find("submissiondate").text();
-        if(parseInt(prob.submissiondate) >= ystday){ res.in24h++; }
+        prob.submissiondate = parseInt($prob.find("submissiondate").text());
+        if(prob.submissiondate >= ystday){ res.in24h++; }
         res.solved_list.push(prob);
         res.solved_set[prob.id] = 1;
     });
@@ -264,7 +300,7 @@ function fillRecentActivityList(){
         for(var j=0, m=Math.min(5,member.solved_list.length); j<m; j++){
             var prob = member.solved_list[member.solved_list.length-1-j];
             var id = prob.id;
-            var sec = cur - parseInt(prob.submissiondate);
+            var sec = cur - prob.submissiondate;
             $row.append($("<td>" + id + "</td>"));
             $row.append($("<td>" +  dtToString(sec) + "前</td>"));
         }
@@ -272,7 +308,7 @@ function fillRecentActivityList(){
     }
 }
 
-var dtToString = function(dt){
+function dtToString(dt){
     var res;
     if(dt <= 1000*60){
         res = (dt/1000).toFixed() + "秒";
@@ -285,3 +321,29 @@ var dtToString = function(dt){
     }
     return res;
 };
+
+function drawGraph(){
+    var series = [];
+    for(var i=0, n=currentMembers.length; i<n; i++){
+        series.push(makeGraphData(currentMembers[i]));
+    }
+    graphConfig.series = series;
+    new Highcharts.Chart(graphConfig);
+}
+
+function makeGraphData(member_obj){
+    var n = member_obj.solved;
+    var res = {
+        name: member_obj.id,
+        data: new Array(n)
+    };
+    for(var i=0; i<n; i++){
+        var prob = member_obj.solved_list[i];
+        res.data[i] = { x: new Date(prob.submissiondate) - 0,
+                        y: i+1,
+                        name: prob.id,
+                        userid: member_obj.id
+                      };
+    }
+    return res;
+}
