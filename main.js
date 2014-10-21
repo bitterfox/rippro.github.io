@@ -28,6 +28,10 @@ var members = [
     { id: "kinono",       generation: "11" }
 ];
 
+var generations = [
+    "9", "10", "11"
+];
+
 var volumes = [// "100",
     // PCK
     "0","1","2",
@@ -49,19 +53,51 @@ var currentProlems = [];
 var currentMembers = [];
 
 $.event.add(window,"load",function() {
-    // 世代を指定してsolvedの情報を取得する
-    getMemberList("9");
     // 配列volumesに含まれるボリュームリストのDOMを構築する
+    buildGeneraionList(generations);
     buildVolumeList(volumes);
-    selectVolume(volumes[0]);
+
+    // 初期状態
+    selectGenaration("9");
+    selectVolume("0");
 });
 
 function selectVolume(volume){
-    // Volumeに含まれる問題リストを生成する(初期状態としてVolume0を選択する)
-    // その後問題リストを生成する
+    // Volumeに含まれる問題リストを生成し問題リストを生成する
     getAndBuildProblemList(volume);
-    // 取得した情報によってsolvedリストを埋める
+    // 構築したリストでメンバー毎にsolvedリストを埋める
     fillSolvedList();
+}
+
+function selectGenaration(generation){
+    // メンバーを世代で指定し、solvedリストを取得する
+    getMemberList(generation);
+    // 構築したリストでメンバー毎にsolvedリストを埋める
+    fillSolvedList();
+    fillRecentActivityList();
+}
+
+function buildGeneraionList(generations){
+    // build tabs
+    var $genarationUi = $("#generaion-tab");
+    for(var i=0, l=generations.length; i<l; i++){
+        var $li = $("<li></li>")
+                .append($('<a href="#">' + generations[i] + '</a>')
+                        .attr("id","generation-tab-" + generations[i]));
+        if(i==0) $li.addClass("active");
+        $genarationUi.append($li);
+    }
+
+    for(var i=0, l=generations.length; i<l; i++){
+        $("#generation-tab-" + generations[i]).click((function(gen){
+            selectGenaration(gen);
+        }).bind(undefined,generations[i]));
+    }
+    // tab onclick
+    $('#generaion-tab > li > a').click( function() {
+        $('#generaion-tab > li.active').removeClass('active');
+        $(this).parent().addClass('active');
+    });
 }
 
 function buildVolumeList(volumes){
@@ -80,10 +116,9 @@ function buildVolumeList(volumes){
             selectVolume(volume);
         }).bind(undefined,volumes[i]));
     }
-
     // tab onclick
-    $('.nav-tabs > li > a').click( function() {
-        $('.nav-tabs > li.active').removeClass('active');
+    $('#volume-tab > li > a').click( function() {
+        $('#volume-tab > li.active').removeClass('active');
         $(this).parent().addClass('active');
     });
 }
@@ -171,6 +206,8 @@ function parseUserInfoXML(xml){
     res.age = new Date() - reg;
     res.solved = parseInt($.trim($xml.find("user > status > solved").text()));
     res.perDay = res.solved / (res.age/1000/3600/24);
+    res.in24h = 0;
+    var ystday = new Date() - 24*3600*1000;
     res.solved_list = [];
     res.solved_set = {};
     $xml.find("user > solved_list > problem").each(function(){
@@ -179,6 +216,7 @@ function parseUserInfoXML(xml){
         prob.id = $prob.find("id").text();
         prob.judge_id = $prob.find("judge_id").text();
         prob.submissiondate = $prob.find("submissiondate").text();
+        if(parseInt(prob.submissiondate) >= ystday){ res.in24h++; }
         res.solved_list.push(prob);
         res.solved_set[prob.id] = 1;
     });
@@ -198,10 +236,11 @@ function fillSolvedList(){
 
     $("#problem-table > tbody > tr").each(function(){
         var $raw = $(this);
+        $raw.find(".solved-check").remove();
         var pid = $raw.attr("id");
         for(var i=0,l=currentMembers.length; i<l; i++){
             var member = currentMembers[i];
-            var $column = $('<td></td>');
+            var $column = $('<td class="solved-check"></td>');
             if(pid in member.solved_set){
                 $column.text("#");
             }
@@ -209,3 +248,40 @@ function fillSolvedList(){
         }
     });
 }
+
+function fillRecentActivityList(){
+    var $tbody = $("#recent-activity-table-body");
+    $tbody.html("");
+    var cur = new Date();
+    for(var i=0, l=currentMembers.length; i<l; i++){
+        var member = currentMembers[i];
+        var $row = $("<tr></tr>");
+        $row.append($('<td>'+ (i+1) +'</td>'));
+        $row.append($('<td>'+ member.id +'</td>'));
+        $row.append($('<td>'+ member.solved +'</td>'));
+        $row.append($('<td>'+ member.perDay.toFixed(2) +'</td>'));
+        $row.append($('<td>'+ member.in24h +'</td>'));
+        for(var j=0, m=Math.min(5,member.solved_list.length); j<m; j++){
+            var prob = member.solved_list[member.solved_list.length-1-j];
+            var id = prob.id;
+            var sec = cur - parseInt(prob.submissiondate);
+            $row.append($("<td>" + id + "</td>"));
+            $row.append($("<td>" +  dtToString(sec) + "前</td>"));
+        }
+        $tbody.append($row);
+    }
+}
+
+var dtToString = function(dt){
+    var res;
+    if(dt <= 1000*60){
+        res = (dt/1000).toFixed() + "秒";
+    } else if(dt <= 1000*60*60){
+        res = (dt/1000/60).toFixed() + "分";
+    } else if(dt <= 1000*60*60*24){
+        res = (dt/1000/60/60).toFixed() + "時間";
+    } else {
+        res = (dt/1000/60/60/24).toFixed() + "日";
+    }
+    return res;
+};
