@@ -59,7 +59,7 @@ var volumes = [// "100",
 var bounds = [200,350,500,650];
 var graphConfig = {
     title: { text: null },
-    "tooltip":{
+    tooltip:{
         "formatter":function() {
             return '<b>' + this.point.userid + '</b><br/>' +
                 'Problem: '+ this.point.name +'<br/>Date: '+
@@ -139,17 +139,17 @@ function selectGenaration(generation){
 
 function buildGeneraionList(generations){
     // build tabs
-    var $genarationUi = $("#generaion-tab");
+    var $genarationUi = $('#generaion-tab');
     for(var i=0, l=generations.length; i<l; i++){
-        var $li = $("<li></li>")
+        var $li = $('<li></li>')
                 .append($('<a href="#">' + generations[i] + '</a>')
-                        .attr("id","generation-tab-" + generations[i]));
-        if(generations[i]==="11th") $li.addClass("active");
+                        .attr('id','generation-tab-' + generations[i]));
+        if(generations[i]==='11th') $li.addClass('active');
         $genarationUi.append($li);
     }
 
     for(var i=0, l=generations.length; i<l; i++){
-        $("#generation-tab-" + generations[i]).click((function(gen){
+        $('#generation-tab-' + generations[i]).click((function(gen){
             selectGenaration(gen);
         }).bind(undefined,generations[i]));
     }
@@ -162,17 +162,17 @@ function buildGeneraionList(generations){
 
 function buildVolumeList(volumes){
     // build tabs
-    var $volumeUl = $("#volume-tab");
+    var $volumeUl = $('#volume-tab');
     for(var i=0, l=volumes.length; i<l;i++){
-        var $li = $("<li></li>")
+        var $li = $('<li></li>')
                 .append($('<a href="#">' + volumes[i] + '</a>')
-                        .attr("id","volume-tab-" + volumes[i]));
-        if(i==0) $li.addClass("active");
+                        .attr('id','volume-tab-' + volumes[i]));
+        if(i==0) $li.addClass('active');
         $volumeUl.append($li);
     }
 
     for(var i=0, l=volumes.length; i<l; i++){
-        $("#volume-tab-" + volumes[i]).click((function(volume){
+        $('#volume-tab-' + volumes[i]).click((function(volume){
             selectVolume(volume);
         }).bind(undefined,volumes[i]));
     }
@@ -184,12 +184,12 @@ function buildVolumeList(volumes){
 }
 
 function getAndBuildProblemList(volume){
-    var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=" + volume;
+    var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=' + volume;
     $.ajax({
         url: apiUrl ,
-        type: "GET",
-        dataType: "xml",
-        timeout: "1000",
+        type: 'GET',
+        dataType: 'xml',
+        timeout: '1000',
         async: false,
         success: function(xml){
             // build ploblem list on table
@@ -201,28 +201,28 @@ function getAndBuildProblemList(volume){
 
 function parseVolumeInfoXML(xml){
     var problems = [];
-    $(xml).find("problem_list").find("problem").each(function(){
+    $(xml).find('problem_list').find('problem').each(function(){
         var problem = {};
-        problem.id = $.trim($(this).find("id").text());
-        problem.url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + problem.id;
-        problem.name = $.trim($(this).find("name").text());
+        problem.id = $.trim($(this).find('id').text());
+        problem.url = 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=' + problem.id;
+        problem.name = $.trim($(this).find('name').text());
         problems.push(problem);
     });
     return problems;
 }
 
 function buildProblemList(){
-    var $table = $("#problem-table-body");
-    $table.html("");
+    var $table = $('#problem-table-body');
+    $table.html('');
     for(var i=0, l=currentProlems.length; i<l; i++){
         var $tr = $('<tr id="' + currentProlems[i].id  + '"></tr>');
         var id = currentProlems[i].id;
         var name = currentProlems[i].name;
         var url = currentProlems[i].url;
-        var $a_id = $("<a>" + id + "</a>").attr("href",url);
-        var $a_name = $("<a>" + name + "</a>").attr("href",url);
-        $tr.append($("<td></td>").append($a_id));
-        $tr.append($("<td></td>").append($a_name));
+        var $a_id = $('<a>' + id + '</a>').attr('href',url);
+        var $a_name = $('<a>' + name + '</a>').attr('href',url);
+        $tr.append($('<td></td>').append($a_id));
+        $tr.append($('<td></td>').append($a_name));
         $table.append($tr);
     }
 }
@@ -238,12 +238,12 @@ function getMemberList(generation){
 
     currentMembers = [];
     for(var i=0, l=members_sel.length; i<l; i++){
-        var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=" + members_sel[i];
+        var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=' + members_sel[i];
         $.ajax({
             url: apiUrl ,
-            type: "GET",
-            dataType: "xml",
-            timeout: "1000",
+            type: 'GET',
+            dataType: 'xml',
+            timeout: '1000',
             // メンバーをsolved順にソートした後で表を埋めるなどの操作をしたいため、やむなく同期処理を行う
             async: false,
             success: function(xml){
@@ -259,23 +259,23 @@ function getMemberList(generation){
 function parseUserInfoXML(xml){
     var res = {};
     var $xml = $(xml);
-    res.id = $.trim($xml.find("user > id").text());
-    res.name = $.trim($xml.find("user > name").text());
+    res.id = $.trim($xml.find('user > id').text());
+    res.name = $.trim($xml.find('user > name').text());
     // milisec
-    var reg = new Date(parseInt($xml.find("user > registerdate").text()));
+    var reg = new Date(parseInt($xml.find('user > registerdate').text()));
     res.age = new Date() - reg;
-    res.solved = parseInt($.trim($xml.find("user > status > solved").text()));
+    res.solved = parseInt($.trim($xml.find('user > status > solved').text()));
     res.perDay = res.solved / (res.age/1000/3600/24);
     res.in24h = 0;
     var ystday = new Date() - 24*3600*1000;
     res.solved_list = [];
     res.solved_set = {};
-    $xml.find("user > solved_list > problem").each(function(){
+    $xml.find('user > solved_list > problem').each(function(){
         var $prob = $(this);
         var prob = {};
-        prob.id = $prob.find("id").text();
-        prob.judge_id = $prob.find("judge_id").text();
-        prob.submissiondate = parseInt($prob.find("submissiondate").text());
+        prob.id = $prob.find('id').text();
+        prob.judge_id = $prob.find('judge_id').text();
+        prob.submissiondate = parseInt($prob.find('submissiondate').text());
         if(prob.submissiondate >= ystday){ res.in24h++; }
         res.solved_list.push(prob);
         res.solved_set[prob.id] = prob.judge_id;
@@ -287,24 +287,24 @@ function parseUserInfoXML(xml){
 }
 
 function fillSolvedList(){
-    var $header = $("#problem-table-head-tr");
-    $("#problem-table > thead > tr > .header-user-name").remove();
+    var $header = $('#problem-table-head-tr');
+    $('#problem-table > thead > tr > .header-user-name').remove();
     for(var i=0,l=currentMembers.length; i<l; i++){
         var id = currentMembers[i].id;
-        $header.append($('<th class="header-user-name">'+ id.substr(0,3) +"</th>"));
+        $header.append($('<th class="header-user-name">'+ id.substr(0,3) +'</th>'));
     }
 
-    $("#problem-table > tbody > tr").each(function(){
+    $('#problem-table > tbody > tr').each(function(){
         var $raw = $(this);
-        $raw.find(".solved-check").remove();
-        var pid = $raw.attr("id");
+        $raw.find('.solved-check').remove();
+        var pid = $raw.attr('id');
         for(var i=0,l=currentMembers.length; i<l; i++){
             var member = currentMembers[i];
             var $column = $('<td class="solved-check"></td>');
-            var $solvedMark = $("<a></a>");
+            var $solvedMark = $('<a></a>');
             if(pid in member.solved_set){
-                $solvedMark.text("#");
-                $solvedMark.attr("href", "http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + member.solved_set[pid]);
+                $solvedMark.text('#');
+                $solvedMark.attr('href', 'http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=' + member.solved_set[pid]);
             }
 
             $column.append($solvedMark);
@@ -314,18 +314,18 @@ function fillSolvedList(){
 }
 
 function fillRecentActivityList(){
-    var $tbody = $("#recent-activity-table-body");
-    $tbody.html("");
+    var $tbody = $('#recent-activity-table-body');
+    $tbody.html('');
     var cur = new Date();
     for(var i=0, l=currentMembers.length; i<l; i++){
         var member = currentMembers[i];
         var userColor = getColor(member.solved,500,300,200,100);
-        var $row = $("<tr></tr>");
+        var $row = $('<tr></tr>');
         $row.append($('<td>'+ (i+1) +'</td>'));
         var $id = $('<td></td>')
-                .append($("<a>"+ member.id +"</a>")
-                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + member.id)
-                        .attr("style",userColor));
+                .append($('<a>'+ member.id +'</a>')
+                        .attr('href','http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=' + member.id)
+                        .attr('style',userColor));
         $row.append($id);
         $row.append($('<td><span style="' + userColor + '">'+ member.solved +'</span></td>'));
         $row.append($('<td>'+ member.perDay.toFixed(2) +'</td>'));
@@ -336,14 +336,14 @@ function fillRecentActivityList(){
             var judge_id = prob.judge_id;
             var dt = cur - prob.submissiondate;
             var submissionColor = getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true);
-            var prob_url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + id;
-            var run_url = "http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + judge_id;
-            var $id = $("<td></td>")
-                    .append($('<a><span style="' + submissionColor + '">' + id + "</span></a>")
-                            .attr("href", prob_url));
-            var $dt = $("<td></td>")
-                    .append($('<a><span style="' + submissionColor + '">' + dtToString(dt) + "前</span></a>")
-                            .attr("href", run_url));
+            var prob_url = 'http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=' + id;
+            var run_url = 'http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=' + judge_id;
+            var $id = $('<td></td>')
+                    .append($('<a><span style="' + submissionColor + '">' + id + '</span></a>')
+                            .attr('href', prob_url));
+            var $dt = $('<td></td>')
+                    .append($('<a><span style="' + submissionColor + '">' + dtToString(dt) + '前</span></a>')
+                            .attr('href', run_url));
             $row.append($id).append($dt);
         }
         $tbody.append($row);
@@ -380,13 +380,13 @@ function makeGraphData(member_obj){
 function dtToString(dt){
     var res;
     if(dt <= 1000*60){
-        res = (dt/1000).toFixed() + "秒";
+        res = (dt/1000).toFixed() + '秒';
     } else if(dt <= 1000*60*60){
-        res = (dt/1000/60).toFixed() + "分";
+        res = (dt/1000/60).toFixed() + '分';
     } else if(dt <= 1000*60*60*24){
-        res = (dt/1000/60/60).toFixed() + "時間";
+        res = (dt/1000/60/60).toFixed() + '時間';
     } else {
-        res = (dt/1000/60/60/24).toFixed() + "日";
+        res = (dt/1000/60/60/24).toFixed() + '日';
     }
     return res;
 };
@@ -395,7 +395,7 @@ var getColor = function(x,a,b,c,d,inv){
     if(inv){
         x*=-1; a*=-1; b*=-1; c*=-1; d*=-1;
     }
-    var res = "color:";
+    var res = 'color:';
     if(x >= a){
         res += 'red';
     } else if(x >= b){
@@ -407,6 +407,6 @@ var getColor = function(x,a,b,c,d,inv){
     } else {
         res += 'grey';
     }
-    res += ";";
+    res += ';';
     return res;
 };
