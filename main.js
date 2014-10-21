@@ -1,16 +1,16 @@
 var members = [
-    { id: "bnsgny",       generation: "10" },
-    { id: "CROW",         generation: "10" },
-    { id: "is0220rk",     generation: "10" },
-    { id: "okyyun",       generation: "10" },
-    { id: "tmbsx",        generation: "10" },
-
     { id: "komi0222" ,    generation: "9" },
     { id: "menphim" ,     generation: "9" },
     { id: "ja3rno" ,      generation: "9" },
     { id: "dispenser" ,   generation: "9" },
     { id: "arsenic28" ,   generation: "9" },
     { id: "ayihis" ,      generation: "9" },
+
+    { id: "bnsgny",       generation: "10" },
+    { id: "CROW",         generation: "10" },
+    { id: "is0220rk",     generation: "10" },
+    { id: "okyyun",       generation: "10" },
+    { id: "tmbsx",        generation: "10" },
 
     { id: "is0248vx",     generation: "11" },
     { id: "Nanana",       generation: "11" },
