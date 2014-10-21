@@ -319,43 +319,36 @@ function fillRecentActivityList(){
     var cur = new Date();
     for(var i=0, l=currentMembers.length; i<l; i++){
         var member = currentMembers[i];
+        var userColor = getColor(member.solved,500,300,200,100);
         var $row = $("<tr></tr>");
         $row.append($('<td>'+ (i+1) +'</td>'));
         var $id = $('<td></td>')
                 .append($("<a>"+ member.id +"</a>")
-                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + member.id));
+                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + member.id)
+                        .attr("style",userColor));
         $row.append($id);
-        $row.append($('<td>'+ member.solved +'</td>'));
+        $row.append($('<td><span style="' + userColor + '">'+ member.solved +'</span></td>'));
         $row.append($('<td>'+ member.perDay.toFixed(2) +'</td>'));
-        $row.append($('<td>'+ member.in24h +'</td>'));
+        $row.append($('<td><span style="'+ getColor(member.in24h,10,5,3,1) +'">'+ member.in24h +'</td>'));
         for(var j=0, m=Math.min(5,member.solved_list.length); j<m; j++){
             var prob = member.solved_list[member.solved_list.length-1-j];
             var id = prob.id;
             var judge_id = prob.judge_id;
             var dt = cur - prob.submissiondate;
+            var submissionColor = getColor(dt,1000*60,1000*60*60*24,1000*60*60*24*7,1000*60*60*24*30,true);
             var prob_url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + id;
             var run_url = "http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + judge_id;
-            var $id = $("<td></td>").append($("<a>" + id + "</a>").attr("href", prob_url));
-            var $dt = $("<td></td>").append($("<a>" + dtToString(dt) + "前</a>").attr("href", run_url));
+            var $id = $("<td></td>")
+                    .append($('<a><span style="' + submissionColor + '">' + id + "</span></a>")
+                            .attr("href", prob_url));
+            var $dt = $("<td></td>")
+                    .append($('<a><span style="' + submissionColor + '">' + dtToString(dt) + "前</span></a>")
+                            .attr("href", run_url));
             $row.append($id).append($dt);
         }
         $tbody.append($row);
     }
 }
-
-function dtToString(dt){
-    var res;
-    if(dt <= 1000*60){
-        res = (dt/1000).toFixed() + "秒";
-    } else if(dt <= 1000*60*60){
-        res = (dt/1000/60).toFixed() + "分";
-    } else if(dt <= 1000*60*60*24){
-        res = (dt/1000/60/60).toFixed() + "時間";
-    } else {
-        res = (dt/1000/60/60/24).toFixed() + "日";
-    }
-    return res;
-};
 
 function drawGraph(){
     var series = [];
@@ -382,3 +375,38 @@ function makeGraphData(member_obj){
     }
     return res;
 }
+
+
+function dtToString(dt){
+    var res;
+    if(dt <= 1000*60){
+        res = (dt/1000).toFixed() + "秒";
+    } else if(dt <= 1000*60*60){
+        res = (dt/1000/60).toFixed() + "分";
+    } else if(dt <= 1000*60*60*24){
+        res = (dt/1000/60/60).toFixed() + "時間";
+    } else {
+        res = (dt/1000/60/60/24).toFixed() + "日";
+    }
+    return res;
+};
+
+var getColor = function(x,a,b,c,d,inv){
+    if(inv){
+        x*=-1; a*=-1; b*=-1; c*=-1; d*=-1;
+    }
+    var res = "color:";
+    if(x >= a){
+        res += 'red';
+    } else if(x >= b){
+        res += 'orange';
+    } else if(x >= c){
+        res += 'blue';
+    } else if(x >= d){
+        res += 'green';
+    } else {
+        res += 'grey';
+    }
+    res += ";";
+    return res;
+};
