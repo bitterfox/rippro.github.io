@@ -278,7 +278,7 @@ function parseUserInfoXML(xml){
         prob.submissiondate = parseInt($prob.find("submissiondate").text());
         if(prob.submissiondate >= ystday){ res.in24h++; }
         res.solved_list.push(prob);
-        res.solved_set[prob.id] = 1;
+        res.solved_set[prob.id] = prob.judge_id;
     });
     res.solved_list.sort(function(a,b){
         return a.submissiondate - b.submissiondate;
@@ -301,9 +301,13 @@ function fillSolvedList(){
         for(var i=0,l=currentMembers.length; i<l; i++){
             var member = currentMembers[i];
             var $column = $('<td class="solved-check"></td>');
+            var $solvedMark = $("<a></a>");
             if(pid in member.solved_set){
-                $column.text("#");
+                $solvedMark.text("#");
+                $solvedMark.attr("href", "http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + member.solved_set[pid]);
             }
+
+            $column.append($solvedMark);
             $raw.append($column);
         }
     });
@@ -317,16 +321,23 @@ function fillRecentActivityList(){
         var member = currentMembers[i];
         var $row = $("<tr></tr>");
         $row.append($('<td>'+ (i+1) +'</td>'));
-        $row.append($('<td>'+ member.id +'</td>'));
+        var $id = $('<td></td>')
+                .append($("<a>"+ member.id +"</a>")
+                        .attr("href","http://judge.u-aizu.ac.jp/onlinejudge/user.jsp?id=" + member.id));
+        $row.append($id);
         $row.append($('<td>'+ member.solved +'</td>'));
         $row.append($('<td>'+ member.perDay.toFixed(2) +'</td>'));
         $row.append($('<td>'+ member.in24h +'</td>'));
         for(var j=0, m=Math.min(5,member.solved_list.length); j<m; j++){
             var prob = member.solved_list[member.solved_list.length-1-j];
             var id = prob.id;
-            var sec = cur - prob.submissiondate;
-            $row.append($("<td>" + id + "</td>"));
-            $row.append($("<td>" +  dtToString(sec) + "前</td>"));
+            var judge_id = prob.judge_id;
+            var dt = cur - prob.submissiondate;
+            var prob_url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + id;
+            var run_url = "http://judge.u-aizu.ac.jp/onlinejudge/review.jsp?rid=" + judge_id;
+            var $id = $("<td></td>").append($("<a>" + id + "</a>").attr("href", prob_url));
+            var $dt = $("<td></td>").append($("<a>" + dtToString(dt) + "前</a>").attr("href", run_url));
+            $row.append($id).append($dt);
         }
         $tbody.append($row);
     }
