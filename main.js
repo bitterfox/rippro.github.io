@@ -291,7 +291,7 @@ function fillSolvedList(){
     $('#problem-table > thead > tr > .header-user-name').remove();
     for(var i=0,l=currentMembers.length; i<l; i++){
         var id = currentMembers[i].id;
-        $header.append($('<th class="header-user-name">'+ id.substr(0,3) +'</th>'));
+        $header.append($('<th class="header-user-name text-center">'+ id.substr(0,3) +'</th>'));
     }
 
     $('#problem-table > tbody > tr').each(function(){
