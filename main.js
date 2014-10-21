@@ -22,10 +22,17 @@ var volumes = [// "100",
     "20","21","22","23","24","25"
 ];
 
+var currentProlems = [];
+var currentMembers = [];
+
 $.event.add(window,"load",function() {
+    // 配列volumesに含まれるボリュームリストのDOMを構築する
     buildVolumeList(volumes);
-    var ms = buildMemberListOfGeneration("10");
-    fillSolvedTable(ms);
+    // Volumeに含まれる問題リストを生成する(初期状態としてVolume0を選択する)
+    // その後問題リストを生成する
+    getAndBuildProblemList(volumes[0]);
+    // 世代を指定して問題リストを埋める
+    getAndbuildMemberList("10");
 });
 
 function buildVolumeList(volumes){
@@ -44,21 +51,18 @@ function buildVolumeList(volumes){
 
     for(var i=0, l=volumes.length; i<l; i++){
         $("#volume-tab-" + volumes[i]).click((function(volume){
-            selectVolume(volume);
+            getAndBuildProblemList(volume);
         }).bind(undefined,volumes[i]));
     }
-
-    // build table
-    selectVolume(volumes[0]);
 
     // tab onclick
     $('.nav-tabs > li > a').click( function() {
         $('.nav-tabs > li.active').removeClass('active');
         $(this).parent().addClass('active');
-    } );
+    });
 }
 
-function selectVolume(volume){
+function getAndBuildProblemList(volume){
     var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=" + volume;
     $.ajax({
         url: apiUrl ,
@@ -67,8 +71,8 @@ function selectVolume(volume){
         timeout: "1000",
         success: function(xml){
             // build ploblem list on table
-            var problems = parseVolumeInfoXML(xml);
-            buildProblemList(problems);
+            currentProlems = parseVolumeInfoXML(xml);
+            buildProblemList();
         }
     });
 }
@@ -85,13 +89,13 @@ function parseVolumeInfoXML(xml){
     return problems;
 }
 
-function buildProblemList(problems){
+function buildProblemList(){
     var $table = $("#problem-table-body");
     $table.html("");
-    for(var i=0, l=problems.length; i<l; i++){
-        var $tr = $("<tr></tr>");
-        var $a_id = $("<a></a>").text(problems[i].id).attr("href",problems[i].url);
-        var $a_name = $("<a></a>").text(problems[i].name).attr("href",problems[i].url);
+    for(var i=0, l=currentProlems.length; i<l; i++){
+        var $tr = $('<tr id="problem' + currentProlems[i].id  + '"></tr>');
+        var $a_id = $("<a></a>").text(currentProlems[i].id).attr("href",currentProlems[i].url);
+        var $a_name = $("<a></a>").text(currentProlems[i].name).attr("href",currentProlems[i].url);
         $tr.append($("<td></td>").append($a_id));
         $tr.append($("<td></td>").append($a_name));
         $table.append($tr);
@@ -99,7 +103,7 @@ function buildProblemList(problems){
 }
 
 // 戻り値はsolved降順にソートされている
-function buildMemberListOfGeneration(generation){
+function getAndbuildMemberList(generation){
     var members_sel = [];
     for(var i=0, l=members.length; i<l;i++){
         if(members[i].generation === generation){
@@ -117,15 +121,14 @@ function buildMemberListOfGeneration(generation){
             timeout: "1000",
             async: false, // TODO 非同期にする
             success: function(xml){
-                var obj = parseUserInfoXML(xml);
-                members_obj.push(obj);
+                members_obj.push(parseUserInfoXML(xml));
             }
         });
     }
     members_obj.sort(function(a,b){
         return -(a.solved - b.solved);
     });
-    return members_obj;
+    currentMembers = members_obj;
 }
 
 function parseUserInfoXML(xml){
@@ -139,7 +142,7 @@ function parseUserInfoXML(xml){
     res.solved = parseInt($.trim($xml.find("user > status > solved").text()));
     res.perDay = res.solved / (res.age/1000/3600/24);
     res.solved_list = [];
-    res.solved_set = {};
+    // res.solved_set = {};
     $xml.find("user > solved_list > problem").each(function(){
         var $prob = $(this);
         var prob = {};
@@ -147,16 +150,10 @@ function parseUserInfoXML(xml){
         prob.judge_id = $prob.find("judge_id").text();
         prob.submissiondate = $prob.find("submissiondate").text();
         res.solved_list.push(prob);
-        res.solved_set[prob.id] = 1;
+        // res.solved_set[prob.id] = 1;
     });
     res.solved_list.sort(function(a,b){
         return a.submissiondate - b.submissiondate;
     });
     return res;
-}
-
-function fillSolvedTable(members_obj){
-    for(var i=0, l=members_obj.length; i<l; i++){
-
-    }
 }
