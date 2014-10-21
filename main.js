@@ -46,10 +46,8 @@ function buildVolumeList(volumes){
     var $volumeUl = $("#volume-tab");
     for(var i=0, l=volumes.length; i<l;i++){
         var $li = $("<li></li>")
-            .append($("<a></a>")
-                    .attr("href","#")
-                    .attr("id","volume-tab-" + volumes[i])
-                    .text(volumes[i]));
+                .append($('<a href="#">' + volumes[i] + '</a>')
+                        .attr("id","volume-tab-" + volumes[i]));
         if(i==0) $li.addClass("active");
         $volumeUl.append($li);
     }
@@ -100,8 +98,11 @@ function buildProblemList(){
     $table.html("");
     for(var i=0, l=currentProlems.length; i<l; i++){
         var $tr = $('<tr id="' + currentProlems[i].id  + '"></tr>');
-        var $a_id = $("<a></a>").text(currentProlems[i].id).attr("href",currentProlems[i].url);
-        var $a_name = $("<a></a>").text(currentProlems[i].name).attr("href",currentProlems[i].url);
+        var id = currentProlems[i].id;
+        var name = currentProlems[i].name;
+        var url = currentProlems[i].url;
+        var $a_id = $("<a>" + id + "</a>").attr("href",url);
+        var $a_name = $("<a>" + name + "</a>").attr("href",url);
         $tr.append($("<td></td>").append($a_id));
         $tr.append($("<td></td>").append($a_name));
         $table.append($tr);
