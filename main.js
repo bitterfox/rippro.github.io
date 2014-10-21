@@ -23,12 +23,12 @@ var volumes = [// "100",
 ];
 
 $.event.add(window,"load",function() {
-    buildPriblemList(volumes);
-    var ms = buildMemberList("10");
+    buildVolumeList(volumes);
+    var ms = buildMemberListOfGeneration("10");
     fillSolvedTable(ms);
 });
 
-function buildPriblemList(volumes){
+function buildVolumeList(volumes){
     // build tabs
     var $volumeUl = $("#volume-tab");
     for(var i=0, l=volumes.length; i<l;i++){
@@ -44,12 +44,12 @@ function buildPriblemList(volumes){
 
     for(var i=0, l=volumes.length; i<l; i++){
         $("#volume-tab-" + volumes[i]).click((function(volume){
-            selectVolumeTab(volume);
+            selectVolume(volume);
         }).bind(undefined,volumes[i]));
     }
 
     // build table
-    selectVolumeTab(volumes[0]);
+    selectVolume(volumes[0]);
 
     // tab onclick
     $('.nav-tabs > li > a').click( function() {
@@ -58,7 +58,7 @@ function buildPriblemList(volumes){
     } );
 }
 
-function selectVolumeTab(volume){
+function selectVolume(volume){
     var apiUrl = "http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=" + volume;
     $.ajax({
         url: apiUrl ,
@@ -67,25 +67,39 @@ function selectVolumeTab(volume){
         timeout: "1000",
         success: function(xml){
             // build ploblem list on table
-            var $table = $("#problem-table-body");
-            $table.html("");
-            $(xml).find("problem_list").find("problem").each(function(){
-                var id = $.trim($(this).find("id").text());
-                var name = $.trim($(this).find("name").text());
-                var $tr = $("<tr></tr>");
-                var url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + id;
-                var $a_id = $("<a></a>").text(id).attr("href",url);
-                var $a_name = $("<a></a>").text(name).attr("href",url);
-                $tr.append($("<td></td>").append($a_id));
-                $tr.append($("<td></td>").append($a_name));
-                $table.append($tr);
-            });
+            var problems = parseVolumeInfoXML(xml);
+            buildProblemList(problems);
         }
     });
 }
 
+function parseVolumeInfoXML(xml){
+    var problems = [];
+    $(xml).find("problem_list").find("problem").each(function(){
+        var problem = {};
+        problem.id = $.trim($(this).find("id").text());
+        problem.url = "http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=" + problem.id;
+        problem.name = $.trim($(this).find("name").text());
+        problems.push(problem);
+    });
+    return problems;
+}
+
+function buildProblemList(problems){
+    var $table = $("#problem-table-body");
+    $table.html("");
+    for(var i=0, l=problems.length; i<l; i++){
+        var $tr = $("<tr></tr>");
+        var $a_id = $("<a></a>").text(problems[i].id).attr("href",problems[i].url);
+        var $a_name = $("<a></a>").text(problems[i].name).attr("href",problems[i].url);
+        $tr.append($("<td></td>").append($a_id));
+        $tr.append($("<td></td>").append($a_name));
+        $table.append($tr);
+    }
+}
+
 // 戻り値はsolved降順にソートされている
-function buildMemberList(generation){
+function buildMemberListOfGeneration(generation){
     var members_sel = [];
     for(var i=0, l=members.length; i<l;i++){
         if(members[i].generation === generation){
