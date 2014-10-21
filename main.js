@@ -1,8 +1,31 @@
 var members = [
-    { id: "bnsgny" , generation: "10" },
-    { id: "CROW" , generation: "10" },
-    { id: "dispenser" , generation: "9" },
-    { id: "arsenic28" , generation: "9" }
+    { id: "bnsgny",       generation: "10" },
+    { id: "CROW",         generation: "10" },
+    { id: "is0220rk",     generation: "10" },
+    { id: "okyyun",       generation: "10" },
+    { id: "tmbsx",        generation: "10" },
+
+    { id: "komi0222" ,    generation: "9" },
+    { id: "menphim" ,     generation: "9" },
+    { id: "ja3rno" ,      generation: "9" },
+    { id: "dispenser" ,   generation: "9" },
+    { id: "arsenic28" ,   generation: "9" },
+    { id: "ayihis" ,      generation: "9" },
+
+    { id: "is0248vx",     generation: "11" },
+    { id: "Nanana",       generation: "11" },
+    { id: "satoshi31043", generation: "11" },
+    { id: "mots555",      generation: "11" },
+    { id: "ixmel",        generation: "11" },
+    { id: "pikanatsu",    generation: "11" },
+    { id: "kerokero",     generation: "11" },
+    { id: "futo",         generation: "11" },
+    { id: "proru",        generation: "11" },
+    { id: "sarada417",    generation: "11" },
+    { id: "is0268ev",     generation: "11" },
+    { id: "IS0283IR",     generation: "11" },
+    { id: "moon_remon",   generation: "11" },
+    { id: "kinono",       generation: "11" }
 ];
 
 var volumes = [// "100",
