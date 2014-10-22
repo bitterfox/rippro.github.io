@@ -118,7 +118,6 @@ function initGenerationArray(){
     for(var i=0; i<n; i++){
         if(temp[i] != temp[i+1]) generations.push(temp[i]);
     }
-    console.log(generations);
 }
 
 function selectVolume(volume){
@@ -142,7 +141,7 @@ function buildGeneraionList(generations){
     var $genarationUi = $('#generaion-tab');
     for(var i=0, l=generations.length; i<l; i++){
         var $li = $('<li></li>')
-                .append($('<a href="#">' + generations[i] + '</a>')
+                .append($('<a href="javascript:;">' + generations[i] + '</a>')
                         .attr('id','generation-tab-' + generations[i]));
         if(generations[i]==='Active') $li.addClass('active');
         $genarationUi.append($li);
@@ -165,7 +164,7 @@ function buildVolumeList(volumes){
     var $volumeUl = $('#volume-tab');
     for(var i=0, l=volumes.length; i<l;i++){
         var $li = $('<li></li>')
-                .append($('<a href="#">' + volumes[i] + '</a>')
+                .append($('<a href="javascript:;">' + volumes[i] + '</a>')
                         .attr('id','volume-tab-' + volumes[i]));
         if(i==0) $li.addClass('active');
         $volumeUl.append($li);
@@ -183,7 +182,7 @@ function buildVolumeList(volumes){
     });
 }
 
-function getAndBuildProblemList(volume){
+function getAndBuildProblemList(volume, y){
     var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=' + volume;
     $.ajax({
         url: apiUrl ,
@@ -212,8 +211,7 @@ function parseVolumeInfoXML(xml){
 }
 
 function buildProblemList(){
-    var $table = $('#problem-table-body');
-    $table.html('');
+    var $newTbody = $('<tbody id="problem-table-body"></tbody>');
     for(var i=0, l=currentProlems.length; i<l; i++){
         var $tr = $('<tr id="' + currentProlems[i].id  + '"></tr>');
         var id = currentProlems[i].id;
@@ -223,8 +221,9 @@ function buildProblemList(){
         var $a_name = $('<a>' + name + '</a>').attr('href',url);
         $tr.append($('<td></td>').append($a_id));
         $tr.append($('<td></td>').append($a_name));
-        $table.append($tr);
+        $newTbody.append($tr);
     }
+    $('#problem-table-body').replaceWith($newTbody);
 }
 
 // 戻り値はsolved降順にソートされている
@@ -316,8 +315,7 @@ function fillSolvedList(){
 }
 
 function fillRecentActivityList(){
-    var $tbody = $('#recent-activity-table-body');
-    $tbody.html('');
+    var $newTbody = $('<tbody id="recent-activity-table-body"></tbody>');
     var cur = new Date();
     for(var i=0, l=currentMembers.length; i<l; i++){
         var member = currentMembers[i];
@@ -348,8 +346,9 @@ function fillRecentActivityList(){
                             .attr('href', run_url));
             $row.append($id).append($dt);
         }
-        $tbody.append($row);
+        $newTbody.append($row);
     }
+    $('#recent-activity-table-body').replaceWith($newTbody);
 }
 
 function drawGraph(){
