@@ -392,7 +392,7 @@ function dtToString(dt){
     return res;
 };
 
-var getColor = function(x,a,b,c,d,inv){
+function getColor(x,a,b,c,d,inv){
     if(inv){
         x*=-1; a*=-1; b*=-1; c*=-1; d*=-1;
     }
