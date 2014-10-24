@@ -122,7 +122,8 @@ function initGenerationArray(){
 
 function selectVolume(volume){
     // Volumeに含まれる問題リストを生成し問題リストを生成する
-    getAndBuildProblemList(volume);
+    getProblemList(volume);
+    buildProblemList();
     // 構築したリストでメンバー毎にsolvedリストを埋める
     fillSolvedList();
 }
@@ -160,21 +161,23 @@ function buildGeneraionList(generations){
 }
 
 function buildVolumeList(volumes){
-    // build tabs
     var $volumeUl = $('#volume-tab');
-    for(var i=0, l=volumes.length; i<l;i++){
+
+    function doit(volume){
         var $li = $('<li></li>')
-                .append($('<a href="javascript:;">' + volumes[i] + '</a>')
-                        .attr('id','volume-tab-' + volumes[i]));
-        if(i==0) $li.addClass('active');
+                .attr('id','volume-tab-' + volume)
+                .append($('<a href="javascript:;">' + volume + '</a>'))
+                .click((function(volume){
+                    selectVolume(volume);
+                }).bind(undefined,volume));
         $volumeUl.append($li);
     }
 
     for(var i=0, l=volumes.length; i<l; i++){
-        $('#volume-tab-' + volumes[i]).click((function(volume){
-            selectVolume(volume);
-        }).bind(undefined,volumes[i]));
+        doit(volumes[i]);
     }
+    doit("ALL");
+
     // tab onclick
     $('#volume-tab > li > a').click( function() {
         $('#volume-tab > li.active').removeClass('active');
@@ -182,8 +185,22 @@ function buildVolumeList(volumes){
     });
 }
 
-function getAndBuildProblemList(volume, y){
+function getProblemList(volume){
+    currentProlems = [];
+    if(volume != "ALL"){
+        currentProlems = getProblemInfo(volume);
+    } else {
+        for(var i=0, l=volumes.length; i<l; i++){
+            currentProlems = currentProlems.concat(getProblemInfo(volumes[i]));
+        }
+    }
+}
+
+var dp2 = {};
+function getProblemInfo(volume){
+    if(dp2[volume]) return dp2[volume];
     var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/problem_list?volume=' + volume;
+    var res = null;
     $.ajax({
         url: apiUrl ,
         type: 'GET',
@@ -192,10 +209,10 @@ function getAndBuildProblemList(volume, y){
         async: false,
         success: function(xml){
             // build ploblem list on table
-            currentProlems = parseVolumeInfoXML(xml);
-            buildProblemList();
+            res = parseVolumeInfoXML(xml);
         }
     });
+    return dp2[volume] = res;
 }
 
 function parseVolumeInfoXML(xml){
@@ -239,22 +256,31 @@ function getMemberList(generation){
 
     currentMembers = [];
     for(var i=0, l=members_sel.length; i<l; i++){
-        var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=' + members_sel[i];
-        $.ajax({
-            url: apiUrl ,
-            type: 'GET',
-            dataType: 'xml',
-            timeout: '1000',
-            // メンバーをsolved順にソートした後で表を埋めるなどの操作をしたいため、やむなく同期処理を行う
-            async: false,
-            success: function(xml){
-                currentMembers.push(parseUserInfoXML(xml));
-            }
-        });
+        var info = getMemberInfo(members_sel[i]);
+        currentMembers.push(info);
     }
     currentMembers.sort(function(a,b){
         return -(a.solved - b.solved);
     });
+}
+
+var dp1 = {};
+function getMemberInfo(memberid){
+    if(dp1[memberid]) return dp1[memberid];
+    var apiUrl = 'http://judge.u-aizu.ac.jp/onlinejudge/webservice/user?id=' + memberid;
+    var res = null;
+    $.ajax({
+        url: apiUrl ,
+        type: 'GET',
+        dataType: 'xml',
+        timeout: '1000',
+        // メンバーをsolved順にソートした後で表を埋めるなどの操作をしたいため、やむなく同期処理を行う
+        async: false,
+        success: function(xml){
+            res = parseUserInfoXML(xml);
+        }
+    });
+    return dp1[memberid] = res;
 }
 
 function parseUserInfoXML(xml){
